@@ -24,7 +24,8 @@ public class WebSecurityConfig {
     @SuppressWarnings("deprecation")
 	@Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+    	// TODO do something about these deprecation notices
+    	http.csrf().disable()
         .authorizeRequests().requestMatchers("/login").permitAll()
         .anyRequest().authenticated();
         http.headers().frameOptions().disable();
