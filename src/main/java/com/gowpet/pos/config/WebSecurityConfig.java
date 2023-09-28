@@ -26,12 +26,13 @@ public class WebSecurityConfig {
 	@Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     	// TODO do something about these deprecation notices
-    	http.csrf().disable()
-        .authorizeRequests()
-        .requestMatchers(HttpMethod.POST, "/login").permitAll()
-        // TODO remove this on prod
-        .requestMatchers(HttpMethod.POST, "/user").permitAll()
-        .anyRequest().authenticated();
+    	http.csrf().disable();
+    	http.httpBasic().disable();
+        http.authorizeRequests()
+        	.requestMatchers(HttpMethod.POST, "/login").permitAll()
+        	// TODO remove this on prod
+        	.requestMatchers(HttpMethod.POST, "/user").permitAll()
+        	.anyRequest().authenticated();
         http.headers().frameOptions().disable();
         return http.build();
     }
