@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.gowpet.pos.model.user.User;
 
-public class CustomUserDetails implements UserDetails {
+class CustomUserDetails implements UserDetails {
 	private static final long serialVersionUID = 6982846822734450056L;
 	private User user;
 
