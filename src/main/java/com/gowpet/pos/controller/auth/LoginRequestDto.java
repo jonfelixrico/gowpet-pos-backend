@@ -1,4 +1,4 @@
-package com.gowpet.pos.controller;
+package com.gowpet.pos.controller.auth;
 
 public class LoginRequestDto {
 	private String username;
