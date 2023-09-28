@@ -1,4 +1,4 @@
-package com.gowpet.pos.entities;
+package com.gowpet.pos.model;
 
 import java.util.UUID;
 
