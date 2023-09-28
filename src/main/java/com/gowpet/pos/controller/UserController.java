@@ -1,4 +1,4 @@
-package com.gowpet.pos.controller.user;
+package com.gowpet.pos.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
