@@ -20,8 +20,7 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 	
-	public User(UUID id, String username, String password) {
-		this.id = id;
+	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}
