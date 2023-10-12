@@ -35,3 +35,5 @@ build/
 # Prevent bloating
 /build/
 /bin/
+
+application.properties
