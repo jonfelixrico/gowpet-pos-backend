@@ -21,7 +21,7 @@ import java.util.function.Function;
  *
  */
 @Service
-public class JwtService {
+class JwtService {
 	private String secret;
 	private long duration;
 	
