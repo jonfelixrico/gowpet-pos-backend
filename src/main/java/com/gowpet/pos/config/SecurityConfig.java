@@ -25,6 +25,11 @@ public class SecurityConfig {
 	private JwtAuthFilter authFilter;
 	private UserDetailsService userDetailsService;
 	
+	SecurityConfig(JwtAuthFilter authFilter, UserDetailsService userDetailsService) {
+		this.authFilter = authFilter;
+		this.userDetailsService = userDetailsService;
+	}
+
 	// Configuring HttpSecurity 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { 
