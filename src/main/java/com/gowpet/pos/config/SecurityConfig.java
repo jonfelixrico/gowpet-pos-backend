@@ -1,7 +1,8 @@
 package com.gowpet.pos.config;
 
 import org.springframework.context.annotation.Bean; 
-import org.springframework.context.annotation.Configuration; 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager; 
 import org.springframework.security.authentication.AuthenticationProvider; 
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider; 
@@ -36,7 +37,8 @@ public class SecurityConfig {
         		.csrf(csrf -> csrf.disable()) // TODO restore this someday
                 .authorizeHttpRequests(authz -> authz
                 		.requestMatchers("/authenticate").permitAll()
-                        .requestMatchers("/**").authenticated())
+                		.requestMatchers(HttpMethod.POST, "/user").permitAll() // TODO remove once registration flow is done
+                        .anyRequest().authenticated())
                 .sessionManagement(smc -> smc.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()) 
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class) 
