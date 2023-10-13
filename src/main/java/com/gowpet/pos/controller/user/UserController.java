@@ -12,6 +12,11 @@ public class UserController {
 	private PasswordEncoder pwEncoder;
 	private UserService userService;
 
+	UserController(PasswordEncoder pwEncoder, UserService userService) {
+		this.pwEncoder = pwEncoder;
+		this.userService = userService;
+	}
+
 	/**
 	 * WARNING: This is for debugging only. This should be disabled in production.
 	 * @param dto
