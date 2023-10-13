@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.gowpet.pos.service.UserService;
 
 @Service
-public class ImplUserDetailsService implements UserDetailsService {
+class ImplUserDetailsService implements UserDetailsService {
 	private UserService userService;
 
 	ImplUserDetailsService(UserService userService) {
