@@ -9,6 +9,10 @@ import com.gowpet.pos.model.user.UserRepository;
 public class UserService {
 	private UserRepository repo;
 	
+	UserService(UserRepository repo) {
+		this.repo = repo;
+	}
+
 	public User createUser (String username, String password) {
 		return repo.save(new User(username, password));
 	}
