@@ -1,6 +1,7 @@
 package com.gowpet.pos.controller.user;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,5 +25,11 @@ public class UserController {
 	@PostMapping
 	public void createUser (@RequestBody CreateUserDto dto) {
 		userService.createUser(dto.getUsername(), pwEncoder.encode(dto.getPassword()));
+	}
+	
+	// TODO remove this; this is just for testing
+	@GetMapping
+	public String test () {
+		return "Hi";
 	}
 }
