@@ -1,4 +1,4 @@
-package com.gowpet.pos.security;
+package com.gowpet.pos.auth;
 
 import java.io.IOException;
 
