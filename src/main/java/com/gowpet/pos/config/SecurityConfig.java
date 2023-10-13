@@ -35,7 +35,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { 
         return http
                 .authorizeHttpRequests(authz -> authz
-                		.requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll()
+                		.requestMatchers("/authenticate").permitAll()
                         .requestMatchers("/**").authenticated())
                 .sessionManagement(smc -> smc.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()) 
