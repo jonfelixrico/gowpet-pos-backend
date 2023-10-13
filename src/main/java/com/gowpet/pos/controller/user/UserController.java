@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gowpet.pos.service.UserService;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 	private PasswordEncoder pwEncoder;
 	private UserService userService;
