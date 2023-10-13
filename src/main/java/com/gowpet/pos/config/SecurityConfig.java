@@ -30,7 +30,6 @@ public class SecurityConfig {
 		this.userDetailsService = userDetailsService;
 	}
 
-	// Configuring HttpSecurity 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { 
         return http
@@ -44,7 +43,6 @@ public class SecurityConfig {
                 .build(); 
     } 
   
-    // Password Encoding 
     @Bean
     PasswordEncoder passwordEncoder() { 
         return new BCryptPasswordEncoder(); 
