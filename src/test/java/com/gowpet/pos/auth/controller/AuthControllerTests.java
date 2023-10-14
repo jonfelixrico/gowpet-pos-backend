@@ -1,6 +1,7 @@
 package com.gowpet.pos.auth.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,14 +33,15 @@ public class AuthControllerTests {
 
 	@Test
 	public void AuthController_Authenticate_ThrowsError() throws Exception {
-		given(userService.getUserByUsername(ArgumentMatchers.any())).willAnswer(User.builder());
-		var request = post("/authenticate")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content("{ \"username\": \"user\", \"password\": \"password\" }");
-		mockMvc.perform(request);
 	}
 	
 	@Test
 	public void AuthController_Authenticate_ReturnsToken() throws Exception {
+		given(userService.getUserByUsername(ArgumentMatchers.any())).willAnswer(answer -> new User("user1", passwordEncoder.encode("password")));
+
+		var request = post("/authenticate")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{ \"username\": \"user\", \"password\": \"password\" }");
+		mockMvc.perform(request).andExpect(status().isOk());
 	}
 }
