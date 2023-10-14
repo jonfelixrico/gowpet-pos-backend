@@ -1,4 +1,4 @@
-package com.gowpet.pos.auth;
+package com.gowpet.pos.auth.service;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

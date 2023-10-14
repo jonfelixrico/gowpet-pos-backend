@@ -1,4 +1,4 @@
-package com.gowpet.pos.auth;
+package com.gowpet.pos.auth.service;
 
 import io.jsonwebtoken.Claims; 
 import io.jsonwebtoken.Jwts; 

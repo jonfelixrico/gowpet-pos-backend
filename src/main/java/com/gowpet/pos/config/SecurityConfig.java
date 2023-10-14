@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain; 
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.gowpet.pos.auth.JwtAuthFilter; 
+import com.gowpet.pos.auth.JwtAuthFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -26,7 +26,7 @@ public class SecurityConfig {
 	private JwtAuthFilter authFilter;
 	private UserDetailsService userDetailsService;
 	
-	SecurityConfig(JwtAuthFilter authFilter, UserDetailsService userDetailsService) {
+	SecurityConfig(com.gowpet.pos.auth.JwtAuthFilter authFilter, UserDetailsService userDetailsService) {
 		this.authFilter = authFilter;
 		this.userDetailsService = userDetailsService;
 	}
