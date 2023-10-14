@@ -1,9 +1,6 @@
-package com.gowpet.pos.service;
+package com.gowpet.pos.user.service;
 
 import org.springframework.stereotype.Service;
-
-import com.gowpet.pos.model.user.User;
-import com.gowpet.pos.model.user.UserRepository;
 
 @Service
 public class UserService {

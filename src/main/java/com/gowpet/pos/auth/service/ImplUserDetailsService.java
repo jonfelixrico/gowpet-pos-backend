@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.gowpet.pos.service.UserService;
+import com.gowpet.pos.user.service.UserService;
 
 @Service
 class ImplUserDetailsService implements UserDetailsService {
