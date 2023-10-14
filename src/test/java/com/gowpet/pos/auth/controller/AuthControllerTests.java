@@ -5,13 +5,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.given;
@@ -19,8 +23,9 @@ import static org.mockito.BDDMockito.given;
 import com.gowpet.pos.user.service.User;
 import com.gowpet.pos.user.service.UserService;
 
-@WebMvcTest(controllers = AuthController.class)
-@ExtendWith(MockitoExtension.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class AuthControllerTests {
 	@Autowired
 	private MockMvc mockMvc;
@@ -32,11 +37,11 @@ public class AuthControllerTests {
 	private PasswordEncoder passwordEncoder;
 
 	@Test
-	public void AuthController_Authenticate_ThrowsError() throws Exception {
+	void AuthController_Authenticate_ThrowsError() throws Exception {
 	}
 	
 	@Test
-	public void AuthController_Authenticate_ReturnsToken() throws Exception {
+	void AuthController_Authenticate_ReturnsToken() throws Exception {
 		given(userService.getUserByUsername(ArgumentMatchers.any())).willAnswer(answer -> new User("user1", passwordEncoder.encode("password")));
 
 		var request = post("/authenticate")
