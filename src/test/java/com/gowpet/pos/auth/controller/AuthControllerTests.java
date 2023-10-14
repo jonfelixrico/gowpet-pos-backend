@@ -32,6 +32,7 @@ public class AuthControllerTests {
 
 	@Test
 	public void AuthController_Authenticate_ThrowsError() throws Exception {
+		given(userService.getUserByUsername(ArgumentMatchers.any())).willAnswer(User.builder());
 		var request = post("/authenticate")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{ \"username\": \"user\", \"password\": \"password\" }");
