@@ -26,7 +26,7 @@ public class SecurityConfig {
 	private JwtAuthFilter authFilter;
 	private UserDetailsService userDetailsService;
 	
-	SecurityConfig(com.gowpet.pos.auth.JwtAuthFilter authFilter, UserDetailsService userDetailsService) {
+	SecurityConfig(JwtAuthFilter authFilter, UserDetailsService userDetailsService) {
 		this.authFilter = authFilter;
 		this.userDetailsService = userDetailsService;
 	}
