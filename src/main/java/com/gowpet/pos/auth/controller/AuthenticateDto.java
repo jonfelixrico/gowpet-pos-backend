@@ -1,4 +1,4 @@
-package com.gowpet.pos.auth;
+package com.gowpet.pos.auth.controller;
 
 class AuthenticateDto {
 	private String username;

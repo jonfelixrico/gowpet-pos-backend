@@ -1,4 +1,4 @@
-package com.gowpet.pos.auth;
+package com.gowpet.pos.auth.service;
 
 import io.jsonwebtoken.Claims; 
 import io.jsonwebtoken.Jwts; 
@@ -21,7 +21,7 @@ import java.util.function.Function;
  *
  */
 @Service
-class JwtService {
+public class JwtService {
 	private String secret;
 	private long duration;
 	

@@ -1,4 +1,4 @@
-package com.gowpet.pos.controller.user;
+package com.gowpet.pos.user.controller;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gowpet.pos.service.UserService;
+import com.gowpet.pos.user.service.UserService;
 
 @RestController
 @RequestMapping("/user")

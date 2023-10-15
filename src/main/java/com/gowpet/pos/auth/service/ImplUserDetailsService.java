@@ -1,4 +1,4 @@
-package com.gowpet.pos.auth;
+package com.gowpet.pos.auth.service;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.gowpet.pos.service.UserService;
+import com.gowpet.pos.user.service.UserService;
 
 @Service
 class ImplUserDetailsService implements UserDetailsService {
