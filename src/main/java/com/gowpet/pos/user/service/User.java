@@ -1,4 +1,4 @@
-package com.gowpet.pos.model.user;
+package com.gowpet.pos.user.service;
 
 import java.util.UUID;
 
@@ -10,9 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-// Can't use "user" since it's a reserved keyword in some DBs (pg)
-@Table(name = "app_user")
-public class User {
+@Table(name = "app_user") // Can't use "user" since it's a reserved keyword in some DBs (pg)
+public class User { // TODO turn this into an abstract; decouple from DB
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private UUID id;
