@@ -20,7 +20,7 @@ import com.gowpet.pos.user.service.UserService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AuthControllerTests {
+class AuthControllerIT {
 	@Autowired
 	private MockMvc mockMvc;
 	
