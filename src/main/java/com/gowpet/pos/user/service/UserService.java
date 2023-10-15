@@ -1,7 +1,20 @@
 package com.gowpet.pos.user.service;
 
-public abstract class UserService {
-	public abstract User createUser (String username, String password);
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+	private UserRepository repo;
 	
-	public abstract User getUserByUsername(String username);
+	UserService(UserRepository repo) {
+		this.repo = repo;
+	}
+
+	public User createUser (String username, String password) {
+		return repo.save(new User(username, password));
+	}
+	
+	public User getUserByUsername(String username) {
+		return repo.findByUsername(username);
+	}
 }
