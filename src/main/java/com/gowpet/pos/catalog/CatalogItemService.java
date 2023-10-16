@@ -13,7 +13,7 @@ public class CatalogItemService {
 		this.repo = repo;
 	}
 
-	public CatalogItem createCatalogItem (CatalogItem catalog) {
+	public CatalogItem create(CatalogItem catalog) {
 		return repo.save(catalog);
 	}
 	
