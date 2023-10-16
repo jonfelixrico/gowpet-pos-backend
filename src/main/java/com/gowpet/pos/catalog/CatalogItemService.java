@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CatalogService {
+public class CatalogItemService {
 	private CatalogItemRepository repo;
 	
-	public CatalogService(CatalogItemRepository repo) {
+	public CatalogItemService(CatalogItemRepository repo) {
 		this.repo = repo;
 	}
 
