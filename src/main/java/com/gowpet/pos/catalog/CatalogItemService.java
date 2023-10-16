@@ -1,6 +1,7 @@
 package com.gowpet.pos.catalog;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,11 @@ public class CatalogItemService {
 	}
 	
 	public CatalogItem update(String id, CatalogItem item) {
-		var record = repo.findById(id);
-		if (record.isEmpty()) {
+		if (repo.existsById(id)) {
 			return null;
 		}
 		
-		return repo.save(item);
+		return repo.save(item.withId(UUID.fromString(id)));
 	}
 	
 	public List<CatalogItem> getCatalogItems() {

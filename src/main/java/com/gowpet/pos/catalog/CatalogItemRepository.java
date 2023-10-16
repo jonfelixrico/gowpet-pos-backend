@@ -10,4 +10,5 @@ import org.springframework.data.repository.CrudRepository;
 interface CatalogItemRepository extends CrudRepository<CatalogItem, UUID> {
 	List<CatalogItem> findAll();
 	Optional<CatalogItem> findById(String id);
+	boolean existsById(String id);
 }
