@@ -14,12 +14,16 @@ public class CatalogItem {
 	private UUID id;
 	
 	private String name;
-
-	public CatalogItem(UUID id, String name) {
+	private Float price;
+	private ItemType type;
+	
+	public CatalogItem(UUID id, String name, Float price, ItemType type) {
 		this.id = id;
 		this.name = name;
+		this.price = price;
+		this.type = type;
 	}
-	
+
 	CatalogItem() {}
 
 	public UUID getId() {
@@ -29,4 +33,12 @@ public class CatalogItem {
 	public String getName() {
 		return name;
 	}
+
+	public Float getPrice() {
+		return price;
+	}
+
+	public ItemType getType() {
+		return type;
+	}	
 }
