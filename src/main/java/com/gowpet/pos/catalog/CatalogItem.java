@@ -16,9 +16,8 @@ public class CatalogItem {
 	private String name;
 	private Float price;
 	private ItemType type;
-	
-	public CatalogItem(UUID id, String name, Float price, ItemType type) {
-		this.id = id;
+
+	public CatalogItem(String name, Float price, ItemType type) {
 		this.name = name;
 		this.price = price;
 		this.type = type;
