@@ -1,7 +1,5 @@
 package com.gowpet.pos.catalog;
 
-import java.util.UUID;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,8 +19,8 @@ import lombok.With;
 @Entity
 public class CatalogItem {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private UUID id;
+	@GeneratedValue(strategy=GenerationType.UUID)
+	private String id;
 	
 	private String name;
 	private Float price;

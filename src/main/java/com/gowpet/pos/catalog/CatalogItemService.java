@@ -27,9 +27,9 @@ public class CatalogItemService {
 			return null;
 		}
 		
-		return repo.save(item.withId(UUID.fromString(id)));
+		return repo.save(item.withId(id));
 	}
-	
+
 	// TODO make this paginated
 	public List<CatalogItem> listAll() {
 		return repo.findAll();
