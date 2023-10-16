@@ -1,7 +1,6 @@
 package com.gowpet.pos.catalog.controller;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +28,7 @@ class CatalogController {
 	}
 	
 	@PostMapping("/product")
-	List<UUID> createGoods(@RequestBody List<CreateProductDto> newItems) {
+	List<String> createGoods(@RequestBody List<CreateProductDto> newItems) {
 		var created = svc.create(newItems
 				.stream()
 				.map(item -> CatalogItem.builder().name(item.getName()).price(item.getPrice()).type(ItemType.PRODUCT).build())
