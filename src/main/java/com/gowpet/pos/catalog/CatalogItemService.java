@@ -7,26 +7,26 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CatalogItemService {
-	private CatalogItemRepository crudRepo;
+	private CatalogItemRepository repo;
 	
 	public CatalogItemService(CatalogItemRepository repo) {
-		this.crudRepo = repo;
+		this.repo = repo;
 	}
 
 	public CatalogItem create(CatalogItem catalog) {
-		return crudRepo.save(catalog);
+		return repo.save(catalog);
 	}
 	
 	public CatalogItem update(String id, CatalogItem item) {
-		if (crudRepo.existsById(id)) {
+		if (repo.existsById(id)) {
 			return null;
 		}
 		
-		return crudRepo.save(item.withId(UUID.fromString(id)));
+		return repo.save(item.withId(UUID.fromString(id)));
 	}
 	
 	// TODO make this paginated
 	public List<CatalogItem> listAll() {
-		return crudRepo.findAll();
+		return repo.findAll();
 	}
 }
