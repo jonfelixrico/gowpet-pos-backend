@@ -28,11 +28,11 @@ class CatalogController {
 		return svc.listAll();
 	}
 	
-	@PostMapping("/goods")
-	List<UUID> createGoods(@RequestBody List<CreateGoodsDto> newItems) {
+	@PostMapping("/product")
+	List<UUID> createGoods(@RequestBody List<CreateProductDto> newItems) {
 		var created = svc.create(newItems
 				.stream()
-				.map(item -> CatalogItem.builder().name(item.getName()).price(item.getPrice()).type(ItemType.GOODS).build())
+				.map(item -> CatalogItem.builder().name(item.getName()).price(item.getPrice()).type(ItemType.PRODUCT).build())
 				.collect(Collectors.toList()));
 		
 		return created.stream().map(item -> item.getId()).collect(Collectors.toList());
