@@ -16,6 +16,15 @@ public class CatalogItemService {
 		return repo.save(catalog);
 	}
 	
+	public CatalogItem update(String id, CatalogItem item) {
+		var record = repo.findById(id);
+		if (record.isEmpty()) {
+			return null;
+		}
+		
+		return repo.save(item);
+	}
+	
 	public List<CatalogItem> getCatalogItems() {
 		return repo.findAll();
 	}
