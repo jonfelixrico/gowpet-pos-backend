@@ -6,8 +6,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.With;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@With
 @Entity
+@Data
 public class CatalogItem {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -16,28 +26,4 @@ public class CatalogItem {
 	private String name;
 	private Float price;
 	private ItemType type;
-
-	public CatalogItem(String name, Float price, ItemType type) {
-		this.name = name;
-		this.price = price;
-		this.type = type;
-	}
-
-	CatalogItem() {}
-
-	public UUID getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public Float getPrice() {
-		return price;
-	}
-
-	public ItemType getType() {
-		return type;
-	}	
 }
