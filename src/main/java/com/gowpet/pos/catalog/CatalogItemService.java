@@ -25,6 +25,7 @@ public class CatalogItemService {
 		return crudRepo.save(item.withId(UUID.fromString(id)));
 	}
 	
+	// TODO make this paginated
 	public List<CatalogItem> listAll() {
 		return crudRepo.findAll();
 	}
