@@ -1,5 +1,6 @@
 package com.gowpet.pos.catalog;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -22,5 +23,9 @@ public class CatalogItemService {
 		}
 		
 		return crudRepo.save(item.withId(UUID.fromString(id)));
+	}
+	
+	public List<CatalogItem> listAll() {
+		return crudRepo.findAll();
 	}
 }
