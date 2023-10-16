@@ -31,7 +31,7 @@ public class CatalogItemService {
 	}
 	
 	// TODO make this paginated
-	public List<CatalogItem> listByType(ItemType type) {
-		return repo.findByType(type);
+	public List<CatalogItem> listAll() {
+		return repo.findAll();
 	}
 }
