@@ -1,9 +1,11 @@
 package com.gowpet.pos.catalog;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class CatalogItemService {
@@ -13,8 +15,11 @@ public class CatalogItemService {
 		this.repo = repo;
 	}
 
-	public CatalogItem create(CatalogItem catalog) {
-		return repo.save(catalog);
+	public List<CatalogItem> create(List<CatalogItem> items) {
+		var saved = repo.saveAll(items);
+		var results = new ArrayList<CatalogItem>();
+		saved.forEach(results::add);
+		return results;
 	}
 	
 	public CatalogItem update(String id, CatalogItem item) {
