@@ -3,6 +3,8 @@ package com.gowpet.pos.catalog.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +30,7 @@ class CatalogController {
 	}
 	
 	@PostMapping("/product")
-	List<String> createGoods(@RequestBody List<CreateProductDto> newItems) {
+	List<String> createGoods(@RequestBody List<CreateProductDto> newItems, @AuthenticationPrincipal UserDetails user) {
 		var created = svc.create(newItems
 				.stream()
 				.map(item -> CatalogItem.builder()
