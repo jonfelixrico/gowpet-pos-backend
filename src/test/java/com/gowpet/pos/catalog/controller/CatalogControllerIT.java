@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class CatalogControllerIT {
 	@Autowired
 	private MockMvc mockMvc;
@@ -31,7 +31,8 @@ class CatalogControllerIT {
 							}
 						]
 						""");
-		mockMvc.perform(createReq);
+		mockMvc.perform(createReq)
+			.andExpect(status().isOk());
 		
 		mockMvc.perform(get("/catalog"))
 			.andExpect(status().isOk())
