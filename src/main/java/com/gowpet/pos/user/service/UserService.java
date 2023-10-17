@@ -10,13 +10,13 @@ public class UserService {
 		this.repo = repo;
 	}
 
-	public User createUser (String username, String password) {
+	public User create(String username, String password) {
 		return repo.save(User.builder()
 				.username(username)
 				.password(password).build());
 	}
 	
-	public User getUserByUsername(String username) {
+	public User findByUsername(String username) {
 		return repo.findByUsername(username);
 	}
 }

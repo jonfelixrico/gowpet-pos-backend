@@ -42,7 +42,7 @@ class CatalogController {
 						.price(item.getPrice())
 						.type(ItemType.PRODUCT)
 						.createDt(Instant.now())
-						.createdBy(userSvc.getUserByUsername(user.getUsername()))
+						.createdBy(userSvc.findByUsername(user.getUsername()))
 						.build())
 				.collect(Collectors.toList()));
 		

@@ -25,6 +25,6 @@ public class UserController {
 	 */
 	@PostMapping
 	public void createUser (@RequestBody CreateUserDto dto) {
-		userService.createUser(dto.getUsername(), pwEncoder.encode(dto.getPassword()));
+		userService.create(dto.getUsername(), pwEncoder.encode(dto.getPassword()));
 	}
 }
