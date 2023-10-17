@@ -9,12 +9,14 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder
 @Entity
+@Getter
 @Table(name = "app_user") // Can't use "user" since it's a reserved keyword in some DBs (pg)
 public class User { // TODO turn this into an abstract; decouple from DB
 	@Id
