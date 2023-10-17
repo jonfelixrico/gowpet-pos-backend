@@ -1,8 +1,11 @@
 package com.gowpet.pos.catalog.controller;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,29 +15,34 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gowpet.pos.catalog.CatalogItem;
 import com.gowpet.pos.catalog.CatalogItemService;
 import com.gowpet.pos.catalog.ItemType;
+import com.gowpet.pos.user.service.UserService;
 
 @RestController
 @RequestMapping("/catalog")
 class CatalogController {
-	private CatalogItemService svc;
-	
-	CatalogController(CatalogItemService svc) {
-		this.svc = svc;
+	private CatalogItemService catalogSvc;
+	private UserService userSvc;
+
+	CatalogController(CatalogItemService catalogSvc, UserService userSvc) {
+		this.catalogSvc = catalogSvc;
+		this.userSvc = userSvc;
 	}
 
 	@GetMapping
 	List<CatalogItem> listItems() {
-		return svc.listAll();
+		return catalogSvc.listAll();
 	}
 	
 	@PostMapping("/product")
-	List<String> createGoods(@RequestBody List<CreateProductDto> newItems) {
-		var created = svc.create(newItems
+	List<String> createGoods(@RequestBody List<CreateProductDto> newItems, @AuthenticationPrincipal UserDetails user) {
+		var created = catalogSvc.create(newItems
 				.stream()
 				.map(item -> CatalogItem.builder()
 						.name(item.getName())
 						.price(item.getPrice())
 						.type(ItemType.PRODUCT)
+						.createDt(Instant.now())
+						.createdBy(userSvc.findByUsername(user.getUsername()))
 						.build())
 				.collect(Collectors.toList()));
 		

@@ -1,9 +1,15 @@
 package com.gowpet.pos.catalog;
 
+import java.time.Instant;
+
+import com.gowpet.pos.user.service.User;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,4 +31,10 @@ public class CatalogItem {
 	private String name;
 	private Float price;
 	private ItemType type;
+	
+	private Instant createDt;
+
+	@ManyToOne
+	@JoinColumn(name="created_by", nullable=false)
+	private User createdBy;
 }
