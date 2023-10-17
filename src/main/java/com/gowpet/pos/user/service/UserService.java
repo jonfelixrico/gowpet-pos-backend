@@ -11,7 +11,9 @@ public class UserService {
 	}
 
 	public User createUser (String username, String password) {
-		return repo.save(new User(username, password));
+		return repo.save(User.builder()
+				.username(username)
+				.password(password).build());
 	}
 	
 	public User getUserByUsername(String username) {
