@@ -43,7 +43,11 @@ class AuthControllerIT {
 	
 	@Test
 	void AuthController_AuthenticateWithCorrectCredentials_ReturnsToken() throws Exception {
-		given(userService.getUserByUsername(ArgumentMatchers.any())).willAnswer(answer -> new User("user1", passwordEncoder.encode("password")));
+		given(userService.getUserByUsername(ArgumentMatchers.any()))
+			.willAnswer(answer -> User.builder()
+					.username("user1")
+					.password(passwordEncoder.encode("password"))
+					.build());
 
 		var request = post("/authenticate")
 				.contentType(MediaType.APPLICATION_JSON)
