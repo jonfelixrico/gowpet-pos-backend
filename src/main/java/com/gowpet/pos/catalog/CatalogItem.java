@@ -1,6 +1,6 @@
 package com.gowpet.pos.catalog;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 
 import com.gowpet.pos.user.service.User;
 
@@ -32,7 +32,7 @@ public class CatalogItem {
 	private Float price;
 	private ItemType type;
 	
-	private Timestamp createDt;
+	private Instant createDt;
 
 	@ManyToOne
 	@JoinColumn(nullable=false)
