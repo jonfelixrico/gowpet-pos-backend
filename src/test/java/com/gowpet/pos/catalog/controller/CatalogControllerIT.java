@@ -27,7 +27,7 @@ class CatalogControllerIT {
 						[
 							{
 								"name": "test product",
-								"price": 69.00,
+								"price": 69.00
 							}
 						]
 						""");
