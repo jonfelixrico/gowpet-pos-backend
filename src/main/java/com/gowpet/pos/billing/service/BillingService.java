@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 
 import com.gowpet.pos.billing.Billing;
+import com.gowpet.pos.catalog.CatalogItemService;
 import com.gowpet.pos.user.service.User;
 
 import lombok.Getter;
@@ -14,11 +15,11 @@ import lombok.Getter;
 @Service
 public class BillingService {
 	private BillingRepository billingRepo;
-	private BillingItemRepository itemRepo;
-	
-	BillingService(BillingRepository billingRepo, BillingItemRepository itemRepo) {
+	private CatalogItemService catalogSvc;
+
+	BillingService(BillingRepository billingRepo, CatalogItemService catalogSvc) {
 		this.billingRepo = billingRepo;
-		this.itemRepo = itemRepo;
+		this.catalogSvc = catalogSvc;
 	}
 
 	public Billing get(String id) {
@@ -37,25 +38,25 @@ public class BillingService {
 		private String notes;
 	}
 	
+	@Getter
 	public static abstract class NewBillingItem {
 		private String catalogId;
-		private String quantity;
+		private Double quantity;
 		private Double price;
 	}
 	
-	private BillingItemDb getItemHelper(String id) {
-		var result = itemRepo.findById(id);
-		if (result.isEmpty()) {
-			throw new NoSuchElementException();
-		}
-		
-		return result.get();
+	private BillingItemDb billingItemHelper (NewBillingItem item) {
+		return BillingItemDb.builder()
+				.item(catalogSvc.get(item.getCatalogId()))
+				.price(item.getPrice())
+				.quantity(item.getQuantity())
+				.build();
 	}
 	
 	public Billing create(NewBilling newBilling, User author) {
 		var mappedItems = newBilling.getItems()
 				.stream()
-				.map(id -> getItemHelper(id))
+				.map(this::billingItemHelper)
 				.toList();
 
 		var toSaveToDb = BillingDb.builder()
