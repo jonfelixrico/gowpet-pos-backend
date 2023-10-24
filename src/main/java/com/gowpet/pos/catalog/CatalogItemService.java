@@ -1,4 +1,4 @@
-package com.gowpet.pos.catalog.service;
+package com.gowpet.pos.catalog;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
 
-import com.gowpet.pos.catalog.CatalogItem;
 import com.gowpet.pos.user.service.User;
 
 
@@ -48,7 +47,8 @@ public class CatalogItemService {
 
 	// TODO make this paginated
 	public List<CatalogItem> listAll() {
-		return StreamSupport.stream(repo.findAll(CatalogItemSpecifications.isNotDeleted()).spliterator(), false)
+		var results = repo.findAll(CatalogItemSpecifications.isNotDeleted());
+		return StreamSupport.stream(results.spliterator(), false)
 				.collect(Collectors.toList());
 	}
 }

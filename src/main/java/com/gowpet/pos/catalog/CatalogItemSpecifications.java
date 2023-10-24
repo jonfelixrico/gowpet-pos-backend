@@ -1,8 +1,6 @@
-package com.gowpet.pos.catalog.service;
+package com.gowpet.pos.catalog;
 
 import org.springframework.data.jpa.domain.Specification;
-
-import com.gowpet.pos.catalog.CatalogItem;
 
 class CatalogItemSpecifications {
 	static Specification<CatalogItem> isNotDeleted() {

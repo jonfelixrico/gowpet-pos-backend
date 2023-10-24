@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gowpet.pos.catalog.CatalogItem;
+import com.gowpet.pos.catalog.CatalogItemService;
 import com.gowpet.pos.catalog.ItemType;
-import com.gowpet.pos.catalog.service.CatalogItemService;
 import com.gowpet.pos.user.service.UserService;
 
 @RestController
