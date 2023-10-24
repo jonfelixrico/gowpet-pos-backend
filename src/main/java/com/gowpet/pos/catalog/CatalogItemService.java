@@ -10,6 +10,7 @@ import java.util.stream.StreamSupport;
 import org.springframework.stereotype.Service;
 
 import com.gowpet.pos.catalog.db.CatalogItemRepository;
+import com.gowpet.pos.catalog.db.CatalogItemSpecifications;
 import com.gowpet.pos.user.service.User;
 
 
@@ -40,7 +41,7 @@ public class CatalogItemService {
 
 	// TODO make this paginated
 	public List<CatalogItem> listAll() {
-		return StreamSupport.stream(repo.findAll().spliterator(), false)
+		return StreamSupport.stream(repo.findAll(CatalogItemSpecifications.isNotDeleted()).spliterator(), false)
 				.collect(Collectors.toList());
 	}
 }
