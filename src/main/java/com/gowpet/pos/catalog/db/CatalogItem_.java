@@ -1,6 +1,8 @@
-package com.gowpet.pos.catalog;
+package com.gowpet.pos.catalog.db;
 
 import java.time.Instant;
+
+import com.gowpet.pos.catalog.CatalogItem;
 
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;

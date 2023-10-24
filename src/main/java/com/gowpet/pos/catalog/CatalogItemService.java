@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
+import com.gowpet.pos.catalog.db.CatalogItemRepository;
 import com.gowpet.pos.user.service.User;
 
 

@@ -16,12 +16,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
+@WithMockUser(username = "user1")
 class CatalogControllerIT {
 	@Autowired
 	private MockMvc mockMvc;
 
 	@Test
-	@WithMockUser(username = "user1")
 	void CatalogController_CreateItem_ShowsInList () throws Exception {
 		var createReq = post("/catalog/product")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -35,6 +35,30 @@ class CatalogControllerIT {
 						""");
 		mockMvc.perform(createReq)
 			.andExpect(status().isOk());
+		
+		mockMvc.perform(get("/catalog"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].name").value("test product"))
+			.andExpect(jsonPath("$[0].price").value(69.00));
+	}
+	
+	@Test
+	@WithMockUser(username = "user1")
+	void CatalogController_DeleteItem_Succeeds () throws Exception {
+		var createReq = post("/catalog/product")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("""
+						[
+							{
+								"name": "product to delete",
+								"price": 69.00
+							}
+						]
+						""");
+		mockMvc.perform(createReq)
+			.andExpect(status().isOk())
+			.andReturn()
+			.getResponse().
 		
 		mockMvc.perform(get("/catalog"))
 			.andExpect(status().isOk())
