@@ -27,6 +27,6 @@ public class BillingService {
 	}
 	
 	@SuperBuilder(toBuilder = true)
-	static class NewBilling extends BaseBilling {
+	public static class NewBilling extends BaseBilling {
 	}
 }
