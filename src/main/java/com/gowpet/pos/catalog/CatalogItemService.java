@@ -73,12 +73,12 @@ public class CatalogItemService {
 		return StreamSupport.stream(results.spliterator(), false)
 				.collect(Collectors.toList());
 	}
-}
-
-@Getter
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@Builder
-class UpdateableFields {
-	private String name;
-	private Float price;
+	
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PACKAGE)
+	@Builder
+	public static class UpdateableFields {
+		private String name;
+		private Float price;
+	}
 }
