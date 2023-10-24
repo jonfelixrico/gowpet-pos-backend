@@ -1,7 +1,9 @@
 package com.gowpet.pos.catalog.controller;
 
+import java.net.http.HttpResponse;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -41,19 +43,18 @@ class CatalogController {
 	}
 	
 	@PostMapping("/product")
-	List<String> createGoods(@RequestBody List<CreateProductDto> newItems, @AuthenticationPrincipal UserDetails user) {
-		var created = catalogSvc.create(newItems
-				.stream()
-				.map(item -> CatalogItem.builder()
-						.name(item.getName())
-						.price(item.getPrice())
-						.type(ItemType.PRODUCT)
-						.createDt(Instant.now())
-						.createBy(userSvc.findByUsername(user.getUsername()))
-						.build())
-				.collect(Collectors.toList()));
+	Map<String, String> createGoods(@RequestBody CreateProductDto item, @AuthenticationPrincipal UserDetails user) {
+		var toCreate = CatalogItem.builder()
+				.name(item.getName())
+				.price(item.getPrice())
+				.type(ItemType.PRODUCT)
+				.createDt(Instant.now())
+				.createBy(userSvc.findByUsername(user.getUsername()))
+				.build();
 		
-		return created.stream().map(item -> item.getId()).collect(Collectors.toList());
+		var created = catalogSvc.create(List.of(toCreate)).get(0);
+		
+		return Map.of("id", created.getId());
 	}
 	
 	@GetMapping("/product/{id}")

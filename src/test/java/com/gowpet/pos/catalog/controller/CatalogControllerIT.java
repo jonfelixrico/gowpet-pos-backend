@@ -29,12 +29,11 @@ class CatalogControllerIT {
 		var createReq = post("/catalog/product")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
-						[
-							{
-								"name": "test product",
-								"price": 69.00
-							}
-						]
+						{
+							"name": "test product",
+							"price": 69.00
+						}
+						
 						""");
 		mockMvc.perform(createReq)
 			.andExpect(status().isOk());
@@ -51,18 +50,16 @@ class CatalogControllerIT {
 		var createReq = post("/catalog/product")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
-						[
-							{
-								"name": "product to delete",
-								"price": 69.00
-							}
-						]
+						{
+							"name": "product to delete",
+							"price": 69.00
+						}
 						""");
 		var serializedJson = mockMvc.perform(createReq)
 			.andExpect(status().isOk())
 			.andReturn()
 			.getResponse().getContentAsString();
-		var id = JsonPath.read(serializedJson, "$[0]");
+		var id = JsonPath.read(serializedJson, "$.id");
 		
 		mockMvc.perform(get(String.format("/catalog/product/%s", id)))
 			.andExpect(status().isOk());
