@@ -16,10 +16,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
 @SuperBuilder(toBuilder = true)
 @Entity
+@Getter
 public class BillingDb extends Billing {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
