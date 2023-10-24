@@ -23,15 +23,8 @@ public class CatalogItemService {
 	public CatalogItemService(CatalogItemRepository repo) {
 		this.repo = repo;
 	}
-
-	public List<CatalogItem> create(List<CatalogItem> items) {
-		var saved = repo.saveAll(items);
-		var results = new ArrayList<CatalogItem>();
-		saved.forEach(results::add);
-		return results;
-	}
 	
-	public CatalogItem create(CatalogItem item, User user) {
+	public CatalogItem create(InsertFields item, User user) {
 		var now = Instant.now();
 		var preparedForSaving = CatalogItem.builder()
 				.name(item.getName())
