@@ -28,7 +28,7 @@ public class BillingDb extends Billing {
 	protected String id;
 	
 	@Builder.Default
-	@OneToMany(orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, targetEntity = BillingItemDb.class)
 	protected List<? extends BillingItem> items = new ArrayList<>();
 	
 	@ManyToOne
