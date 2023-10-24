@@ -31,6 +31,22 @@ public class CatalogItemService {
 		return results;
 	}
 	
+	public CatalogItem create(CatalogItem item, User user) {
+		var now = Instant.now();
+		var preparedForSaving = CatalogItem.builder()
+				.name(item.getName())
+				.price(item.getPrice())
+				.type(ItemType.PRODUCT)
+				.createDt(now)
+				.createBy(user)
+				.updateDt(now)
+				.updateBy(user)
+				.updateCtr(0)
+				.build();
+		
+		return repo.save(preparedForSaving);
+	}
+	
 	public void delete(String id, User deleteBy) {
 		var record = get(id);
 		var modifiedRecord = record
