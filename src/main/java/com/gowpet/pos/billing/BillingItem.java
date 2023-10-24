@@ -17,4 +17,6 @@ public class BillingItem {
 	protected Double price;
 	
 	protected Double quantity;
+	
+	protected Billing billing;
 }

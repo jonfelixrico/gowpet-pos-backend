@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 public class Billing {
 	protected String id;
-	protected List<BillingItem> items;
+	protected List<? extends BillingItem> items;
 	
 	protected Double amountOverride;
 	
