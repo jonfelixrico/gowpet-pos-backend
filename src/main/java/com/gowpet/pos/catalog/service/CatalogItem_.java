@@ -10,5 +10,4 @@ import jakarta.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(CatalogItem.class)
 class CatalogItem_ {
 	static volatile SingularAttribute<CatalogItem, Instant> deleteDt;
-	static volatile SingularAttribute<CatalogItem, String> id;
 }
