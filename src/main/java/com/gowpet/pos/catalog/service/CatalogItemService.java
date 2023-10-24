@@ -30,7 +30,7 @@ public class CatalogItemService {
 	
 	public void delete(String id, User user) {
 		var record = repo.findById(id);
-		if (record.isEmpty()) {
+		if (record.isEmpty() || record.get().getDeleteBy() != null) {
 			throw new NoSuchElementException();
 		}
 		
