@@ -1,5 +1,6 @@
 package com.gowpet.pos.catalog.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -10,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.jayway.jsonpath.JsonPath;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -55,14 +58,19 @@ class CatalogControllerIT {
 							}
 						]
 						""");
-		mockMvc.perform(createReq)
+		var serializedJson = mockMvc.perform(createReq)
 			.andExpect(status().isOk())
 			.andReturn()
-			.getResponse().
+			.getResponse().getContentAsString();
+		var id = JsonPath.read(serializedJson, "$[0]");
 		
-		mockMvc.perform(get("/catalog"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].name").value("test product"))
-			.andExpect(jsonPath("$[0].price").value(69.00));
+		mockMvc.perform(get(String.format("/catalog/product/%s", id)))
+			.andExpect(status().isOk());
+		
+		mockMvc.perform(delete(String.format("/catalog/product/%s", id)))
+			.andExpect(status().isOk());
+		
+		mockMvc.perform(get(String.format("/catalog/product/%s", id)))
+			.andExpect(status().isNotFound());
 	}
 }
