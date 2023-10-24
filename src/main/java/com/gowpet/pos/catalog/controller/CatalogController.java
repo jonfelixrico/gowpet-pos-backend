@@ -2,11 +2,18 @@ package com.gowpet.pos.catalog.controller;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.ErrorResponse;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,10 +49,25 @@ class CatalogController {
 						.price(item.getPrice())
 						.type(ItemType.PRODUCT)
 						.createDt(Instant.now())
-						.createdBy(userSvc.findByUsername(user.getUsername()))
+						.createBy(userSvc.findByUsername(user.getUsername()))
 						.build())
 				.collect(Collectors.toList()));
 		
 		return created.stream().map(item -> item.getId()).collect(Collectors.toList());
+	}
+	
+	@GetMapping("/product/{id}")
+	CatalogItem getProduct(@PathVariable String id) {
+		return catalogSvc.get(id);
+	}
+	
+	@DeleteMapping("/product/{id}")
+	void deleteProduct(@PathVariable String id, @AuthenticationPrincipal UserDetails user) {
+		catalogSvc.delete(id, userSvc.findByUsername(user.getUsername()));
+	}
+	
+	@ExceptionHandler(NoSuchElementException.class)
+	ResponseEntity<ErrorResponse> handleNoSuchElement() {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 }

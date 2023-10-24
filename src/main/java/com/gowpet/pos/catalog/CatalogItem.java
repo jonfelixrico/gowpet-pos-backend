@@ -32,9 +32,14 @@ public class CatalogItem {
 	private Float price;
 	private ItemType type;
 	
-	private Instant createDt;
 
 	@ManyToOne
-	@JoinColumn(name="created_by", nullable=false)
-	private User createdBy;
+	@JoinColumn(nullable=false)
+	private User createBy;
+	private Instant createDt;
+	
+	@ManyToOne
+	@JoinColumn
+	private User deleteBy;
+	private Instant deleteDt;
 }
