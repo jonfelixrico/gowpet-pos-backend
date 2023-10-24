@@ -1,11 +1,9 @@
 package com.gowpet.pos.catalog.controller;
 
-import java.net.http.HttpResponse;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gowpet.pos.catalog.CatalogItem;
 import com.gowpet.pos.catalog.CatalogItemService;
+import com.gowpet.pos.catalog.CatalogItemService.InsertFields;
 import com.gowpet.pos.catalog.CatalogItemService.UpdateableFields;
 import com.gowpet.pos.catalog.ItemType;
 import com.gowpet.pos.user.service.UserService;
@@ -45,23 +44,8 @@ class CatalogController {
 	}
 	
 	@PostMapping("/product")
-	Map<String, String> createGoods(@RequestBody CreateProductDto item, @AuthenticationPrincipal UserDetails user) {
-		// TODO move logic to the service level
-		var userRecord = userSvc.findByUsername(user.getUsername());
-		var now = Instant.now();
-
-		var toCreate = CatalogItem.builder()
-				.name(item.getName())
-				.price(item.getPrice())
-				.type(ItemType.PRODUCT)
-				.createDt(now)
-				.createBy(userRecord)
-				.updateDt(now)
-				.updateBy(userRecord)
-				.updateCtr(0)
-				.build();
-		
-		var created = catalogSvc.create(List.of(toCreate)).get(0);
+	Map<String, String> createGoods(@RequestBody InsertFields item, @AuthenticationPrincipal UserDetails user) {
+		var created = catalogSvc.create(item, userSvc.findByUsername(user.getUsername()));
 		
 		return Map.of("id", created.getId());
 	}

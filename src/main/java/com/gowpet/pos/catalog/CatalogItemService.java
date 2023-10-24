@@ -23,12 +23,21 @@ public class CatalogItemService {
 	public CatalogItemService(CatalogItemRepository repo) {
 		this.repo = repo;
 	}
-
-	public List<CatalogItem> create(List<CatalogItem> items) {
-		var saved = repo.saveAll(items);
-		var results = new ArrayList<CatalogItem>();
-		saved.forEach(results::add);
-		return results;
+	
+	public CatalogItem create(InsertFields item, User user) {
+		var now = Instant.now();
+		var preparedForSaving = CatalogItem.builder()
+				.name(item.getName())
+				.price(item.getPrice())
+				.type(ItemType.PRODUCT)
+				.createDt(now)
+				.createBy(user)
+				.updateDt(now)
+				.updateBy(user)
+				.updateCtr(0)
+				.build();
+		
+		return repo.save(preparedForSaving);
 	}
 	
 	public void delete(String id, User deleteBy) {
@@ -76,8 +85,14 @@ public class CatalogItemService {
 	
 	@Getter
 	@AllArgsConstructor(access = AccessLevel.PACKAGE)
-	@Builder
 	public static class UpdateableFields {
+		private String name;
+		private Float price;
+	}
+	
+	@Getter
+	@AllArgsConstructor(access = AccessLevel.PACKAGE)
+	public static class InsertFields {
 		private String name;
 		private Float price;
 	}
