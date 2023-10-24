@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import com.gowpet.pos.catalog.CatalogItem;
 
 
-public interface CatalogItemRepository extends CrudRepository<CatalogItem, String>, JpaSpecificationExecutor<CatalogItem> {
+interface CatalogItemRepository extends CrudRepository<CatalogItem, String>, JpaSpecificationExecutor<CatalogItem> {
 }

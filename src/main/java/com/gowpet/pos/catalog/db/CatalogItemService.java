@@ -1,4 +1,4 @@
-package com.gowpet.pos.catalog;
+package com.gowpet.pos.catalog.db;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -9,8 +9,7 @@ import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
 
-import com.gowpet.pos.catalog.db.CatalogItemRepository;
-import com.gowpet.pos.catalog.db.CatalogItemSpecifications;
+import com.gowpet.pos.catalog.CatalogItem;
 import com.gowpet.pos.user.service.User;
 
 
