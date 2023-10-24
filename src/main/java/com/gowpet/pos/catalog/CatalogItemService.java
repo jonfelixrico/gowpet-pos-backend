@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
 
@@ -38,6 +40,7 @@ public class CatalogItemService {
 
 	// TODO make this paginated
 	public List<CatalogItem> listAll() {
-		return repo.findAll();
+		return StreamSupport.stream(repo.findAll().spliterator(), false)
+				.collect(Collectors.toList());
 	}
 }
