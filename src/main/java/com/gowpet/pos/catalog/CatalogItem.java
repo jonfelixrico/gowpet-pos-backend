@@ -42,4 +42,9 @@ public class CatalogItem {
 	@JoinColumn
 	private User deleteBy;
 	private Instant deleteDt;
+	
+	@ManyToOne
+	@JoinColumn
+	private User updateBy;
+	private Instant updateDt;
 }
