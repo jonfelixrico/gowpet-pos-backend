@@ -1,6 +1,10 @@
 package com.gowpet.pos.billing.service;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.stereotype.Service;
+
+import com.gowpet.pos.billing.Billing;
 
 @Service
 public class BillingService {
@@ -8,5 +12,14 @@ public class BillingService {
 
 	BillingService(BillingRepository repo) {
 		this.repo = repo;
+	}
+	
+	public Billing get(String id) {
+		var result = repo.findById(id);
+		if (result.isEmpty()) {
+			throw new NoSuchElementException();
+		}
+		
+		return result.get();
 	}
 }
