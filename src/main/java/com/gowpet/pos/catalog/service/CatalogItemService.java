@@ -28,21 +28,22 @@ public class CatalogItemService {
 		return results;
 	}
 	
-	private CatalogItem findByIdHelper(String id) {
+	public void delete(String id, User deleteBy) {
+		var record = get(id);
+		var modifiedRecord = record.withDeleteBy(deleteBy).withDeleteDt(Instant.now());
+		repo.save(modifiedRecord);
+	}
+	
+	public CatalogItem get(String id) {
 		var record = repo.findById(id);
 		if (record.isEmpty() ||
 				// check if not deleted
 				record.get().getDeleteBy() != null) {
+			// TODO consider using a custom error
 			throw new NoSuchElementException();
 		}
 		
 		return record.get();
-	}
-	
-	public void delete(String id, User deleteBy) {
-		var record = findByIdHelper(id);
-		var modifiedRecord = record.withDeleteBy(deleteBy).withDeleteDt(Instant.now());
-		repo.save(modifiedRecord);
 	}
 
 	// TODO make this paginated
