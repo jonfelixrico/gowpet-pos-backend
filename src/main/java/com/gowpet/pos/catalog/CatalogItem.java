@@ -42,8 +42,4 @@ public class CatalogItem {
 	@JoinColumn
 	private User deleteBy;
 	private Instant deleteDt;
-	
-	public boolean getIsDeleted () {
-		return deleteBy != null;
-	}
 }
