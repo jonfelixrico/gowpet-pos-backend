@@ -32,9 +32,15 @@ public class BillingService {
 	
 	@Getter
 	public static abstract class NewBilling {
-		private List<String> items;
+		private List<NewBillingItem> items;
 		private Double amountOverride;
 		private String notes;
+	}
+	
+	public static abstract class NewBillingItem {
+		private String catalogId;
+		private String quantity;
+		private Double price;
 	}
 	
 	private BillingItemDb getItemHelper(String id) {
