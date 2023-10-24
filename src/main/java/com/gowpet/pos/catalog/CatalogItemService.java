@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.gowpet.pos.user.service.User;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
 @Service
 public class CatalogItemService {
@@ -37,6 +41,17 @@ public class CatalogItemService {
 		repo.save(modifiedRecord);
 	}
 	
+	public CatalogItem update(String id, UpdateableFields toUpdate, User updateBy) {
+		var record = get(id);
+		var modifiedRecord = record
+				.withUpdateDt(Instant.now())
+				.withUpdateBy(updateBy)
+				.withUpdateCtr(record.getUpdateCtr() + 1)
+				.withPrice(toUpdate.getPrice())
+				.withName(toUpdate.getName());
+		return repo.save(modifiedRecord);
+	}
+	
 	public CatalogItem get(String id) {
 		var result = repo.findById(id);
 		if (result.isEmpty()) {
@@ -58,4 +73,12 @@ public class CatalogItemService {
 		return StreamSupport.stream(results.spliterator(), false)
 				.collect(Collectors.toList());
 	}
+}
+
+@Getter
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@Builder
+class UpdateableFields {
+	private String name;
+	private Float price;
 }
