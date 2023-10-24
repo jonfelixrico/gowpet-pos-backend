@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gowpet.pos.catalog.CatalogItem;
 import com.gowpet.pos.catalog.CatalogItemService;
+import com.gowpet.pos.catalog.CatalogItemService.UpdateableFields;
 import com.gowpet.pos.catalog.ItemType;
 import com.gowpet.pos.user.service.UserService;
 
@@ -72,6 +74,11 @@ class CatalogController {
 	@DeleteMapping("/product/{id}")
 	void deleteProduct(@PathVariable String id, @AuthenticationPrincipal UserDetails user) {
 		catalogSvc.delete(id, userSvc.findByUsername(user.getUsername()));
+	}
+	
+	@PutMapping("/product/{id}")
+	CatalogItem updateProduct(@PathVariable String id, @RequestBody UpdateableFields item, @AuthenticationPrincipal UserDetails user) {
+		return catalogSvc.update(id, item, userSvc.findByUsername(user.getUsername()));
 	}
 	
 	@ExceptionHandler(NoSuchElementException.class)
