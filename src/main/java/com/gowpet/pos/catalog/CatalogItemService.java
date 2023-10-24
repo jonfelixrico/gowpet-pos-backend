@@ -20,14 +20,6 @@ public class CatalogItemService {
 		saved.forEach(results::add);
 		return results;
 	}
-	
-	public CatalogItem update(String id, CatalogItem item) {
-		if (repo.existsById(id)) {
-			return null;
-		}
-		
-		return repo.save(item.withId(id));
-	}
 
 	// TODO make this paginated
 	public List<CatalogItem> listAll() {
