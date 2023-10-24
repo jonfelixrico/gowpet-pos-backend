@@ -31,7 +31,7 @@ class CatalogControllerIT {
 				.content("""
 						{
 							"name": "test product",
-								"price": 69.00
+							"price": 69.00
 						}
 						
 						""");
@@ -40,8 +40,8 @@ class CatalogControllerIT {
 		
 		mockMvc.perform(get("/catalog"))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.name").value("test product"))
-			.andExpect(jsonPath("$.price").value(69.00));
+			.andExpect(jsonPath("$[0].name").value("test product"))
+			.andExpect(jsonPath("$[0].price").value(69.00));
 	}
 	
 	@Test
