@@ -32,7 +32,8 @@ public class CatalogItemService {
 		var modifiedRecord = record
 				.withStatus(ItemStatus.DELETED)
 				.withUpdateDt(Instant.now())
-				.withUpdateBy(deleteBy);
+				.withUpdateBy(deleteBy)
+				.withUpdateCtr(record.getUpdateCtr() + 1);
 		repo.save(modifiedRecord);
 	}
 	
