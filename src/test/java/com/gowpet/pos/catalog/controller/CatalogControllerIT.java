@@ -46,7 +46,6 @@ class CatalogControllerIT {
 	}
 	
 	@Test
-	@WithMockUser(username = "user1")
 	void CatalogController_DeleteItem_Succeeds () throws Exception {
 		var createReq = post("/catalog/product")
 				.contentType(MediaType.APPLICATION_JSON)
