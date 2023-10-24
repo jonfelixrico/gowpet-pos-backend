@@ -41,7 +41,7 @@ public class CatalogItemService {
 		var record = repo.findById(id);
 		if (record.isEmpty() ||
 				// check if not deleted
-				!record.get().getStatus().equals(ItemStatus.DELETED)) {
+				record.get().getStatus().equals(ItemStatus.DELETED)) {
 			// TODO consider using a custom error
 			throw new NoSuchElementException();
 		}
