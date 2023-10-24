@@ -1,4 +1,4 @@
-package com.gowpet.pos.catalog.db;
+package com.gowpet.pos.catalog.service;
 
 import java.time.Instant;
 import java.util.ArrayList;
