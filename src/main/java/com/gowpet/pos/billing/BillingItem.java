@@ -12,5 +12,9 @@ import lombok.experimental.SuperBuilder;
 @Getter
 public class BillingItem {
 	protected String id;
+	
 	protected CatalogItem item;
+	protected Double price;
+	
+	protected Double quantity;
 }
