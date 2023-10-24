@@ -38,15 +38,18 @@ public class CatalogItemService {
 	}
 	
 	public CatalogItem get(String id) {
-		var record = repo.findById(id);
-		if (record.isEmpty() ||
-				// check if not deleted
-				record.get().getStatus().equals(ItemStatus.DELETED)) {
+		var result = repo.findById(id);
+		if (result.isEmpty()) {
 			// TODO consider using a custom error
 			throw new NoSuchElementException();
 		}
 		
-		return record.get();
+		var record = result.get();
+		if (record.getStatus() != null && record.getStatus().equals(ItemStatus.DELETED)) {
+			throw new NoSuchElementException();
+		}
+		
+		return result.get();
 	}
 
 	// TODO make this paginated
