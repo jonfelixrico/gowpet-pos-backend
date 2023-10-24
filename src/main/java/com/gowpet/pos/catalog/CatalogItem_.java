@@ -1,7 +1,5 @@
 package com.gowpet.pos.catalog;
 
-import java.time.Instant;
-
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
 
@@ -12,5 +10,5 @@ import jakarta.persistence.metamodel.StaticMetamodel;
  */
 @StaticMetamodel(CatalogItem.class)
 class CatalogItem_ {
-	static volatile SingularAttribute<CatalogItem, Instant> deleteDt;
+	static volatile SingularAttribute<CatalogItem, ItemStatus> status;
 }

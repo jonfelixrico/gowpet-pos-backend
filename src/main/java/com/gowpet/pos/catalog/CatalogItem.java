@@ -4,6 +4,7 @@ import java.time.Instant;
 
 import com.gowpet.pos.user.service.User;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,23 +29,28 @@ public class CatalogItem {
 	@GeneratedValue(strategy=GenerationType.UUID)
 	private String id;
 	
+	@Column(nullable = false)
 	private String name;
+
+	@Column(nullable = false)
 	private Float price;
+	
+	@Column(nullable = false)
 	private ItemType type;
 	
 
 	@ManyToOne
 	@JoinColumn(nullable=false)
 	private User createBy;
+	@Column(nullable=false)
 	private Instant createDt;
 	
-	@ManyToOne
-	@JoinColumn
-	private User deleteBy;
-	private Instant deleteDt;
+	private ItemStatus status;
 	
 	@ManyToOne
 	@JoinColumn
 	private User updateBy;
 	private Instant updateDt;
+
+	private Integer updateCtr;
 }

@@ -29,7 +29,10 @@ public class CatalogItemService {
 	
 	public void delete(String id, User deleteBy) {
 		var record = get(id);
-		var modifiedRecord = record.withDeleteBy(deleteBy).withDeleteDt(Instant.now());
+		var modifiedRecord = record
+				.withStatus(ItemStatus.DELETED)
+				.withUpdateDt(Instant.now())
+				.withUpdateBy(deleteBy);
 		repo.save(modifiedRecord);
 	}
 	
@@ -37,7 +40,7 @@ public class CatalogItemService {
 		var record = repo.findById(id);
 		if (record.isEmpty() ||
 				// check if not deleted
-				record.get().getDeleteBy() != null) {
+				!record.get().getStatus().equals(ItemStatus.DELETED)) {
 			// TODO consider using a custom error
 			throw new NoSuchElementException();
 		}
