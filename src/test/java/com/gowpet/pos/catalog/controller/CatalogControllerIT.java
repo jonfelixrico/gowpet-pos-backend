@@ -105,4 +105,6 @@ class CatalogControllerIT {
 			.andExpect(jsonPath("$.name").value("updated name"))
 			.andExpect(jsonPath("$.price").value(69.00));
 	}
+	
+	// TODO create listing tests
 }
