@@ -4,7 +4,10 @@ import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
+import com.gowpet.pos.billing.BaseBilling;
 import com.gowpet.pos.billing.Billing;
+
+import lombok.experimental.SuperBuilder;
 
 @Service
 public class BillingService {
@@ -21,5 +24,9 @@ public class BillingService {
 		}
 		
 		return result.get();
+	}
+	
+	@SuperBuilder(toBuilder = true)
+	static class NewBilling extends BaseBilling {
 	}
 }
