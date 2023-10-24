@@ -33,16 +33,16 @@ public class BillingService {
 	
 	@Getter
 	public static abstract class NewBilling {
-		private List<NewBillingItem> items;
-		private Double amountOverride;
-		private String notes;
+		protected List<? extends NewBillingItem> items;
+		protected Double amountOverride;
+		protected String notes;
 	}
 	
 	@Getter
 	public static abstract class NewBillingItem {
-		private String catalogId;
-		private Double quantity;
-		private Double price;
+		protected String catalogId;
+		protected Double quantity;
+		protected Double price;
 	}
 	
 	private BillingItemDb billingItemHelper (NewBillingItem item) {
