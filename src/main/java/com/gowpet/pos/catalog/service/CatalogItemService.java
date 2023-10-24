@@ -28,7 +28,7 @@ public class CatalogItemService {
 		return results;
 	}
 	
-	public void delete(String id, User user) {
+	private CatalogItem findByIdHelper(String id) {
 		var record = repo.findById(id);
 		if (record.isEmpty() ||
 				// check if not deleted
@@ -36,7 +36,12 @@ public class CatalogItemService {
 			throw new NoSuchElementException();
 		}
 		
-		var modifiedRecord = record.get().withDeleteBy(user).withDeleteDt(Instant.now());
+		return record.get();
+	}
+	
+	public void delete(String id, User deleteBy) {
+		var record = findByIdHelper(id);
+		var modifiedRecord = record.withDeleteBy(deleteBy).withDeleteDt(Instant.now());
 		repo.save(modifiedRecord);
 	}
 
