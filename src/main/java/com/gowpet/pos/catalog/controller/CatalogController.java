@@ -44,12 +44,19 @@ class CatalogController {
 	
 	@PostMapping("/product")
 	Map<String, String> createGoods(@RequestBody CreateProductDto item, @AuthenticationPrincipal UserDetails user) {
+		// TODO move logic to the service level
+		var userRecord = userSvc.findByUsername(user.getUsername());
+		var now = Instant.now();
+
 		var toCreate = CatalogItem.builder()
 				.name(item.getName())
 				.price(item.getPrice())
 				.type(ItemType.PRODUCT)
-				.createDt(Instant.now())
-				.createBy(userSvc.findByUsername(user.getUsername()))
+				.createDt(now)
+				.createBy(userRecord)
+				.updateDt(now)
+				.updateBy(userRecord)
+				.updateCtr(0)
 				.build();
 		
 		var created = catalogSvc.create(List.of(toCreate)).get(0);
