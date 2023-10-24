@@ -33,7 +33,7 @@ public class CatalogItem {
 	private String name;
 
 	@Column(nullable = false)
-	private Float price;
+	private Double price;
 	
 	@Column(nullable = false)
 	private ItemType type;

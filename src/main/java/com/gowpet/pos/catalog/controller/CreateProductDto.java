@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 class CreateProductDto {
 	private String name;
-	private Float price;
+	private Double price;
 }
