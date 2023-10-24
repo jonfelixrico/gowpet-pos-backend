@@ -34,8 +34,8 @@ public class CatalogItem {
 	
 
 	@ManyToOne
-	@JoinColumn(name="created_by", nullable=false)
-	private User createdBy;
+	@JoinColumn(nullable=false)
+	private User createBy;
 	private Instant createDt;
 	
 	@ManyToOne
