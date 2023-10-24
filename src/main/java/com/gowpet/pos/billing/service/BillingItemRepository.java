@@ -1,4 +1,4 @@
-package com.gowpet.pos.billing.db;
+package com.gowpet.pos.billing.service;
 
 import org.springframework.data.repository.CrudRepository;
 
