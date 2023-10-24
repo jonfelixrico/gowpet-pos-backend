@@ -101,7 +101,7 @@ class CatalogControllerIT {
 		
 		mockMvc.perform(get(String.format("/catalog/product/%s", id)))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.name").value("update name"))
+			.andExpect(jsonPath("$.name").value("updated name"))
 			.andExpect(jsonPath("$.price").value(69.00));
 	}
 }
