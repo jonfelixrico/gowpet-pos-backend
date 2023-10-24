@@ -87,13 +87,13 @@ public class CatalogItemService {
 	@AllArgsConstructor(access = AccessLevel.PACKAGE)
 	public static class UpdateableFields {
 		private String name;
-		private Float price;
+		private Double price;
 	}
 	
 	@Getter
 	@AllArgsConstructor(access = AccessLevel.PACKAGE)
 	public static class InsertFields {
 		private String name;
-		private Float price;
+		private Double price;
 	}
 }
