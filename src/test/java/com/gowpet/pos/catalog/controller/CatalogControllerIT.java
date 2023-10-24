@@ -3,6 +3,7 @@ package com.gowpet.pos.catalog.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,38 @@ class CatalogControllerIT {
 		
 		mockMvc.perform(get(String.format("/catalog/product/%s", id)))
 			.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	void CatalogController_UpdateItemName_Succeeds () throws Exception {
+		var createReq = post("/catalog/product")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("""
+						{
+							"name": "product to update",
+							"price": 69.00
+						}
+						""");
+		var serializedJson = mockMvc.perform(createReq)
+			.andExpect(status().isOk())
+			.andReturn()
+			.getResponse().getContentAsString();
+		var id = JsonPath.read(serializedJson, "$.id");
+		
+		var updateReq = put(String.format("/catalog/product/%s", id))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("""
+						{
+							"name": "updated name",
+							"price": 69.00
+						}
+						""");
+		mockMvc.perform(updateReq)
+			.andExpect(status().isOk());
+		
+		mockMvc.perform(get(String.format("/catalog/product/%s", id)))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.name").value("update name"))
+			.andExpect(jsonPath("$.price").value(69.00));
 	}
 }
