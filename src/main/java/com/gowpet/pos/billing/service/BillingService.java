@@ -9,21 +9,20 @@ import org.springframework.stereotype.Service;
 import com.gowpet.pos.billing.Billing;
 import com.gowpet.pos.user.service.User;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.experimental.SuperBuilder;
 
 @Service
 public class BillingService {
-	private BillingRepository repo;
-
-	BillingService(BillingRepository repo) {
-		this.repo = repo;
-	}
+	private BillingRepository billingRepo;
+	private BillingItemRepository itemRepo;
 	
+	BillingService(BillingRepository billingRepo, BillingItemRepository itemRepo) {
+		this.billingRepo = billingRepo;
+		this.itemRepo = itemRepo;
+	}
+
 	public Billing get(String id) {
-		var result = repo.findById(id);
+		var result = billingRepo.findById(id);
 		if (result.isEmpty()) {
 			throw new NoSuchElementException();
 		}
@@ -32,24 +31,35 @@ public class BillingService {
 	}
 	
 	@Getter
-	@AllArgsConstructor(access = AccessLevel.PROTECTED)
-	@SuperBuilder(toBuilder = true)
-	public static class NewBilling {
+	public static abstract class NewBilling {
 		private List<String> items;
 		private Double amountOverride;
 		private String notes;
 	}
 	
+	private BillingItemDb getItemHelper(String id) {
+		var result = itemRepo.findById(id);
+		if (result.isEmpty()) {
+			throw new NoSuchElementException();
+		}
+		
+		return result.get();
+	}
+	
 	public Billing create(NewBilling newBilling, User author) {
+		var mappedItems = newBilling.getItems()
+				.stream()
+				.map(id -> getItemHelper(id))
+				.toList();
+
 		var toSaveToDb = BillingDb.builder()
-				// TODO Impl item mapping
-//				.items(newBilling.getItems())
+				.items(mappedItems)
 				.amountOverride(newBilling.getAmountOverride())
 				.notes(newBilling.getNotes())
 				.createDt(Instant.now())
 				.createBy(author)
 				.build();
 		
-		return repo.save(toSaveToDb);
+		return billingRepo.save(toSaveToDb);
 	}
 }
