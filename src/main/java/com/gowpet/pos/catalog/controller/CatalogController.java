@@ -51,8 +51,13 @@ class CatalogController {
 		return created.stream().map(item -> item.getId()).collect(Collectors.toList());
 	}
 	
+	@GetMapping("/product/{id}")
+	CatalogItem getProduct(@PathVariable String id) {
+		return catalogSvc.get(id);
+	}
+	
 	@DeleteMapping("/product/{id}")
-	void deleteProduct(@PathVariable String id) {
-		// TODO impl this
+	void deleteProduct(@PathVariable String id, @AuthenticationPrincipal UserDetails user) {
+		catalogSvc.delete(id, userSvc.findByUsername(user.getUsername()));
 	}
 }
