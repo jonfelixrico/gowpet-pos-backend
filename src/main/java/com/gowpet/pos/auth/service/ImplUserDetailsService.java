@@ -19,7 +19,7 @@ class ImplUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		var user = userService.getUserByUsername(username);
+		var user = userService.findByUsername(username);
 		
 		if (user == null) {
 			throw new UsernameNotFoundException(String.format("Username %s is not found", username));
