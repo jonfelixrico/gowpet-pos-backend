@@ -7,6 +7,7 @@ import com.gowpet.pos.billing.Billing;
 import com.gowpet.pos.billing.BillingItem;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,6 +23,6 @@ public class BillingDb extends Billing {
 	protected String id;
 	
 	@Builder.Default
-	@OneToMany(orphanRemoval = true)
+	@OneToMany(orphanRemoval = true, fetch = FetchType.EAGER)
 	protected List<? extends BillingItem> items = new ArrayList<>();
 }
