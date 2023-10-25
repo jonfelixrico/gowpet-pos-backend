@@ -44,8 +44,8 @@ public class BillingService {
 		protected Double price;
 	}
 	
-	private BillingItemDb billingItemHelper (NewBillingItem item) {
-		return BillingItemDb.builder()
+	private BillingItem billingItemHelper (NewBillingItem item) {
+		return BillingItem.builder()
 				.item(catalogSvc.get(item.getCatalogId()))
 				.price(item.getPrice())
 				.quantity(item.getQuantity())
@@ -58,7 +58,7 @@ public class BillingService {
 				.map(this::billingItemHelper)
 				.toList();
 
-		var toSaveToDb = BillingDb.builder()
+		var toSaveToDb = Billing.builder()
 				.items(mappedItems)
 				.amountOverride(newBilling.getAmountOverride())
 				.notes(newBilling.getNotes())
