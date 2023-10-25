@@ -46,15 +46,9 @@ public class BillingService {
 	}
 	
 	public Billing create(BillingInput newBilling, User author) {
-		var mappedItems = new ArrayList<BillingItem>();
-		var inputItems = newBilling.getItems();
-		for (int i = 0; i < inputItems.size(); i++) {
-			mappedItems.add(billingItemHelper(inputItems.get(i), i));
-		}
-
 		var now = Instant.now();
 		var toSaveToDb = Billing.builder()
-				.items(mappedItems)
+				.items(extractItems(newBilling))
 				.amountOverride(newBilling.getAmountOverride())
 				.notes(newBilling.getNotes())
 				.createDt(now)
@@ -76,6 +70,17 @@ public class BillingService {
 			.recordStatus(RecordStatus.DELETED);
 		
 		billingRepo.save(builder.build());
+	}
+	
+	private List<BillingItem> extractItems(BillingInput input) {
+		var mappedItems = new ArrayList<BillingItem>();
+
+		var inputItems = input.getItems();
+		for (int i = 0; i < inputItems.size(); i++) {
+			mappedItems.add(billingItemHelper(inputItems.get(i), i));
+		}
+		
+		return mappedItems;
 	}
 	
 	@Getter
