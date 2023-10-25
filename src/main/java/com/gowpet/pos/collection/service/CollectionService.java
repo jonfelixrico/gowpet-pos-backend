@@ -1,6 +1,7 @@
 package com.gowpet.pos.collection.service;
 
 import java.time.Instant;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,15 @@ public class CollectionService {
 				.build();
 		
 		return repo.save(toSave);
+	}
+	
+	public Collection get(String id) {
+		var result = repo.findById(id);
+		if (result.isEmpty()) {
+			throw new NoSuchElementException();
+		}
+		
+		return result.get();
 	}
 	
 	@Getter
