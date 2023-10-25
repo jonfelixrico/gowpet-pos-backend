@@ -77,4 +77,13 @@ public class BillingService {
 		
 		return billingRepo.save(toSaveToDb);
 	}
+	
+	public void delete(String id, User deleteBy) {
+		var record = get(id);
+		record.toBuilder()
+			.updateCtr(record.getUpdateCtr() + 1)
+			.updateDt(Instant.now())
+			.updateBy(deleteBy)
+			.recordStatus(RecordStatus.DELETED);
+	}
 }
