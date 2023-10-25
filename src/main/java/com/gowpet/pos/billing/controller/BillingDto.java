@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
-public class NewBillingDto extends BillingInput {
-	protected List<NewBillingItemDto> items;
+public class BillingDto extends BillingInput {
+	protected List<BillingItemDto> items;
 	
 	@NoArgsConstructor(access = AccessLevel.PACKAGE)
-	static class NewBillingItemDto extends BillingItemInput {}
+	static class BillingItemDto extends BillingItemInput {}
 }

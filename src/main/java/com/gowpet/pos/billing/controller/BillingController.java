@@ -37,7 +37,7 @@ public class BillingController {
 	}
 	
 	@PostMapping
-	Billing createBilling(@RequestBody NewBillingDto newBilling,
+	Billing createBilling(@RequestBody BillingDto newBilling,
 			@AuthenticationPrincipal UserDetails user) {
 		return billingSvc.create(newBilling, userSvc.findByUsername(user.getUsername()));
 	}
