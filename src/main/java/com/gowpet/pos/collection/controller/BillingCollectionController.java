@@ -51,7 +51,9 @@ public class BillingCollectionController {
 	}
 	
 	@GetMapping
-	private List<Collection> listBillingCollections() {
-		return collSvc.list();
+	private List<Collection> listBillingCollections(@PathVariable String billingId) {
+		billSvc.get(billingId); // this is just used to throw if billing does not exist
+
+		return collSvc.listUnder(billingId);
 	}
 }

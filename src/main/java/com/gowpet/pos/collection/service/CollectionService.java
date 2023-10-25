@@ -43,9 +43,8 @@ public class CollectionService {
 		return result.get();
 	}
 	
-	public List<Collection> list() {
-		return StreamSupport.stream(repo.findAll().spliterator(), false)
-				.toList();
+	public List<Collection> listUnder(String billingId) {
+		return repo.findAll(CollectionSpecifications.belongsToBilling(billingId));
 	}
 	
 	@Getter
