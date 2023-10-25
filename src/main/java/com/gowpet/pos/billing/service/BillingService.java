@@ -36,20 +36,6 @@ public class BillingService {
 		return result.get();
 	}
 	
-	@Getter
-	public static abstract class NewBilling {
-		protected List<? extends NewBillingItem> items;
-		protected Double amountOverride;
-		protected String notes;
-	}
-	
-	@Getter
-	public static abstract class NewBillingItem {
-		protected String catalogId;
-		protected Double quantity;
-		protected Double price;
-	}
-	
 	private BillingItem billingItemHelper (NewBillingItem item, int itemNo) {
 		return BillingItem.builder()
 				.catalogItem(catalogSvc.get(item.getCatalogId()))
@@ -90,5 +76,19 @@ public class BillingService {
 			.recordStatus(RecordStatus.DELETED);
 		
 		billingRepo.save(builder.build());
+	}
+	
+	@Getter
+	public static abstract class NewBilling {
+		protected List<? extends NewBillingItem> items;
+		protected Double amountOverride;
+		protected String notes;
+	}
+	
+	@Getter
+	public static abstract class NewBillingItem {
+		protected String catalogId;
+		protected Double quantity;
+		protected Double price;
 	}
 }
