@@ -1,7 +1,9 @@
 package com.gowpet.pos.collection.service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,11 @@ public class CollectionService {
 		}
 		
 		return result.get();
+	}
+	
+	public List<Collection> list() {
+		return StreamSupport.stream(repo.findAll().spliterator(), false)
+				.toList();
 	}
 	
 	@Getter
