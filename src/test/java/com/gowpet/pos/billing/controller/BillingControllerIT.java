@@ -149,4 +149,42 @@ class BillingControllerIT {
 			.andExpect(jsonPath("$.amountOverride").value(1000.0))
 			.andExpect(jsonPath("$.notes").value("This is intentionally overpriced"));
 	}
+	
+	@Test
+	void BillingController_Create_ShowsInList() throws Exception {
+		mockMvc.perform(post("/billing")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("""
+						{
+							"items": [],
+							"amountOverride": null,
+							"notes": "Billing 1"
+						}
+						"""));
+		
+		mockMvc.perform(post("/billing")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("""
+						{
+							"items": [],
+							"amountOverride": null,
+							"notes": "Billing 2"
+						}
+						"""));
+		
+		mockMvc.perform(post("/billing")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("""
+						{
+							"items": [],
+							"amountOverride": null,
+							"notes": "Billing 3"
+						}
+						"""));
+		
+		mockMvc.perform(get("/billing"))
+			.andExpect(jsonPath("$[?(@.notes=='Billing 1')]").exists())
+			.andExpect(jsonPath("$[?(@.notes=='Billing 2')]").exists())
+			.andExpect(jsonPath("$[?(@.notes=='Billing 3')]").exists());
+	}
 }
