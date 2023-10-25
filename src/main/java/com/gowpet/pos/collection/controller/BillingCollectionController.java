@@ -3,8 +3,12 @@ package com.gowpet.pos.collection.controller;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.ErrorResponse;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,5 +59,10 @@ public class BillingCollectionController {
 		billSvc.get(billingId); // this is just used to throw if billing does not exist
 
 		return collSvc.listUnder(billingId);
+	}
+	
+	@ExceptionHandler(NoSuchElementException.class)
+	ResponseEntity<ErrorResponse> handleNoSuchElement() {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 }
