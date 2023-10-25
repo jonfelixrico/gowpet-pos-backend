@@ -31,7 +31,7 @@ class BillingControllerIT {
 	}
 	
 	@Test
-	void BillingController_Create_CanAccessRecord() throws Exception {
+	void BillingController_Create_ReturnsCreatedValue() throws Exception {
 		var postReq = post("/billing")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
@@ -44,7 +44,7 @@ class BillingControllerIT {
 								}
 							],
 							"amountOverride": null,
-							"notes": null
+							"notes": "This is the create test"
 						}
 						""");
 		
@@ -52,7 +52,9 @@ class BillingControllerIT {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.items[0].catalogItem.id").value("3e2d537a-3b2a-476d-804b-9ab4c4556cbf"))
 			.andExpect(jsonPath("$.items[0].price").value(120.00))
-			.andExpect(jsonPath("$.items[0].quantity").value(3.0));
+			.andExpect(jsonPath("$.items[0].quantity").value(3.0))
+			.andExpect(jsonPath("$.notes").value("This is the create test"))
+			.andExpect(jsonPath("$.amountOverride").isEmpty());
 	}
 	
 	@Test
