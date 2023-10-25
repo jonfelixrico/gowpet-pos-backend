@@ -18,7 +18,9 @@ public class CollectionService {
 		this.repo = repo;
 	}
 	
-	public Collection create(Billing billing, CollectionInput newCollection, User createBy) {
+	public Collection create(Billing billing,
+			CollectionInput newCollection,
+			User createBy) {
 		var toSave = Collection.builder()
 				.amountPaid(newCollection.amountPaid)
 				.notes(newCollection.notes)
