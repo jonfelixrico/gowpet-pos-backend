@@ -1,7 +1,5 @@
 package com.gowpet.pos.billing.service;
 
-import com.gowpet.pos.billing.BillingItem;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -3,8 +3,6 @@ package com.gowpet.pos.billing.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gowpet.pos.billing.Billing;
-import com.gowpet.pos.billing.BillingItem;
 import com.gowpet.pos.user.service.User;
 
 import jakarta.persistence.CascadeType;
@@ -29,7 +27,11 @@ public class BillingDb extends Billing {
 	protected String id;
 	
 	@Builder.Default
-	@OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, targetEntity = BillingItemDb.class, cascade = CascadeType.ALL)
+	@OneToMany(orphanRemoval = true,
+		fetch = FetchType.EAGER,
+		targetEntity = BillingItemDb.class,
+		cascade = CascadeType.ALL,
+		mappedBy = "billing")
 	protected List<? extends BillingItem> items = new ArrayList<>();
 	
 	@ManyToOne

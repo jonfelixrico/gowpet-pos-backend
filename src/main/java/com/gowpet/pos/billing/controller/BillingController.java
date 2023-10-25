@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gowpet.pos.billing.Billing;
+import com.gowpet.pos.billing.service.Billing;
 import com.gowpet.pos.billing.service.BillingService;
 import com.gowpet.pos.user.service.UserService;
 

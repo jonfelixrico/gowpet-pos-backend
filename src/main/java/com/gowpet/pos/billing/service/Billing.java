@@ -1,4 +1,4 @@
-package com.gowpet.pos.billing;
+package com.gowpet.pos.billing.service;
 
 import java.time.Instant;
 import java.util.List;
