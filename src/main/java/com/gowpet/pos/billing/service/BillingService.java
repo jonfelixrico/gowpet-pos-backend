@@ -80,7 +80,7 @@ public class BillingService {
 	
 	@Getter
 	public static abstract class NewBilling {
-		protected List<? extends NewBillingItem> items;
+		protected List<NewBillingItem> items;
 		protected Double amountOverride;
 		protected String notes;
 	}
