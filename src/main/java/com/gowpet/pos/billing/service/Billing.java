@@ -48,4 +48,8 @@ public class Billing {
 	@JoinColumn
 	protected User createBy;
 	
+	protected Instant updateDt;
+	@ManyToOne
+	@JoinColumn
+	protected User updateBy;
 }
