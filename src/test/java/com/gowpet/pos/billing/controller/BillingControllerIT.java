@@ -27,7 +27,7 @@ class BillingControllerIT {
 	}
 	
 	@Test
-	void BillingController_Create_Succeed() throws Exception {
+	void BillingController_Create_CanAccessRecord() throws Exception {
 		var postReq = post("/billing")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
