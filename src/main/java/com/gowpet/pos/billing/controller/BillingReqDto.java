@@ -8,7 +8,7 @@ import com.gowpet.pos.billing.service.BillingService.BillingItemInput;
 import lombok.Getter;
 
 @Getter
-public class BillingReqDto extends BillingInput {
+class BillingReqDto extends BillingInput {
 	protected List<BillingItemReqDto> items;
 	
 	@Getter
