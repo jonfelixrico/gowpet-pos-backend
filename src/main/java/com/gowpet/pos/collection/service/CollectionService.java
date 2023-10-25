@@ -42,7 +42,7 @@ public class CollectionService {
 	}
 	
 	@Getter
-	public static class CollectionInput {
+	public static abstract class CollectionInput {
 		private Double amountPaid;
 		private String notes;
 	}
