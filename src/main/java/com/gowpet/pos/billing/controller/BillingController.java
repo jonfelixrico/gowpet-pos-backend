@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.ErrorResponse;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,6 +40,11 @@ public class BillingController {
 	Billing createBilling(@RequestBody NewBillingDto newBilling,
 			@AuthenticationPrincipal UserDetails user) {
 		return billingSvc.create(newBilling, userSvc.findByUsername(user.getUsername()));
+	}
+	
+	@DeleteMapping("/{id}")
+	void deleteBilling(@PathVariable String id, @AuthenticationPrincipal UserDetails user) {
+		billingSvc.delete(id, userSvc.findByUsername(user.getUsername()));
 	}
 	
 	@ExceptionHandler(NoSuchElementException.class)

@@ -8,6 +8,8 @@ import com.gowpet.pos.user.service.User;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -48,4 +50,12 @@ public class Billing {
 	@JoinColumn
 	protected User createBy;
 	
+	protected Instant updateDt;
+	@ManyToOne
+	@JoinColumn
+	protected User updateBy;
+	protected Integer updateCtr;
+	
+	@Enumerated(EnumType.STRING)
+	protected RecordStatus recordStatus;
 }

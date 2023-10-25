@@ -27,6 +27,11 @@ public class BillingService {
 			throw new NoSuchElementException();
 		}
 		
+		var record = result.get();
+		if (record.getRecordStatus() != null && record.getRecordStatus().equals(RecordStatus.DELETED)) {
+			throw new NoSuchElementException();
+		}
+		
 		return result.get();
 	}
 	
@@ -58,14 +63,29 @@ public class BillingService {
 				.map(this::billingItemHelper)
 				.toList();
 
+		var now = Instant.now();
 		var toSaveToDb = Billing.builder()
 				.items(mappedItems)
 				.amountOverride(newBilling.getAmountOverride())
 				.notes(newBilling.getNotes())
-				.createDt(Instant.now())
+				.createDt(now)
 				.createBy(author)
+				.updateCtr(0)
+				.updateBy(author)
+				.updateDt(now)
 				.build();
 		
 		return billingRepo.save(toSaveToDb);
+	}
+	
+	public void delete(String id, User deleteBy) {
+		var record = get(id);
+		var builder = record.toBuilder()
+			.updateCtr(record.getUpdateCtr() + 1)
+			.updateDt(Instant.now())
+			.updateBy(deleteBy)
+			.recordStatus(RecordStatus.DELETED);
+		
+		billingRepo.save(builder.build());
 	}
 }
