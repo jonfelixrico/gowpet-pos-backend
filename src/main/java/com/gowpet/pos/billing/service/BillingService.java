@@ -36,7 +36,7 @@ public class BillingService {
 		return result.get();
 	}
 	
-	private BillingItem billingItemHelper (NewBillingItem item, int itemNo) {
+	private BillingItem billingItemHelper (BillingItemInput item, int itemNo) {
 		return BillingItem.builder()
 				.catalogItem(catalogSvc.get(item.getCatalogId()))
 				.price(item.getPrice())
@@ -45,7 +45,7 @@ public class BillingService {
 				.build();
 	}
 	
-	public Billing create(NewBilling newBilling, User author) {
+	public Billing create(BillingInput newBilling, User author) {
 		var mappedItems = new ArrayList<BillingItem>();
 		var inputItems = newBilling.getItems();
 		for (int i = 0; i < inputItems.size(); i++) {
@@ -79,14 +79,14 @@ public class BillingService {
 	}
 	
 	@Getter
-	public static abstract class NewBilling {
-		protected List<NewBillingItem> items;
+	public static abstract class BillingInput {
+		protected List<? extends BillingItemInput> items;
 		protected Double amountOverride;
 		protected String notes;
 	}
 	
 	@Getter
-	public static abstract class NewBillingItem {
+	public static abstract class BillingItemInput {
 		protected String catalogId;
 		protected Double quantity;
 		protected Double price;
