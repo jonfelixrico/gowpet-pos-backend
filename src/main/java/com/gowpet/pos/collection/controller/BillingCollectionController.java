@@ -1,5 +1,6 @@
 package com.gowpet.pos.collection.controller;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -38,7 +39,7 @@ public class BillingCollectionController {
 	}
 	
 	@GetMapping("/{collectionId}")
-	private Collection getCollection(@PathVariable String billingId,
+	private Collection getBillingCollection(@PathVariable String billingId,
 			@PathVariable String collectionId) {
 		var collection = collSvc.get(collectionId);
 		
@@ -47,5 +48,10 @@ public class BillingCollectionController {
 		}
 		
 		return collection;
+	}
+	
+	@GetMapping
+	private List<Collection> listBillingCollections() {
+		return collSvc.list();
 	}
 }
