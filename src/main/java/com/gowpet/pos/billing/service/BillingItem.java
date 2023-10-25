@@ -2,7 +2,9 @@ package com.gowpet.pos.billing.service;
 
 import com.gowpet.pos.catalog.CatalogItem;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,16 +26,20 @@ public class BillingItem {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	protected String id;
 	
-	@ManyToOne
-	@JoinColumn
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(nullable = false)
 	protected CatalogItem catalogItem;
+	
+	@Column(nullable = false)
 	protected Double price;
 	
+	@Column(nullable = false)
 	protected Double quantity;
 	
+	@Column(nullable = false)
 	protected Integer itemNo;
 	
-	@ManyToOne
-	@JoinColumn
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(nullable = false)
 	protected Billing billing;
 }
