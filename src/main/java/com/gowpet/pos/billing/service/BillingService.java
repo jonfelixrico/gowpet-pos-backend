@@ -36,6 +36,11 @@ public class BillingService {
 		return result.get();
 	}
 	
+	public List<Billing> list() {
+		// TODO implement pagination
+		return billingRepo.findAll(BillingSpecifications.isNotDeleted());
+	}
+	
 	private BillingItem billingItemHelper (BillingItemInput item, int itemNo) {
 		return BillingItem.builder()
 				.catalogItem(catalogSvc.get(item.getCatalogId()))
