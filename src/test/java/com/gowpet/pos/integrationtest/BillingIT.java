@@ -158,7 +158,7 @@ class BillingIT {
 						{
 							"items": [],
 							"amountOverride": null,
-							"notes": "Billing 1"
+							"notes": "BillingController_Create_ShowsInList 1"
 						}
 						"""));
 		
@@ -168,7 +168,7 @@ class BillingIT {
 						{
 							"items": [],
 							"amountOverride": null,
-							"notes": "Billing 2"
+							"notes": "BillingController_Create_ShowsInList 2"
 						}
 						"""));
 		
@@ -178,13 +178,13 @@ class BillingIT {
 						{
 							"items": [],
 							"amountOverride": null,
-							"notes": "Billing 3"
+							"notes": "BillingController_Create_ShowsInList 3"
 						}
 						"""));
 		
 		mockMvc.perform(get("/billing"))
-			.andExpect(jsonPath("$[?(@.notes=='Billing 1')]").exists())
-			.andExpect(jsonPath("$[?(@.notes=='Billing 2')]").exists())
-			.andExpect(jsonPath("$[?(@.notes=='Billing 3')]").exists());
+			.andExpect(jsonPath("$[?(@.notes=='BillingController_Create_ShowsInList 1')]").exists())
+			.andExpect(jsonPath("$[?(@.notes=='BillingController_Create_ShowsInList 2')]").exists())
+			.andExpect(jsonPath("$[?(@.notes=='BillingController_Create_ShowsInList 3')]").exists());
 	}
 }
