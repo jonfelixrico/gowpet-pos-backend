@@ -42,22 +42,24 @@ public class CatalogItemService {
 	
 	public void delete(String id, User deleteBy) {
 		var record = get(id);
-		var modifiedRecord = record
-				.withStatus(ItemStatus.DELETED)
-				.withUpdateDt(Instant.now())
-				.withUpdateBy(deleteBy)
-				.withUpdateCtr(record.getUpdateCtr() + 1);
+		var modifiedRecord = record.toBuilder()
+				.status(ItemStatus.DELETED)
+				.updateDt(Instant.now())
+				.updateBy(deleteBy)
+				.updateCtr(record.getUpdateCtr() + 1)
+				.build();
 		repo.save(modifiedRecord);
 	}
 	
 	public CatalogItem update(String id, UpdateableFields toUpdate, User updateBy) {
 		var record = get(id);
-		var modifiedRecord = record
-				.withUpdateDt(Instant.now())
-				.withUpdateBy(updateBy)
-				.withUpdateCtr(record.getUpdateCtr() + 1)
-				.withPrice(toUpdate.getPrice())
-				.withName(toUpdate.getName());
+		var modifiedRecord = record.toBuilder()
+				.updateDt(Instant.now())
+				.updateBy(updateBy)
+				.updateCtr(record.getUpdateCtr() + 1)
+				.price(toUpdate.getPrice())
+				.name(toUpdate.getName())
+				.build();
 		return repo.save(modifiedRecord);
 	}
 	

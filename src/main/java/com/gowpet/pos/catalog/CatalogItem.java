@@ -22,8 +22,7 @@ import lombok.With;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-@Builder
-@With
+@Builder(toBuilder = true)
 @Getter
 @Entity
 public class CatalogItem {
