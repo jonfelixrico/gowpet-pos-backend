@@ -2,6 +2,7 @@ package com.gowpet.pos.billing.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,9 @@ class BillingControllerIT {
 						""");
 		
 		mockMvc.perform(postReq)
-			.andExpect(status().isOk());
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.items[0].catalogId").value("3e2d537a-3b2a-476d-804b-9ab4c4556cbf"))
+			.andExpect(jsonPath("$.items[0].price").value(120.00))
+			.andExpect(jsonPath("$.items[0].quantity").value(3.0));
 	}
 }
