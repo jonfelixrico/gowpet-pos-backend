@@ -1,4 +1,4 @@
-package com.gowpet.pos.auth.controller;
+package com.gowpet.pos.integrationtest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AuthControllerIT {
+class AuthIT {
 	@Autowired
 	private MockMvc mockMvc;
 
