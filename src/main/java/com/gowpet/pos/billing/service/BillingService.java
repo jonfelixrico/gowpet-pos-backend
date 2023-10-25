@@ -63,12 +63,16 @@ public class BillingService {
 				.map(this::billingItemHelper)
 				.toList();
 
+		var now = Instant.now();
 		var toSaveToDb = Billing.builder()
 				.items(mappedItems)
 				.amountOverride(newBilling.getAmountOverride())
 				.notes(newBilling.getNotes())
-				.createDt(Instant.now())
+				.createDt(now)
 				.createBy(author)
+				.updateCtr(0)
+				.updateBy(author)
+				.updateDt(now)
 				.build();
 		
 		return billingRepo.save(toSaveToDb);
