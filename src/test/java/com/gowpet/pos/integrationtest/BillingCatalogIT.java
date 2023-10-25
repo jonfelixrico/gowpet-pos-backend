@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @WithMockUser(username = "user1")
-class BillingControllerIT {
+class BillingCatalogIT {
 	@Autowired
 	private MockMvc mockMvc;
 }
