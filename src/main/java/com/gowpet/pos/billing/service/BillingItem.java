@@ -40,6 +40,6 @@ public class BillingItem {
 	protected Integer itemNo;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(nullable = false)
+	@JoinColumn
 	protected Billing billing;
 }
