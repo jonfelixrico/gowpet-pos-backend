@@ -1,5 +1,7 @@
 package com.gowpet.pos.billing.controller;
 
+import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +14,7 @@ class BillingRespDto {
 	private String id;
 	private Double amountOverride;
 	private String notes;
+	private List<BillingItemRespDto> items;
 	
 	@Getter
 	@AllArgsConstructor(access = AccessLevel.PACKAGE)
