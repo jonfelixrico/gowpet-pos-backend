@@ -26,10 +26,12 @@ public class BillingItem {
 	
 	@ManyToOne
 	@JoinColumn
-	protected CatalogItem item;
+	protected CatalogItem catalogItem;
 	protected Double price;
 	
 	protected Double quantity;
+	
+	protected Integer itemNo;
 	
 	@ManyToOne
 	@JoinColumn

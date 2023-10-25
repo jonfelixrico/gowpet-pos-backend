@@ -1,6 +1,7 @@
 package com.gowpet.pos.billing.service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -35,37 +36,19 @@ public class BillingService {
 		return result.get();
 	}
 	
-	@Getter
-	public static abstract class NewBilling {
-		protected List<? extends NewBillingItem> items;
-		protected Double amountOverride;
-		protected String notes;
-	}
-	
-	@Getter
-	public static abstract class NewBillingItem {
-		protected String catalogId;
-		protected Double quantity;
-		protected Double price;
-	}
-	
-	private BillingItem billingItemHelper (NewBillingItem item) {
+	private BillingItem billingItemHelper (BillingItemInput item, int itemNo) {
 		return BillingItem.builder()
-				.item(catalogSvc.get(item.getCatalogId()))
+				.catalogItem(catalogSvc.get(item.getCatalogId()))
 				.price(item.getPrice())
 				.quantity(item.getQuantity())
+				.itemNo(itemNo)
 				.build();
 	}
 	
-	public Billing create(NewBilling newBilling, User author) {
-		var mappedItems = newBilling.getItems()
-				.stream()
-				.map(this::billingItemHelper)
-				.toList();
-
+	public Billing create(BillingInput newBilling, User author) {
 		var now = Instant.now();
 		var toSaveToDb = Billing.builder()
-				.items(mappedItems)
+				.items(extractItems(newBilling))
 				.amountOverride(newBilling.getAmountOverride())
 				.notes(newBilling.getNotes())
 				.createDt(now)
@@ -87,5 +70,45 @@ public class BillingService {
 			.recordStatus(RecordStatus.DELETED);
 		
 		billingRepo.save(builder.build());
+	}
+	
+	public Billing update(String id, BillingInput toUpdate, User updateBy) {
+		var fromDb = get(id);
+		
+		var withUpdatedFields = fromDb.toBuilder()
+				.items(extractItems(toUpdate))
+				.amountOverride(toUpdate.getAmountOverride())
+				.notes(toUpdate.getNotes())
+				.updateCtr(fromDb.getUpdateCtr() + 1)
+				.updateBy(updateBy)
+				.updateDt(Instant.now())
+				.build();
+		
+		return billingRepo.save(withUpdatedFields);
+	}
+	
+	private List<BillingItem> extractItems(BillingInput input) {
+		var mappedItems = new ArrayList<BillingItem>();
+
+		var inputItems = input.getItems();
+		for (int i = 0; i < inputItems.size(); i++) {
+			mappedItems.add(billingItemHelper(inputItems.get(i), i));
+		}
+		
+		return mappedItems;
+	}
+	
+	@Getter
+	public static abstract class BillingInput {
+		protected List<? extends BillingItemInput> items;
+		protected Double amountOverride;
+		protected String notes;
+	}
+	
+	@Getter
+	public static abstract class BillingItemInput {
+		protected String catalogId;
+		protected Double quantity;
+		protected Double price;
 	}
 }

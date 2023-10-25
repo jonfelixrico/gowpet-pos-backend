@@ -3,6 +3,7 @@ package com.gowpet.pos.billing.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -49,7 +50,7 @@ class BillingControllerIT {
 		
 		mockMvc.perform(postReq)
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.items[0].item.id").value("3e2d537a-3b2a-476d-804b-9ab4c4556cbf"))
+			.andExpect(jsonPath("$.items[0].catalogItem.id").value("3e2d537a-3b2a-476d-804b-9ab4c4556cbf"))
 			.andExpect(jsonPath("$.items[0].price").value(120.00))
 			.andExpect(jsonPath("$.items[0].quantity").value(3.0));
 	}
@@ -87,5 +88,63 @@ class BillingControllerIT {
 		
 		mockMvc.perform(get(route))
 			.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	void BillingController_Update_UpdatesReflected() throws Exception {
+		var postReq = post("/billing")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("""
+						{
+							"items": [
+								{
+									"catalogId": "3e2d537a-3b2a-476d-804b-9ab4c4556cbf",
+									"price": 120.00,
+									"quantity": 3.0
+								}
+							],
+							"amountOverride": null,
+							"notes": null
+						}
+						""");
+		
+		var serializedJson = mockMvc.perform(postReq)
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+		var id = JsonPath.read(serializedJson, "$.id");
+		var route = String.format("/billing/%s", id);
+		
+		var putReq = put(route)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("""
+						{
+							"items": [
+								{
+									"catalogId": "002a95ff-00b1-48ee-98ce-6469a076d201",
+									"price": 50.00,
+									"quantity": 1.0
+								},
+								{
+									"catalogId": "3e2d537a-3b2a-476d-804b-9ab4c4556cbf",
+									"price": 50.00,
+									"quantity": 5.0
+								}
+							],
+							"amountOverride": 1000.00,
+							"notes": "This is intentionally overpriced"
+						}
+						""");
+
+		mockMvc.perform(putReq)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.items[0].catalogItem.id").value("002a95ff-00b1-48ee-98ce-6469a076d201"))
+			.andExpect(jsonPath("$.items[0].price").value(50.00))
+			.andExpect(jsonPath("$.items[0].quantity").value(1.0))
+			.andExpect(jsonPath("$.items[1].catalogItem.id").value("3e2d537a-3b2a-476d-804b-9ab4c4556cbf"))
+			.andExpect(jsonPath("$.items[1].price").value(50.00))
+			.andExpect(jsonPath("$.items[1].quantity").value(5.0))
+			.andExpect(jsonPath("$.amountOverride").value(1000.0))
+			.andExpect(jsonPath("$.notes").value("This is intentionally overpriced"));
 	}
 }
