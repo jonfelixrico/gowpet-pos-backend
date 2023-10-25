@@ -38,7 +38,7 @@ public class BillingController {
 	}
 	
 	@PostMapping
-	Billing createBilling(@RequestBody BillingDto newBilling,
+	Billing createBilling(@RequestBody BillingReqDto newBilling,
 			@AuthenticationPrincipal UserDetails user) {
 		return billingSvc.create(newBilling, userSvc.findByUsername(user.getUsername()));
 	}
@@ -51,7 +51,7 @@ public class BillingController {
 	@PutMapping("/{id}")
 	Billing updateBilling(@PathVariable String id, 
 			@AuthenticationPrincipal UserDetails user, 
-			@RequestBody BillingDto updated) {
+			@RequestBody BillingReqDto updated) {
 		return billingSvc.update(id, updated, userSvc.findByUsername(user.getUsername()));
 	}
 	
