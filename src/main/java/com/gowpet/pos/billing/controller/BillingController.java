@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gowpet.pos.billing.service.Billing;
+import com.gowpet.pos.billing.service.BillingItem;
 import com.gowpet.pos.billing.service.BillingService;
 import com.gowpet.pos.user.service.UserService;
 
@@ -32,21 +33,51 @@ public class BillingController {
 		this.billingSvc = billingSvc;
 		this.userSvc = userSvc;
 	}
+	
+	private BillingRespDto.BillingItemRespDto convertBillingItemToDto(BillingItem item) {
+		var catalogItem = BillingRespDto.CatalogItem.builder()
+				.name(item.getCatalogItem().getName())
+				.id(item.getCatalogItem().getId())
+				.build();
+
+		return BillingRespDto.BillingItemRespDto.builder()
+				.price(item.getPrice())
+				.quantity(item.getQuantity())
+				.catalogItem(catalogItem)
+				.build();
+	}
+	
+	private BillingRespDto convertBillingToDto(Billing billing) {
+		var items = billing.getItems().stream()
+				.map(this::convertBillingItemToDto)
+				.toList();
+		
+		return BillingRespDto.builder()
+				.id(billing.getId())
+				.amountOverride(billing.getAmountOverride())
+				.notes(billing.getNotes())
+				.items(items)
+				.build();
+				
+	}
 
 	@GetMapping("/{id}")
-	Billing getBilling(@PathVariable String id) {
-		return billingSvc.get(id);
+	BillingRespDto getBilling(@PathVariable String id) {
+		return convertBillingToDto(billingSvc.get(id));
 	}
 	
 	@GetMapping
-	List<Billing> listBilling() {
-		return billingSvc.list();
+	List<BillingRespDto> listBilling() {
+		return billingSvc.list().stream()
+				.map(this::convertBillingToDto)
+				.toList();
 	}
 	
 	@PostMapping
-	Billing createBilling(@RequestBody BillingReqDto newBilling,
+	BillingRespDto createBilling(@RequestBody BillingReqDto newBilling,
 			@AuthenticationPrincipal UserDetails user) {
-		return billingSvc.create(newBilling, userSvc.findByUsername(user.getUsername()));
+		var created =  billingSvc.create(newBilling, userSvc.findByUsername(user.getUsername()));
+		return convertBillingToDto(created);
 	}
 	
 	@DeleteMapping("/{id}")
@@ -55,10 +86,11 @@ public class BillingController {
 	}
 	
 	@PutMapping("/{id}")
-	Billing updateBilling(@PathVariable String id, 
+	BillingRespDto updateBilling(@PathVariable String id, 
 			@AuthenticationPrincipal UserDetails user, 
-			@RequestBody BillingReqDto updated) {
-		return billingSvc.update(id, updated, userSvc.findByUsername(user.getUsername()));
+			@RequestBody BillingReqDto toUpdate) {
+		var updated = billingSvc.update(id, toUpdate, userSvc.findByUsername(user.getUsername()));
+		return convertBillingToDto(updated);
 	}
 	
 	@ExceptionHandler(NoSuchElementException.class)
