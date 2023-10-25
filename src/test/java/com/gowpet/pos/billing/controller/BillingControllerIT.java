@@ -32,9 +32,11 @@ class BillingControllerIT {
 				.content("""
 						{
 							"items": [
-								"catalogId": "3e2d537a-3b2a-476d-804b-9ab4c4556cbf",
-								"price": 120.00,
-								"quantity": 3.0
+								{
+									"catalogId": "3e2d537a-3b2a-476d-804b-9ab4c4556cbf",
+									"price": 120.00,
+									"quantity": 3.0
+								}
 							],
 							"amountOverride": null,
 							"notes": null
