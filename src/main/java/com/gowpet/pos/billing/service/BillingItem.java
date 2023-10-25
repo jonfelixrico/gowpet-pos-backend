@@ -31,6 +31,8 @@ public class BillingItem {
 	
 	protected Double quantity;
 	
+	protected Integer itemNo;
+	
 	@ManyToOne
 	@JoinColumn
 	protected Billing billing;

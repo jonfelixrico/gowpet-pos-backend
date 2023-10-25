@@ -1,6 +1,7 @@
 package com.gowpet.pos.billing.service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -49,19 +50,21 @@ public class BillingService {
 		protected Double price;
 	}
 	
-	private BillingItem billingItemHelper (NewBillingItem item) {
+	private BillingItem billingItemHelper (NewBillingItem item, int itemNo) {
 		return BillingItem.builder()
 				.catalogItem(catalogSvc.get(item.getCatalogId()))
 				.price(item.getPrice())
 				.quantity(item.getQuantity())
+				.itemNo(itemNo)
 				.build();
 	}
 	
 	public Billing create(NewBilling newBilling, User author) {
-		var mappedItems = newBilling.getItems()
-				.stream()
-				.map(this::billingItemHelper)
-				.toList();
+		var mappedItems = new ArrayList<BillingItem>();
+		var inputItems = newBilling.getItems();
+		for (int i = 0; i < inputItems.size(); i++) {
+			mappedItems.add(billingItemHelper(inputItems.get(i), i));
+		}
 
 		var now = Instant.now();
 		var toSaveToDb = Billing.builder()
