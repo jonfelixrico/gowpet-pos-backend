@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +46,13 @@ public class BillingController {
 	@DeleteMapping("/{id}")
 	void deleteBilling(@PathVariable String id, @AuthenticationPrincipal UserDetails user) {
 		billingSvc.delete(id, userSvc.findByUsername(user.getUsername()));
+	}
+	
+	@PutMapping("/{id}")
+	Billing updateBilling(@PathVariable String id, 
+			@AuthenticationPrincipal UserDetails user, 
+			@RequestBody BillingDto updated) {
+		return billingSvc.update(id, updated, userSvc.findByUsername(user.getUsername()));
 	}
 	
 	@ExceptionHandler(NoSuchElementException.class)
