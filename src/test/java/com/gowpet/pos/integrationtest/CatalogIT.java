@@ -1,4 +1,4 @@
-package com.gowpet.pos.catalog.controller;
+package com.gowpet.pos.integrationtest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @WithMockUser(username = "user1")
-class CatalogControllerIT {
+class CatalogIT {
 	@Autowired
 	private MockMvc mockMvc;
 

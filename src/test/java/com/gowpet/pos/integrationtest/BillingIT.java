@@ -1,4 +1,4 @@
-package com.gowpet.pos.billing.controller;
+package com.gowpet.pos.integrationtest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -20,7 +20,7 @@ import com.jayway.jsonpath.JsonPath;
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @WithMockUser(username = "user1")
-class BillingControllerIT {
+class BillingIT {
 	@Autowired
 	private MockMvc mockMvc;
 	
