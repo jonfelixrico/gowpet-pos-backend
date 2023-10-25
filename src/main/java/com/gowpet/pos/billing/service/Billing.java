@@ -7,6 +7,7 @@ import java.util.List;
 import com.gowpet.pos.user.service.User;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -45,15 +46,20 @@ public class Billing {
 	
 	protected String notes;
 	
+	@Column(nullable = false)
 	protected Instant createDt;
-	@ManyToOne
-	@JoinColumn
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(nullable = false)
 	protected User createBy;
 	
+	@Column(nullable = false)
 	protected Instant updateDt;
+	
 	@ManyToOne
 	@JoinColumn
 	protected User updateBy;
+
 	protected Integer updateCtr;
 	
 	@Enumerated(EnumType.STRING)
