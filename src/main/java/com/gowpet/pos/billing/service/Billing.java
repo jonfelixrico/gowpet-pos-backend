@@ -56,8 +56,8 @@ public class Billing {
 	@Column(nullable = false)
 	protected Instant updateDt;
 	
-	@ManyToOne
-	@JoinColumn
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(nullable = false)
 	protected User updateBy;
 
 	protected Integer updateCtr;
