@@ -24,6 +24,8 @@ public class BillingItem {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	protected String id;
 	
+	@ManyToOne
+	@JoinColumn
 	protected CatalogItem item;
 	protected Double price;
 	
