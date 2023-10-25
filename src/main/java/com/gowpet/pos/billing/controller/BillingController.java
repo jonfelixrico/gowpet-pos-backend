@@ -1,5 +1,6 @@
 package com.gowpet.pos.billing.controller;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,11 @@ public class BillingController {
 	@GetMapping("/{id}")
 	Billing getBilling(@PathVariable String id) {
 		return billingSvc.get(id);
+	}
+	
+	@GetMapping
+	List<Billing> listBilling() {
+		return billingSvc.list();
 	}
 	
 	@PostMapping
