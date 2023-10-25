@@ -1,7 +1,10 @@
 package com.gowpet.pos.collection.controller;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +17,7 @@ import com.gowpet.pos.collection.service.CollectionService;
 import com.gowpet.pos.user.service.UserService;
 
 @RestController
-@RequestMapping("/billing/{billingId}")
+@RequestMapping("/billing/{billingId}/collection")
 public class BillingCollectionController {
 	private CollectionService collSvc;
 	private BillingService billSvc;
@@ -32,5 +35,17 @@ public class BillingCollectionController {
 			@RequestBody CollectionReqDto newCollection) {
 		var billing = billSvc.get(billingId);
 		return collSvc.create(billing, newCollection, userSvc.findByUsername(user.getUsername()));
+	}
+	
+	@GetMapping("/{collectionId}")
+	private Collection getCollection(@PathVariable String billingId,
+			@PathVariable String collectionId) {
+		var collection = collSvc.get(collectionId);
+		
+		if (!collection.getBilling().getId().equals(billingId)) {
+			throw new NoSuchElementException();
+		}
+		
+		return collection;
 	}
 }
