@@ -6,6 +6,8 @@ import com.gowpet.pos.user.service.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,6 +38,7 @@ public class CatalogItem {
 	private Double price;
 	
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private ItemType type;
 	
 
@@ -45,6 +48,7 @@ public class CatalogItem {
 	@Column(nullable=false)
 	private Instant createDt;
 	
+	@Enumerated(EnumType.STRING)
 	private ItemStatus status;
 	
 	@ManyToOne

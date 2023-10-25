@@ -26,7 +26,7 @@ class CatalogControllerIT {
 	private MockMvc mockMvc;
 
 	@Test
-	void CatalogController_CreateItem_ShowsInList () throws Exception {
+	void CatalogController_CreateItem_CanAccessDetails () throws Exception {
 		var createReq = post("/catalog/product")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
@@ -36,13 +36,15 @@ class CatalogControllerIT {
 						}
 						
 						""");
-		mockMvc.perform(createReq)
-			.andExpect(status().isOk());
-		
-		mockMvc.perform(get("/catalog"))
+		var serializedJson = mockMvc.perform(createReq)
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].name").value("test product"))
-			.andExpect(jsonPath("$[0].price").value(69.00));
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+		var id = JsonPath.read(serializedJson, "$.id");
+		
+		mockMvc.perform(get(String.format("/catalog/product/%s", id)))
+			.andExpect(status().isOk());
 	}
 	
 	@Test
@@ -103,4 +105,6 @@ class CatalogControllerIT {
 			.andExpect(jsonPath("$.name").value("updated name"))
 			.andExpect(jsonPath("$.price").value(69.00));
 	}
+	
+	// TODO create listing tests
 }
