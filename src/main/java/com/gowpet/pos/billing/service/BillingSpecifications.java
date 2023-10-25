@@ -2,7 +2,7 @@ package com.gowpet.pos.billing.service;
 
 import org.springframework.data.jpa.domain.Specification;
 
-public class BillingSpecifications {
+class BillingSpecifications {
 	static Specification<Billing> isNotDeleted() {
 		Specification<Billing> statusNotDeleted = (root, query, builder) -> {
 			return builder.notEqual(root.get(Billing_.recordStatus), RecordStatus.DELETED);
