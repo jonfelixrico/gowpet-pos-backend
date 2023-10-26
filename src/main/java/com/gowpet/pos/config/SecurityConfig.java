@@ -37,6 +37,8 @@ public class SecurityConfig {
         		.csrf(csrf -> csrf.disable()) // TODO restore this someday
                 .authorizeHttpRequests(authz -> authz
                 		.requestMatchers("/authenticate").permitAll()
+                		.requestMatchers("/openapi").permitAll()
+                		.requestMatchers("/openapi/**").permitAll()
                 		.requestMatchers(HttpMethod.POST, "/user").permitAll() // TODO remove once registration flow is done
                         .anyRequest().authenticated())
                 .sessionManagement(smc -> smc.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
