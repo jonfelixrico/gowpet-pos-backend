@@ -15,6 +15,7 @@ public class RsaService {
 		if (keyPair == null) {
 			try {
 				var gen = KeyPairGenerator.getInstance("RSASSA-PSS");
+				gen.initialize(2048);
 				keyPair = gen.generateKeyPair();
 			} catch (NoSuchAlgorithmException e) {
 				// We're suppressing this because this is unlikely to happen
