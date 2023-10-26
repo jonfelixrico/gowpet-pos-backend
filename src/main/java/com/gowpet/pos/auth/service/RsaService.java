@@ -11,20 +11,27 @@ import org.springframework.stereotype.Service;
 public class RsaService {
 	KeyPair keyPair = null;
 	
-	private KeyPair getKeyPair() throws NoSuchAlgorithmException {
+	private KeyPair getKeyPair() {
 		if (keyPair == null) {
-			var gen = KeyPairGenerator.getInstance("RSASSA-PSS");
-			keyPair = gen.generateKeyPair();
+			try {
+				var gen = KeyPairGenerator.getInstance("RSASSA-PSS");
+				keyPair = gen.generateKeyPair();
+			} catch (NoSuchAlgorithmException e) {
+				// We're suppressing this because this is unlikely to happen
+
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return keyPair;
 	}
 	
-	public Key getPublicKey() throws NoSuchAlgorithmException {
+	public Key getPublicKey() {
 		return getKeyPair().getPublic();
 	}
 	
-	public Key getPrivateKey() throws NoSuchAlgorithmException {
+	public Key getPrivateKey() {
 		return getKeyPair().getPrivate();
 	}
 }
