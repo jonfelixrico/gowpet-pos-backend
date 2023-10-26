@@ -38,4 +38,4 @@ build/
 
 # Ignore root-level application properties.
 # This is modified for dev-testing.
-/application.properties
+/application.yml
