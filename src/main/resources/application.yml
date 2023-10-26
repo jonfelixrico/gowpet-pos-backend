@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/gowpet-pos
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: false
+
+springdoc:
+  swagger-ui:
+    enabled: false
+    path: /openapi/swagger-ui.html
+  api-docs:
+    enabled: false
+    path: /openapi
+
+server:
+  port: 3005
