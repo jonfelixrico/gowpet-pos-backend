@@ -26,10 +26,6 @@ public class RsaService {
 		this.publicKeyPem = publicKeyPem;
 	}
 
-	public String getPrivateKeyPem() {
-		return privateKeyPem;
-	}
-
 	public String getPublicKeyPem() {
 		return publicKeyPem;
 	}
