@@ -20,3 +20,47 @@ springdoc:
 
 server:
   port: 3005
+
+app:
+  # OVERRIDE THESE ON PROD! These are here just to make setting up the dev environment convenient
+  rsa:
+    public: |
+      -----BEGIN PUBLIC KEY-----
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2V+sEtZ7XHwxyd1NNnuM
+      yMx3oBQlFQ0hWbRhH8jn27dHNAaIhtL3nF0GXUD5hxATG2gh2Oh/JwYAiO1H64vI
+      A9knfS1pE/LZAMi+Vl1v7HNcvmOFAzaLyUXPvN0gkvrg4FdCts6mU0KrOvoA7kY/
+      akp8wbHw/WglgxowbsRXWe95VGSBWLYrMA02I6rbg4WjWj93qWq2VPkc+bHtbK4S
+      7UJfyA6jBkYtQrGbgHOo2m7KdTMXaXOHMEtxlfmBIM6uUsPccC9U1k9QCnobXPe9
+      13PpK7lQcxYzLeUHM3TtukDrYy5tYSu9pTKM4y4hCzqtsJzYc39yIn2plYzC+UD4
+      gQIDAQAB
+      -----END PUBLIC KEY-----
+
+    private: |
+      -----BEGIN PRIVATE KEY-----
+      MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDZX6wS1ntcfDHJ
+      3U02e4zIzHegFCUVDSFZtGEfyOfbt0c0BoiG0vecXQZdQPmHEBMbaCHY6H8nBgCI
+      7Ufri8gD2Sd9LWkT8tkAyL5WXW/sc1y+Y4UDNovJRc+83SCS+uDgV0K2zqZTQqs6
+      +gDuRj9qSnzBsfD9aCWDGjBuxFdZ73lUZIFYtiswDTYjqtuDhaNaP3eparZU+Rz5
+      se1srhLtQl/IDqMGRi1CsZuAc6jabsp1Mxdpc4cwS3GV+YEgzq5Sw9xwL1TWT1AK
+      ehtc973Xc+kruVBzFjMt5QczdO26QOtjLm1hK72lMozjLiELOq2wnNhzf3IifamV
+      jML5QPiBAgMBAAECggEATLiayC9RbQwcmo30QaWLxBd+pU5W5D41Ji8nFIvZYdAn
+      XnJr34I4iMTAiUt0hroitEqln6Q3tLNGnw14k+dLGiib6m+LpdHRy5gOrfbemQsC
+      keQYP1ESN2DfeF5nr9jCZAwIbPM0+zANtYwlpfO/UCmoLMk8MISAsOweagn8dq4L
+      QTkTwTxyg5s5hCxMMcSYOP+vEILjsf2JbpXYa0XaMNzPGom2XrPia2aS8fQFp+U7
+      5yTrZRDvAC3zjjFnFQ8JX7Exk4tdXEs/w5q44WAm8+TvZCDsDstgbBkw7KrPV86y
+      8nriQBvthBAU6K//aUJd6NZ2Lx5iGDBwnhHC5hmAXQKBgQD7G9qOmXLUAwF9yXpx
+      rgzrnMBksq/JCPzNx7x0VMJCZ412CWc0Afkn+4/pfCh8BzpUv0y1fUsAZ4hPox0L
+      vKlcJ9xNNt9ClPCjZtjMtWalfLGHZKDGqp4JMMnnRuIgktqvQnzK3zFk0kcgdVwc
+      4Jgy9gRLsGNes/b1FNXY9YH4MwKBgQDdm5l3CELpYwNoOyLUY9shD+TqY3fHW+5e
+      7oAA7B0GsHXGIEJsKvqF2xHSJpHbF9tya1oWERNU6cyIIeMS5bXjvXa8RWYm3dso
+      6qfBEXhpRIxb2x/XM+J/R6YvslyjLfNm+ovjCrPc5CrGDip3QOpy5ufY90DDEKWH
+      qcJhWx5oewKBgHaSRneDWcdmy/N7icfYKd2vnOFvxrWk+sqogAJma3wzrYaJFiRm
+      siIBFYloyS0XtKGD21LvoNTGDoWcPgDmywnrAImtWWr1LVPbIpA3MAsAgEuwZoKo
+      2gr48L22qNw8u+p5+LdLAOXcrR1UjXRNUVDu/kRHPATh8cD0X64c74wlAoGAGm3c
+      N538nOj6Fww2cy4VjDPhETMbreMA4sF+8p02OP4CjcZ7JXtatWwTDAUdkAugWF0F
+      OWx/6biYdAPWmQJcVvTZnEqKjEgZQx/5McVrnuJV+v5/JaNCd/uLjlSvR6bLSJTI
+      6iL0oHt1vnkiB2bujxWKwQ1748ewdiWA0SuUzNECgYBWkmhm9UYxNR/ZWUIXHaVc
+      Qfebcex7HGo7Q3QjI2g5Ak03imYM+lqGjKb0TkG1Tg60Fz+AHxQ0ou94LuqOpvi3
+      ME4kpqXm515P8MdEI+mUaKGk6ZCFg1GaFjTsF4MpSPCSrVmE4tL07ooTrtoDQOMn
+      OrdGCOQZ0CIebGRUgtPj7Q==
+      -----END PRIVATE KEY-----
