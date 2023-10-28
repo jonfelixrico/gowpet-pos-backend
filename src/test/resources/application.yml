@@ -23,7 +23,7 @@ spring:
       mode: always
 app:
   rsa:
-    publicX509: |
+    public: |
       -----BEGIN RSA PUBLIC KEY-----
       MIIBCgKCAQEA2V+sEtZ7XHwxyd1NNnuMyMx3oBQlFQ0hWbRhH8jn27dHNAaIhtL3
       nF0GXUD5hxATG2gh2Oh/JwYAiO1H64vIA9knfS1pE/LZAMi+Vl1v7HNcvmOFAzaL

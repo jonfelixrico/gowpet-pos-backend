@@ -21,7 +21,7 @@ public class RsaService {
 	private Key privateKey;
 
 	RsaService(@Value("${app.rsa.private:}") String privateKeyPem,
-			@Value("${app.rsa.publicX509:}") String publicKeyPem) {
+			@Value("${app.rsa.public:}") String publicKeyPem) {
 		this.privateKeyPem = privateKeyPem;
 		this.publicKeyPem = publicKeyPem;
 	}
