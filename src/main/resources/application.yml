@@ -22,6 +22,7 @@ server:
   port: 3005
 
 app:
+  # OVERRIDE THESE ON PROD! These are here just to make setting up the dev environment convenient
   rsa:
     public: |
       -----BEGIN PUBLIC KEY-----
