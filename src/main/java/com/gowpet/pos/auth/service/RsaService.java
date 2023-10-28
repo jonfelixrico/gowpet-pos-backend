@@ -1,38 +1,78 @@
 package com.gowpet.pos.auth.service;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.security.Key;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
+import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 
+import org.bouncycastle.util.io.pem.PemReader;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RsaService {
-	KeyPair keyPair = null;
-	
-	private KeyPair getKeyPair() {
-		if (keyPair == null) {
-			try {
-				var gen = KeyPairGenerator.getInstance("RSASSA-PSS");
-				gen.initialize(2048);
-				keyPair = gen.generateKeyPair();
-			} catch (NoSuchAlgorithmException e) {
-				// We're suppressing this because this is unlikely to happen
+	private String privateKeyPem;
+	private String publicKeyPem;
+	private Key publicKey;
+	private Key privateKey;
 
+	RsaService(@Value("${app.rsa.private:}") String privateKeyPem,
+			@Value("${app.rsa.publicX509:}") String publicKeyPem) {
+		this.privateKeyPem = privateKeyPem;
+		this.publicKeyPem = publicKeyPem;
+	}
+
+	public Key getPublicKey() {
+		if (publicKey == null) {
+			try (var stringReader = new StringReader(publicKeyPem)) {
+				var pemReader = new PemReader(stringReader);
+				var pemObject = pemReader.readPemObject();
+				var content = pemObject.getContent();
+				X509EncodedKeySpec pubKeySpec = new X509EncodedKeySpec(content);
+				
+				KeyFactory factory = KeyFactory.getInstance("RSA");
+				publicKey = factory.generatePublic(pubKeySpec);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidKeySpecException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		
-		return keyPair;
+		return publicKey;
 	}
-	
-	public Key getPublicKey() {
-		return getKeyPair().getPublic();
-	}
-	
+
 	public Key getPrivateKey() {
-		return getKeyPair().getPrivate();
+		if (privateKey == null) {
+			try (var stringReader = new StringReader(privateKeyPem)) {
+				var pemReader = new PemReader(stringReader);
+			    var pemObject = pemReader.readPemObject();
+			    byte[] content = pemObject.getContent();
+			    PKCS8EncodedKeySpec privKeySpec = new PKCS8EncodedKeySpec(content);
+			    
+			    KeyFactory factory = KeyFactory.getInstance("RSA");
+			    privateKey = factory.generatePrivate(privKeySpec);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidKeySpecException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+			
+		return privateKey;
 	}
 }
