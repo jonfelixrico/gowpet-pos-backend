@@ -24,14 +24,16 @@ spring:
 app:
   rsa:
     public: |
-      -----BEGIN RSA PUBLIC KEY-----
-      MIIBCgKCAQEA2V+sEtZ7XHwxyd1NNnuMyMx3oBQlFQ0hWbRhH8jn27dHNAaIhtL3
-      nF0GXUD5hxATG2gh2Oh/JwYAiO1H64vIA9knfS1pE/LZAMi+Vl1v7HNcvmOFAzaL
-      yUXPvN0gkvrg4FdCts6mU0KrOvoA7kY/akp8wbHw/WglgxowbsRXWe95VGSBWLYr
-      MA02I6rbg4WjWj93qWq2VPkc+bHtbK4S7UJfyA6jBkYtQrGbgHOo2m7KdTMXaXOH
-      MEtxlfmBIM6uUsPccC9U1k9QCnobXPe913PpK7lQcxYzLeUHM3TtukDrYy5tYSu9
-      pTKM4y4hCzqtsJzYc39yIn2plYzC+UD4gQIDAQAB
-      -----END RSA PUBLIC KEY-----
+      -----BEGIN PUBLIC KEY-----
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2V+sEtZ7XHwxyd1NNnuM
+      yMx3oBQlFQ0hWbRhH8jn27dHNAaIhtL3nF0GXUD5hxATG2gh2Oh/JwYAiO1H64vI
+      A9knfS1pE/LZAMi+Vl1v7HNcvmOFAzaLyUXPvN0gkvrg4FdCts6mU0KrOvoA7kY/
+      akp8wbHw/WglgxowbsRXWe95VGSBWLYrMA02I6rbg4WjWj93qWq2VPkc+bHtbK4S
+      7UJfyA6jBkYtQrGbgHOo2m7KdTMXaXOHMEtxlfmBIM6uUsPccC9U1k9QCnobXPe9
+      13PpK7lQcxYzLeUHM3TtukDrYy5tYSu9pTKM4y4hCzqtsJzYc39yIn2plYzC+UD4
+      gQIDAQAB
+      -----END PUBLIC KEY-----
+
     private: |
       -----BEGIN PRIVATE KEY-----
       MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDZX6wS1ntcfDHJ
