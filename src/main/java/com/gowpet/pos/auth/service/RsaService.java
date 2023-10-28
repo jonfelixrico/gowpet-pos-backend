@@ -28,6 +28,7 @@ public class RsaService {
 
 	public Key getPublicKey() {
 		if (publicKey == null) {
+			// TODO do proper catching here
 			try (var stringReader = new StringReader(publicKeyPem)) {
 				var pemReader = new PemReader(stringReader);
 				var pemObject = pemReader.readPemObject();
@@ -53,6 +54,7 @@ public class RsaService {
 
 	public Key getPrivateKey() {
 		if (privateKey == null) {
+			// TODO do proper catching here
 			try (var stringReader = new StringReader(privateKeyPem)) {
 				var pemReader = new PemReader(stringReader);
 			    var pemObject = pemReader.readPemObject();
