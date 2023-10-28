@@ -42,6 +42,10 @@ class AuthController {
 	@GetMapping("/authenticate/publicKey")
 	String getPublicKey() {
 		var key = rsaSvc.getPublicKey();
-		return Base64.getEncoder().encodeToString(key.getEncoded());
+		var serializedKey = Base64.getEncoder().encodeToString(key.getEncoded());
+		return String.join("\n",
+				"-----BEGIN PRIVATE KEY-----",
+				serializedKey,
+				"-----END PRIVATE KEY-----");
 	}
 }
