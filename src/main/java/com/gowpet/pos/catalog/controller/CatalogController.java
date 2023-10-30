@@ -1,6 +1,5 @@
 package com.gowpet.pos.catalog.controller;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -24,11 +23,13 @@ import com.gowpet.pos.catalog.CatalogItem;
 import com.gowpet.pos.catalog.CatalogItemService;
 import com.gowpet.pos.catalog.CatalogItemService.InsertFields;
 import com.gowpet.pos.catalog.CatalogItemService.UpdateableFields;
-import com.gowpet.pos.catalog.ItemType;
 import com.gowpet.pos.user.service.UserService;
+
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/catalog")
+@SecurityRequirement(name = "bearerAuth")
 class CatalogController {
 	private CatalogItemService catalogSvc;
 	private UserService userSvc;

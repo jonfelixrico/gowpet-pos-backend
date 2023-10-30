@@ -23,8 +23,11 @@ import com.gowpet.pos.billing.service.BillingItem;
 import com.gowpet.pos.billing.service.BillingService;
 import com.gowpet.pos.user.service.UserService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequestMapping("/billing")
+@SecurityRequirement(name = "bearerAuth")
 public class BillingController {
 	private BillingService billingSvc;
 	private UserService userSvc;
