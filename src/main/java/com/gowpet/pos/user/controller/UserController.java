@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gowpet.pos.user.service.UserService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequestMapping("/user")
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
 	private PasswordEncoder pwEncoder;
 	private UserService userService;
