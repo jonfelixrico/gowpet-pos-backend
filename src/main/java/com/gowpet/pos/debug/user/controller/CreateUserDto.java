@@ -1,4 +1,4 @@
-package com.gowpet.pos.user.controller;
+package com.gowpet.pos.debug.user.controller;
 
 public class CreateUserDto {
 	private String username;
