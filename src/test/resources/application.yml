@@ -22,7 +22,7 @@ spring:
     init:
       mode: always
 app:
-  debug-routes: true
+  debug: true
   rsa:
     public: |
       -----BEGIN PUBLIC KEY-----
