@@ -11,7 +11,7 @@ import com.gowpet.pos.user.service.UserService;
 
 @RestController
 @RequestMapping("/debug/user")
-@ConditionalOnExpression("${app.debugRoutes:false}")
+@ConditionalOnExpression("${app.debug-routes:false}")
 public class DebugUserController {
 	private PasswordEncoder pwEncoder;
 	private UserService userService;
