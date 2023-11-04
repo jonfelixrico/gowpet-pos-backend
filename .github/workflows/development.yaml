@@ -7,8 +7,8 @@ on:
       - feature/*
   pull_request:
     branches:
-      - '*'
-      - '!master'
+      - develop
+      - feature/*
 
 jobs:
   verify:
