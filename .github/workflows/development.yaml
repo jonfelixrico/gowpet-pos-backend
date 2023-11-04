@@ -27,7 +27,7 @@ jobs:
   
   build-and-publish-image:
     permissions: write-all
-    needs: [run-tests]
+    needs: [verify]
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
