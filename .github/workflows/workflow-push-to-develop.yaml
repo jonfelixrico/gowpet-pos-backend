@@ -1,0 +1,10 @@
+name: Push to develop
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  run-tests:
+    uses: './.github/workflows/reusable-test.yml'
