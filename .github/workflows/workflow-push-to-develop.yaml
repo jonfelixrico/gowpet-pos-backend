@@ -9,7 +9,7 @@ jobs:
   run-tests:
     uses: './.github/workflows/reusable-test.yml'
   
-  dockerize-and-publish:
+  build-and-publish-image:
     needs: [run-tests]
     runs-on: ubuntu-latest
     steps:
