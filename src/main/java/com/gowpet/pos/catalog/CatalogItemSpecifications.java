@@ -18,4 +18,8 @@ class CatalogItemSpecifications {
 		 */
 		return Specification.where(statusIsNull).or(statusNotDeleted);
 	}
+	
+	static Specification<CatalogItem> nameLike(String like) {
+		return (root, query, builder) -> builder.like(root.get(CatalogItem_.name), like);
+	}
 }
