@@ -49,4 +49,5 @@ jobs:
         with:
           tags: |
             ghcr.io/jonfelixrico/gowpet-pos-backend:beta
-          build-args: JAR_FILE=/home/runner/work/gowpet-pos-backend/gowpet-pos-backend/target/pos.jar
+          context: .
+          push: true
