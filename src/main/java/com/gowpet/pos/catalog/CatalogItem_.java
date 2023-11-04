@@ -12,4 +12,5 @@ import jakarta.persistence.metamodel.StaticMetamodel;
 class CatalogItem_ {
 	static volatile SingularAttribute<CatalogItem, ItemStatus> status;
 	static volatile SingularAttribute<CatalogItem, String> name;
+	static volatile SingularAttribute<CatalogItem, ItemType> type;
 }
