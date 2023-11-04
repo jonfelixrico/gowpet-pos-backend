@@ -3,8 +3,7 @@ name: Push to develop
 on:
   push:
     branches:
-      # TODO remove this once confirmed that it works
-      - push-docker-image
+      - develop
 
 jobs:
   run-tests:
