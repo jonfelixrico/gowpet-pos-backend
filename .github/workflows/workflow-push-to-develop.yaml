@@ -19,17 +19,8 @@ jobs:
 
       # Start of the Java section
       
-      - name: Set up Java 18
-        uses: actions/setup-java@v1
-        with:
-          java-version: 18
-
-      - name: Set up cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{runner.os}}-m2
+      - name: Prepare maven
+        uses: ./.github/actions/prepare-maven
 
       - name: Create jar
         run: mvn install -DskipTests
