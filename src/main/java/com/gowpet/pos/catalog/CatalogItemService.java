@@ -80,7 +80,7 @@ public class CatalogItemService {
 		return result.get();
 	}
 	
-	public Page<CatalogItem> list(int pageNo, int itemCount, ItemType type, String pattern) {
+	public Page<CatalogItem> list(int pageNo, int itemCount, List<ItemType> type, String pattern) {
 		List<Specification<CatalogItem>> andConditions = new ArrayList<>();
 		andConditions.add(CatalogItemSpecifications.isNotDeleted());
 		
@@ -88,7 +88,11 @@ public class CatalogItemService {
 			andConditions.add(CatalogItemSpecifications.nameLike(pattern));
 		}
 		
-		return repo.findAll(Specification.allOf(andConditions), PageRequest.of(pageNo, itemCount));
+		return repo.findAll(Specification.allOf(
+					CatalogItemSpecifications.isNotDeleted(),
+					CatalogItemSpecifications.nameLike(pattern),
+					CatalogItemSpecifications.typeIncludes(type)
+				), PageRequest.of(pageNo, itemCount));
 	}
 
 	// TODO make this paginated
