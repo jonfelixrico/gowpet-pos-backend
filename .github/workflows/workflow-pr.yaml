@@ -1,0 +1,7 @@
+name: Test PR
+
+on: pull_request
+
+jobs:
+  run-tests:
+    uses: './.github/workflows/reusable-test.yml'
