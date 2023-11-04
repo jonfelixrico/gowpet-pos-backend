@@ -24,7 +24,7 @@ class CatalogItemSpecifications {
 	static Specification<CatalogItem> nameLike(String like) {
 		return (root, query, builder) -> {
 			if (like == null || like.isEmpty()) {
-				return builder.and();
+				return builder.and(); // always-true
 			}
 			
 			return builder.like(root.get(CatalogItem_.name), like);
@@ -34,7 +34,7 @@ class CatalogItemSpecifications {
 	static Specification<CatalogItem> typeIncludes(List<ItemType> types) {
 		return (root, query, builder) -> {
 			if (types == null || types.isEmpty()) {
-				return builder.and();
+				return builder.and(); // always-true
 			}
 			
 			return root.get(CatalogItem_.type).in(types);
