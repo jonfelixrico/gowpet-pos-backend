@@ -1,17 +1,33 @@
-name: Push to develop
+name: Development
 
 on:
   push:
     branches:
       - develop
+      - feature/*
+  pull_request:
+    branches:
+      - '*'
+      - '!master'
 
 jobs:
-  run-tests:
-    uses: './.github/workflows/reusable-test.yaml'
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Prepare maven
+        uses: ./.github/actions/prepare-maven
+
+      - name: Run tests
+        run: mvn -B verify --file pom.xml
+        shell: bash
+
   
   build-and-publish-image:
     permissions: write-all
-    needs: [run-tests]
+    needs: [verify]
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -35,10 +51,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       
+      - name: Build docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/jonfelixrico/gowpet-pos-backend
+      
       - name: Build image and push to GHCR
         uses: docker/build-push-action@v2
         with:
-          tags: |
-            ghcr.io/jonfelixrico/gowpet-pos-backend:beta
+          tags: ${{ steps.meta.outputs.tags }}
           context: .
-          push: true
+          push: ${{ github.event_name == 'push' }}
