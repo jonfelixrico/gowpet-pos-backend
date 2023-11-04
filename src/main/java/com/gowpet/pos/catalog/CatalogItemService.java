@@ -7,6 +7,9 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.gowpet.pos.user.service.User;
@@ -76,6 +79,17 @@ public class CatalogItemService {
 		}
 		
 		return result.get();
+	}
+	
+	public Page<CatalogItem> list(int pageNo, int itemCount, ItemType type, String pattern) {
+		List<Specification<CatalogItem>> andConditions = new ArrayList<>();
+		andConditions.add(CatalogItemSpecifications.isNotDeleted());
+		
+		if (pattern == null || pattern.isEmpty()) {
+			andConditions.add(CatalogItemSpecifications.nameLike(pattern));
+		}
+		
+		return repo.findAll(Specification.allOf(andConditions), PageRequest.of(pageNo, itemCount));
 	}
 
 	// TODO make this paginated
