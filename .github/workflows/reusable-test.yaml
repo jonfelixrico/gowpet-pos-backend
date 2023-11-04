@@ -1,9 +1,10 @@
-name: Test PR
+name: Run tests
 
-on: pull_request
+on:
+  workflow_call:
 
 jobs:
-  run_tests:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -20,3 +21,4 @@ jobs:
           restore-keys: ${{runner.os}}-m2
       - name: Run tests
         run: mvn -B verify --file pom.xml
+        shell: bash
