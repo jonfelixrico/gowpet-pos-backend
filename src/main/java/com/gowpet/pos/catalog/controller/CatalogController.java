@@ -47,13 +47,9 @@ class CatalogController {
 			@RequestParam(defaultValue = "30") Integer itemCount,
 			@RequestParam(required = false) List<ItemType> types) {
 		var page = catalogSvc.list(pageNo, itemCount, types, searchTerm);
-		
-		var response = ResponseEntity.ok();
-		if (pageNo == 0) {
-			response = response.header("X-Total-Count", Integer.toString(page.getTotalPages()));
-		}
-		
-		return response.body(page.getContent());
+		return ResponseEntity.ok()
+				.header("X-Total-Count", Integer.toString(page.getTotalPages()))
+				.body(page.getContent());
 	}
 	
 	@PostMapping("/product")
