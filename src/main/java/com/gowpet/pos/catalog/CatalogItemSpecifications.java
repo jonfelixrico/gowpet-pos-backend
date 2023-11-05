@@ -27,7 +27,7 @@ class CatalogItemSpecifications {
 				return builder.and(); // always-true
 			}
 			
-			return builder.like(root.get(CatalogItem_.name), like);
+			return builder.like(root.get(CatalogItem_.name), String.format("%s%%", like));
 		};
 	}
 	
