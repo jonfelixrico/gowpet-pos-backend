@@ -149,4 +149,10 @@ class CatalogIT {
 		List<String> ids = JsonPath.read(body, "$[*].id");
 		assertEquals(50, ids.size());
 	}
+	
+	@Test
+	void CatalogController_SearchWithoutQueryParams_DoesNotThrow() throws Exception {
+		mockMvc.perform(get("/catalog"))
+			.andExpect(status().isOk());
+	}
 }
