@@ -42,10 +42,10 @@ class CatalogController {
 	}
 
 	@GetMapping
-	ResponseEntity<List<CatalogItem>> listItems(@RequestParam String searchTerm,
+	ResponseEntity<List<CatalogItem>> listItems(@RequestParam(required = false) String searchTerm,
 			@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "30") Integer itemCount,
-			@RequestParam List<ItemType> types) {
+			@RequestParam(required = false) List<ItemType> types) {
 		var page = catalogSvc.list(pageNo, itemCount, types, searchTerm);
 		
 		var response = ResponseEntity.ok();
