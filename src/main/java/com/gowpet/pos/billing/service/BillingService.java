@@ -116,6 +116,7 @@ public class BillingService {
 	}
 	
 	@Getter
+	@Builder
 	@AllArgsConstructor(access = AccessLevel.PACKAGE)
 	public static class BillingItemInput {
 		protected String catalogId;
