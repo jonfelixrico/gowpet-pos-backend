@@ -36,11 +36,12 @@ public class BillingController {
 	private UserService userSvc;
 	private CatalogItemService itemSvc;
 	
-	BillingController(BillingService billingSvc, UserService userSvc) {
+	BillingController(BillingService billingSvc, UserService userSvc, CatalogItemService itemSvc) {
 		this.billingSvc = billingSvc;
 		this.userSvc = userSvc;
+		this.itemSvc = itemSvc;
 	}
-	
+
 	private BillingRespDto.BillingItemRespDto convertBillingItemToDto(BillingItem item) {
 		var catalogItem = BillingRespDto.CatalogItem.builder()
 				.name(item.getCatalogItem().getName())
