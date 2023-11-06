@@ -50,6 +50,7 @@ class BillingIT {
 		mockMvc.perform(postReq)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.items[0].catalogItem.id").value("3e2d537a-3b2a-476d-804b-9ab4c4556cbf"))
+			// The price is defined in import.sql. Just look for the insert statement associated with the id.
 			.andExpect(jsonPath("$.items[0].price").value(40.00))
 			.andExpect(jsonPath("$.items[0].quantity").value(3.0))
 			.andExpect(jsonPath("$.notes").value("This is the create test"))
