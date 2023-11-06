@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gowpet.pos.billing.service.Billing;
 import com.gowpet.pos.billing.service.BillingItem;
 import com.gowpet.pos.billing.service.BillingService;
+import com.gowpet.pos.billing.service.BillingService.BillingInput;
+import com.gowpet.pos.billing.service.BillingService.BillingItemInput;
+import com.gowpet.pos.catalog.CatalogItemService;
 import com.gowpet.pos.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -31,6 +34,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 public class BillingController {
 	private BillingService billingSvc;
 	private UserService userSvc;
+	private CatalogItemService itemSvc;
 	
 	BillingController(BillingService billingSvc, UserService userSvc) {
 		this.billingSvc = billingSvc;
@@ -76,10 +80,27 @@ public class BillingController {
 				.toList();
 	}
 	
+	private BillingInput dtoToInput(BillingReqDto dto) {
+		var inputItems = dto.getItems()
+				.stream()
+				.map(item -> BillingItemInput.builder()
+						.catalogId(item.getCatalogId())
+						.quantity(item.getQuantity())
+						.price(itemSvc.get(item.getCatalogId()).getPrice())
+						.build())
+				.toList();
+		
+		return BillingInput.builder()
+				.amountOverride(dto.getAmountOverride())
+				.notes(dto.getNotes())
+				.items(inputItems)
+				.build();
+	}
+	
 	@PostMapping
 	BillingRespDto createBilling(@RequestBody BillingReqDto newBilling,
 			@AuthenticationPrincipal UserDetails user) {
-		var created =  billingSvc.create(newBilling, userSvc.findByUsername(user.getUsername()));
+		var created =  billingSvc.create(dtoToInput(newBilling), userSvc.findByUsername(user.getUsername()));
 		return convertBillingToDto(created);
 	}
 	
@@ -92,7 +113,7 @@ public class BillingController {
 	BillingRespDto updateBilling(@PathVariable String id, 
 			@AuthenticationPrincipal UserDetails user, 
 			@RequestBody BillingReqDto toUpdate) {
-		var updated = billingSvc.update(id, toUpdate, userSvc.findByUsername(user.getUsername()));
+		var updated = billingSvc.update(id, dtoToInput(toUpdate), userSvc.findByUsername(user.getUsername()));
 		return convertBillingToDto(updated);
 	}
 	
