@@ -8,9 +8,14 @@ import com.gowpet.pos.billing.service.BillingService.BillingItemInput;
 import lombok.Getter;
 
 @Getter
-public class BillingReqDto extends BillingInput {
-	protected List<BillingItemReqDto> items;
+public class BillingReqDto{
+	private List<BillingItemReqDto> items;
+	private String notes;
+	private Double amountOverride;
 	
 	@Getter
-	static class BillingItemReqDto extends BillingItemInput {}
+	static class BillingItemReqDto {
+		private String catalogId;
+		private Double quantity;
+	}
 }

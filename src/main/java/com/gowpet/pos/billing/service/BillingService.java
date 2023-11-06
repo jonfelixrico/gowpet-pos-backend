@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import com.gowpet.pos.catalog.CatalogItemService;
 import com.gowpet.pos.user.service.User;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Service
@@ -104,14 +107,18 @@ public class BillingService {
 	}
 	
 	@Getter
-	public static abstract class BillingInput {
+	@Builder
+	@AllArgsConstructor(access = AccessLevel.PACKAGE)
+	public static class BillingInput {
 		protected List<? extends BillingItemInput> items;
 		protected Double amountOverride;
 		protected String notes;
 	}
 	
 	@Getter
-	public static abstract class BillingItemInput {
+	@Builder
+	@AllArgsConstructor(access = AccessLevel.PACKAGE)
+	public static class BillingItemInput {
 		protected String catalogId;
 		protected Double quantity;
 		protected Double price;
