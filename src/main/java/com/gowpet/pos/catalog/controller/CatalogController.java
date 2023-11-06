@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gowpet.pos.catalog.CatalogItem;
 import com.gowpet.pos.catalog.CatalogItemService;
 import com.gowpet.pos.catalog.CatalogItemService.InsertFields;
 import com.gowpet.pos.catalog.CatalogItemService.UpdateableFields;
+import com.gowpet.pos.catalog.ItemType;
 import com.gowpet.pos.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -40,8 +42,14 @@ class CatalogController {
 	}
 
 	@GetMapping
-	List<CatalogItem> listItems() {
-		return catalogSvc.listAll();
+	ResponseEntity<List<CatalogItem>> listItems(@RequestParam(required = false) String searchTerm,
+			@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "30") Integer itemCount,
+			@RequestParam(required = false) List<ItemType> types) {
+		var page = catalogSvc.list(pageNo, itemCount, types, searchTerm);
+		return ResponseEntity.ok()
+				.header("X-Total-Count", Integer.toString(page.getTotalPages()))
+				.body(page.getContent());
 	}
 	
 	@PostMapping("/product")

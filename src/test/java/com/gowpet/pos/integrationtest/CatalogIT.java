@@ -1,5 +1,6 @@
 package com.gowpet.pos.integrationtest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -18,30 +19,39 @@ import com.jayway.jsonpath.JsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.UnsupportedEncodingException;
+import java.time.Instant;
+import java.util.List;
+
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @WithMockUser(username = "user1")
 class CatalogIT {
 	@Autowired
 	private MockMvc mockMvc;
-
-	@Test
-	void CatalogController_CreateItem_CanAccessDetails () throws Exception {
+	
+	private String createItem(String name, Double price) throws UnsupportedEncodingException, Exception {
 		var createReq = post("/catalog/product")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("""
+				.content(String.format("""
 						{
-							"name": "test product",
-							"price": 69.00
+							"name": "%s",
+							"price": %f
 						}
 						
-						""");
+						""", name, price));
 		var serializedJson = mockMvc.perform(createReq)
 			.andExpect(status().isOk())
 			.andReturn()
 			.getResponse()
 			.getContentAsString();
-		var id = JsonPath.read(serializedJson, "$.id");
+
+		return JsonPath.read(serializedJson, "$.id");
+	}
+
+	@Test
+	void CatalogController_CreateItem_CanAccessDetails () throws Exception {
+		var id = createItem("test product", 69.00);
 		
 		mockMvc.perform(get(String.format("/catalog/product/%s", id)))
 			.andExpect(status().isOk());
@@ -106,5 +116,43 @@ class CatalogIT {
 			.andExpect(jsonPath("$.price").value(69.00));
 	}
 	
-	// TODO create listing tests
+	@Test
+	void CatalogController_CreateItems_AppearsOnList() throws Exception {
+		var baseName = Instant.now().toEpochMilli();
+		for (int i = 0; i < 50; i++) {
+			createItem(String.format("list test %d", baseName + i), 123.45);
+		}
+		
+		var body = mockMvc.perform(get("/catalog?itemCount=999"))
+			.andExpect(status().isOk())
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+		
+		List<String> ids = JsonPath.read(body, "$[?(@.name =~ /list test \\d+/)].id");
+		assertEquals(50, ids.size());
+	}
+	
+	@Test
+	void CatalogController_CreateItems_AppearsExclusivelyInFilteredList() throws Exception {
+		var baseName = Instant.now().toEpochMilli();
+		for (int i = 0; i < 50; i++) {
+			createItem(String.format("filter-test %d", baseName + i), 123.45);
+		}
+		
+		var body = mockMvc.perform(get("/catalog?itemCount=999&searchTerm=filter-test"))
+			.andExpect(status().isOk())
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+		
+		List<String> ids = JsonPath.read(body, "$[*].id");
+		assertEquals(50, ids.size());
+	}
+	
+	@Test
+	void CatalogController_SearchWithoutQueryParams_DoesNotThrow() throws Exception {
+		mockMvc.perform(get("/catalog"))
+			.andExpect(status().isOk());
+	}
 }
