@@ -44,15 +44,6 @@ public class BillingService {
 		return billingRepo.findAll(BillingSpecifications.isNotDeleted());
 	}
 	
-	private BillingItem billingItemHelper (BillingItemInput item, int itemNo) {
-		return BillingItem.builder()
-				.catalogItem(catalogSvc.get(item.getCatalogId()))
-				.price(item.getPrice())
-				.quantity(item.getQuantity())
-				.itemNo(itemNo)
-				.build();
-	}
-	
 	public Billing create(BillingInput newBilling, User author) {
 		var now = Instant.now();
 		var toSaveToDb = Billing.builder()
@@ -93,6 +84,15 @@ public class BillingService {
 				.build();
 		
 		return billingRepo.save(withUpdatedFields);
+	}
+	
+	private BillingItem billingItemHelper (BillingItemInput item, int itemNo) {
+		return BillingItem.builder()
+				.catalogItem(catalogSvc.get(item.getCatalogId()))
+				.price(item.getPrice())
+				.quantity(item.getQuantity())
+				.itemNo(itemNo)
+				.build();
 	}
 	
 	private List<BillingItem> extractItems(BillingInput input) {
