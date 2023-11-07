@@ -36,10 +36,10 @@ public class Billing {
 	
 	@Builder.Default
 	@OneToMany(orphanRemoval = true,
-		fetch = FetchType.EAGER,
+		fetch = FetchType.LAZY,
 		targetEntity = BillingItem.class,
-		cascade = CascadeType.ALL,
-		mappedBy = "billing")
+		cascade = CascadeType.ALL)
+	@JoinColumn
 	protected List<BillingItem> items = new ArrayList<>();
 	
 	protected Double amountOverride;
