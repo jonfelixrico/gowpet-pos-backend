@@ -57,9 +57,6 @@ public class BillingService {
 				.notes(newBilling.getNotes())
 				.createDt(now)
 				.createBy(author)
-				.updateCtr(0)
-				.updateBy(author)
-				.updateDt(now)
 				.build();
 		
 		return billingRepo.save(toSaveToDb);
