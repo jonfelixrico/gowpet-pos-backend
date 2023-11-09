@@ -40,15 +40,6 @@ public class BillingService {
 		return StreamSupport.stream(billingRepo.findAll().spliterator(), false).toList();
 	}
 	
-	private BillingItem billingItemHelper (BillingItemInput item, int itemNo) {
-		return BillingItem.builder()
-				.catalogItem(catalogSvc.get(item.getCatalogId()))
-				.price(item.getPrice())
-				.quantity(item.getQuantity())
-				.itemNo(itemNo)
-				.build();
-	}
-	
 	public Billing create(BillingInput newBilling, User author) {
 		var now = Instant.now();
 		var toSaveToDb = Billing.builder()
@@ -72,6 +63,17 @@ public class BillingService {
 		return mappedItems;
 	}
 	
+	private BillingItem billingItemHelper (BillingItemInput item, int itemNo) {
+		return BillingItem.builder()
+				.catalogItem(catalogSvc.get(item.getCatalogId()))
+				.price(item.getPrice())
+				.quantity(item.getQuantity())
+				.itemNo(itemNo)
+				.priceOverride(item.getPriceOverride())
+				.notes(item.getNotes())
+				.build();
+	}
+	
 	@Getter
 	@Builder
 	@AllArgsConstructor(access = AccessLevel.PACKAGE)
@@ -87,5 +89,7 @@ public class BillingService {
 		protected String catalogId;
 		protected Double quantity;
 		protected Double price;
+		protected Double priceOverride;
+		protected String notes;
 	}
 }
