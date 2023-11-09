@@ -53,7 +53,6 @@ public class BillingService {
 		var now = Instant.now();
 		var toSaveToDb = Billing.builder()
 				.items(extractItems(newBilling))
-				.amountOverride(newBilling.getAmountOverride())
 				.notes(newBilling.getNotes())
 				.createDt(now)
 				.createBy(author)

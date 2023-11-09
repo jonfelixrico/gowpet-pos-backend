@@ -42,7 +42,6 @@ public class Billing {
 	@JoinColumn
 	protected List<BillingItem> items = new ArrayList<>();
 	
-	protected Double amountOverride;
 	
 	protected String notes;
 	
