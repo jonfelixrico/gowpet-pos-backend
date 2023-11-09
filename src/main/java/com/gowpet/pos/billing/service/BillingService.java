@@ -80,21 +80,6 @@ public class BillingService {
 		billingRepo.save(builder.build());
 	}
 	
-	public Billing update(String id, BillingInput toUpdate, User updateBy) {
-		var fromDb = get(id);
-		
-		var withUpdatedFields = fromDb.toBuilder()
-				.items(extractItems(toUpdate))
-				.amountOverride(toUpdate.getAmountOverride())
-				.notes(toUpdate.getNotes())
-				.updateCtr(fromDb.getUpdateCtr() + 1)
-				.updateBy(updateBy)
-				.updateDt(Instant.now())
-				.build();
-		
-		return billingRepo.save(withUpdatedFields);
-	}
-	
 	private List<BillingItem> extractItems(BillingInput input) {
 		var mappedItems = new ArrayList<BillingItem>();
 
