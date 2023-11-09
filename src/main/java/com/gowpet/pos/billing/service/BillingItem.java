@@ -33,6 +33,8 @@ public class BillingItem {
 	@Column(nullable = false)
 	protected Double price;
 	
+	protected Double priceOverride;
+	
 	@Column(nullable = false)
 	protected Double quantity;
 	
