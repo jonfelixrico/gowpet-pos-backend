@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
 
@@ -31,17 +32,12 @@ public class BillingService {
 			throw new NoSuchElementException();
 		}
 		
-		var record = result.get();
-		if (record.getRecordStatus() != null && record.getRecordStatus().equals(RecordStatus.DELETED)) {
-			throw new NoSuchElementException();
-		}
-		
 		return result.get();
 	}
 	
 	public List<Billing> list() {
 		// TODO implement pagination
-		return billingRepo.findAll(BillingSpecifications.isNotDeleted());
+		return StreamSupport.stream(billingRepo.findAll().spliterator(), false).toList();
 	}
 	
 	private BillingItem billingItemHelper (BillingItemInput item, int itemNo) {
@@ -61,38 +57,9 @@ public class BillingService {
 				.notes(newBilling.getNotes())
 				.createDt(now)
 				.createBy(author)
-				.updateCtr(0)
-				.updateBy(author)
-				.updateDt(now)
 				.build();
 		
 		return billingRepo.save(toSaveToDb);
-	}
-	
-	public void delete(String id, User deleteBy) {
-		var record = get(id);
-		var builder = record.toBuilder()
-			.updateCtr(record.getUpdateCtr() + 1)
-			.updateDt(Instant.now())
-			.updateBy(deleteBy)
-			.recordStatus(RecordStatus.DELETED);
-		
-		billingRepo.save(builder.build());
-	}
-	
-	public Billing update(String id, BillingInput toUpdate, User updateBy) {
-		var fromDb = get(id);
-		
-		var withUpdatedFields = fromDb.toBuilder()
-				.items(extractItems(toUpdate))
-				.amountOverride(toUpdate.getAmountOverride())
-				.notes(toUpdate.getNotes())
-				.updateCtr(fromDb.getUpdateCtr() + 1)
-				.updateBy(updateBy)
-				.updateDt(Instant.now())
-				.build();
-		
-		return billingRepo.save(withUpdatedFields);
 	}
 	
 	private List<BillingItem> extractItems(BillingInput input) {

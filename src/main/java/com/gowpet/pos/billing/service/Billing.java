@@ -52,16 +52,4 @@ public class Billing {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)
 	protected User createBy;
-	
-	@Column(nullable = false)
-	protected Instant updateDt;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(nullable = false)
-	protected User updateBy;
-
-	protected Integer updateCtr;
-	
-	@Enumerated(EnumType.STRING)
-	protected RecordStatus recordStatus;
 }
