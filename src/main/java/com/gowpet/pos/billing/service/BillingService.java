@@ -31,11 +31,6 @@ public class BillingService {
 			throw new NoSuchElementException();
 		}
 		
-		var record = result.get();
-		if (record.getRecordStatus() != null && record.getRecordStatus().equals(RecordStatus.DELETED)) {
-			throw new NoSuchElementException();
-		}
-		
 		return result.get();
 	}
 	
