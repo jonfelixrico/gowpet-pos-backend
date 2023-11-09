@@ -49,7 +49,7 @@ class BillingIT {
 			// The price is defined in import.sql. Just look for the insert statement associated with the id.
 			.andExpect(jsonPath("$.items[0].price").value(40.00))
 			.andExpect(jsonPath("$.items[0].quantity").value(3.0))
-			.andExpect(jsonPath("$.notes").value("This is the create test"))
+			.andExpect(jsonPath("$.notes").value("This is the create test"));
 	}
 	
 	@Test
