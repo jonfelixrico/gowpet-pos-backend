@@ -34,6 +34,7 @@ public class BillingItem {
 	protected Double price;
 	
 	protected Double priceOverride;
+	protected String notes;
 	
 	@Column(nullable = false)
 	protected Double quantity;
