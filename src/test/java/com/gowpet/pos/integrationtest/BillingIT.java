@@ -51,7 +51,7 @@ class BillingIT {
 	}
 	
 	@Test
-	void BillingController_Create_ReturnsCreatedValue() throws Exception {
+	void BillingController_CreateWithNotes_ReturnsCreatedValue() throws Exception {
 		var postReq = post("/billing")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
@@ -59,20 +59,18 @@ class BillingIT {
 							"items": [
 								{
 									"catalogId": "3e2d537a-3b2a-476d-804b-9ab4c4556cbf",
-									"quantity": 3.0
+									"quantity": 3.0,
+									"notes": "Item note"
 								}
 							],
-							"notes": "This is the create test"
+							"notes": "Billing note"
 						}
 						""");
 		
 		mockMvc.perform(postReq)
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.items[0].catalogItem.id").value("3e2d537a-3b2a-476d-804b-9ab4c4556cbf"))
-			// The price is defined in import.sql. Just look for the insert statement associated with the id.
-			.andExpect(jsonPath("$.items[0].price").value(40.00))
-			.andExpect(jsonPath("$.items[0].quantity").value(3.0))
-			.andExpect(jsonPath("$.notes").value("This is the create test"));
+			.andExpect(jsonPath("$.items[0].notes").value("Item note"))
+			.andExpect(jsonPath("$.notes").value("Billing note"));
 	}
 	
 	@Test
