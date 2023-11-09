@@ -77,7 +77,6 @@ public class BillingService {
 	@AllArgsConstructor(access = AccessLevel.PACKAGE)
 	public static class BillingInput {
 		protected List<? extends BillingItemInput> items;
-		protected Double amountOverride;
 		protected String notes;
 	}
 	
