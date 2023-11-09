@@ -11,7 +11,6 @@ import lombok.Getter;
 public class BillingReqDto{
 	private List<BillingItemReqDto> items;
 	private String notes;
-	private Double amountOverride;
 	
 	@Getter
 	static class BillingItemReqDto {

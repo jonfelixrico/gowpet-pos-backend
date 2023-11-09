@@ -60,7 +60,6 @@ public class BillingController {
 		
 		return BillingRespDto.builder()
 				.id(billing.getId())
-				.amountOverride(billing.getAmountOverride())
 				.notes(billing.getNotes())
 				.items(items)
 				.build();
@@ -90,7 +89,6 @@ public class BillingController {
 				.toList();
 		
 		return BillingInput.builder()
-				.amountOverride(dto.getAmountOverride())
 				.notes(dto.getNotes())
 				.items(inputItems)
 				.build();
