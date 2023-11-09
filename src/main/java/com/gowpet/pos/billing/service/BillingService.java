@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,7 @@ public class BillingService {
 	
 	public List<Billing> list() {
 		// TODO implement pagination
-		return billingRepo.findAll(BillingSpecifications.isNotDeleted());
+		return StreamSupport.stream(billingRepo.findAll().spliterator(), false).toList();
 	}
 	
 	private BillingItem billingItemHelper (BillingItemInput item, int itemNo) {
