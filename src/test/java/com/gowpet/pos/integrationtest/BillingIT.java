@@ -39,7 +39,6 @@ class BillingIT {
 									"quantity": 3.0
 								}
 							],
-							"amountOverride": null,
 							"notes": "This is the create test"
 						}
 						""");
@@ -51,7 +50,6 @@ class BillingIT {
 			.andExpect(jsonPath("$.items[0].price").value(40.00))
 			.andExpect(jsonPath("$.items[0].quantity").value(3.0))
 			.andExpect(jsonPath("$.notes").value("This is the create test"))
-			.andExpect(jsonPath("$.amountOverride").isEmpty());
 	}
 	
 	@Test
@@ -61,7 +59,6 @@ class BillingIT {
 				.content("""
 						{
 							"items": [],
-							"amountOverride": null,
 							"notes": "BillingController_Create_ShowsInList 1"
 						}
 						"""));
@@ -71,7 +68,6 @@ class BillingIT {
 				.content("""
 						{
 							"items": [],
-							"amountOverride": null,
 							"notes": "BillingController_Create_ShowsInList 2"
 						}
 						"""));
@@ -81,7 +77,6 @@ class BillingIT {
 				.content("""
 						{
 							"items": [],
-							"amountOverride": null,
 							"notes": "BillingController_Create_ShowsInList 3"
 						}
 						"""));
