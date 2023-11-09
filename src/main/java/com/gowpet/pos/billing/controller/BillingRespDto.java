@@ -22,6 +22,8 @@ class BillingRespDto {
 		private CatalogItem catalogItem;
 		private Double price;
 		private Double quantity;
+		private Double priceOverride;
+		private String notes;
 	}
 	
 	@Getter
