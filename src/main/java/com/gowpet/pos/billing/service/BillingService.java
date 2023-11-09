@@ -69,17 +69,6 @@ public class BillingService {
 		return billingRepo.save(toSaveToDb);
 	}
 	
-	public void delete(String id, User deleteBy) {
-		var record = get(id);
-		var builder = record.toBuilder()
-			.updateCtr(record.getUpdateCtr() + 1)
-			.updateDt(Instant.now())
-			.updateBy(deleteBy)
-			.recordStatus(RecordStatus.DELETED);
-		
-		billingRepo.save(builder.build());
-	}
-	
 	private List<BillingItem> extractItems(BillingInput input) {
 		var mappedItems = new ArrayList<BillingItem>();
 
