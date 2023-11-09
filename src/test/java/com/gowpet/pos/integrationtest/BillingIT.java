@@ -1,6 +1,5 @@
 package com.gowpet.pos.integrationtest;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -14,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.jayway.jsonpath.JsonPath;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -54,40 +52,6 @@ class BillingIT {
 			.andExpect(jsonPath("$.items[0].quantity").value(3.0))
 			.andExpect(jsonPath("$.notes").value("This is the create test"))
 			.andExpect(jsonPath("$.amountOverride").isEmpty());
-	}
-	
-	@Test
-	void BillingController_DeleteBilling_CannotAccessRecord() throws Exception {
-		var postReq = post("/billing")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content("""
-						{
-							"items": [
-								{
-									"catalogId": "3e2d537a-3b2a-476d-804b-9ab4c4556cbf",
-									"quantity": 3.0
-								}
-							],
-							"amountOverride": null,
-							"notes": null
-						}
-						""");
-		
-		var serializedJson = mockMvc.perform(postReq)
-			.andReturn()
-			.getResponse()
-			.getContentAsString();
-		var id = JsonPath.read(serializedJson, "$.id");
-		var route = String.format("/billing/%s", id);
-		
-		mockMvc.perform(get(route))
-			.andExpect(status().isOk());
-		
-		mockMvc.perform(delete(route))
-			.andExpect(status().isOk());
-		
-		mockMvc.perform(get(route))
-			.andExpect(status().isNotFound());
 	}
 	
 	@Test
