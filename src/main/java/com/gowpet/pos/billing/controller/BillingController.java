@@ -50,6 +50,8 @@ public class BillingController {
 				.price(item.getPrice())
 				.quantity(item.getQuantity())
 				.catalogItem(catalogItem)
+				.priceOverride(item.getPriceOverride())
+				.notes(item.getNotes())
 				.build();
 	}
 	
@@ -85,6 +87,8 @@ public class BillingController {
 						.catalogId(item.getCatalogId())
 						.quantity(item.getQuantity())
 						.price(itemSvc.get(item.getCatalogId()).getPrice())
+						.priceOverride(item.getPriceOverride())
+						.notes(item.getNotes())
 						.build())
 				.toList();
 		
