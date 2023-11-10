@@ -74,6 +74,32 @@ class BillingIT {
 	}
 	
 	@Test
+	void BillingController_CreateWithPriceOverride_ReturnsCreatedValue() throws Exception {
+		var postReq = post("/billing")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("""
+						{
+							"items": [
+								{
+									"catalogId": "3e2d537a-3b2a-476d-804b-9ab4c4556cbf",
+									"quantity": 3
+								},
+								{
+									"catalogId": "002a95ff-00b1-48ee-98ce-6469a076d201",
+									"quantity": 1,
+									"priceOverride": 50
+								}
+							]
+						}
+						""");
+		
+		mockMvc.perform(postReq)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.items[0].priceOverride").doesNotExist())
+			.andExpect(jsonPath("$.items[1].priceOverride").value(50));
+	}
+	
+	@Test
 	void BillingController_Create_ShowsInList() throws Exception {
 		mockMvc.perform(post("/billing")
 				.contentType(MediaType.APPLICATION_JSON)
