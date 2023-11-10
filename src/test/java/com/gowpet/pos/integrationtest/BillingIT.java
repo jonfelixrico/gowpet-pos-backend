@@ -28,7 +28,7 @@ class BillingIT {
 	}
 	
 	@Test
-	void BillingController_Create_ReturnsCreatedValue() throws Exception {
+	void BillingController_CreateBasic_ReturnsCreatedValue() throws Exception {
 		var postReq = post("/billing")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
@@ -36,11 +36,9 @@ class BillingIT {
 							"items": [
 								{
 									"catalogId": "3e2d537a-3b2a-476d-804b-9ab4c4556cbf",
-									"quantity": 3.0
+									"quantity": 3
 								}
-							],
-							"amountOverride": null,
-							"notes": "This is the create test"
+							]
 						}
 						""");
 		
@@ -48,10 +46,57 @@ class BillingIT {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.items[0].catalogItem.id").value("3e2d537a-3b2a-476d-804b-9ab4c4556cbf"))
 			// The price is defined in import.sql. Just look for the insert statement associated with the id.
-			.andExpect(jsonPath("$.items[0].price").value(40.00))
-			.andExpect(jsonPath("$.items[0].quantity").value(3.0))
-			.andExpect(jsonPath("$.notes").value("This is the create test"))
-			.andExpect(jsonPath("$.amountOverride").isEmpty());
+			.andExpect(jsonPath("$.items[0].price").value(40))
+			.andExpect(jsonPath("$.items[0].quantity").value(3));
+	}
+	
+	@Test
+	void BillingController_CreateWithNotes_ReturnsCreatedValue() throws Exception {
+		var postReq = post("/billing")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("""
+						{
+							"items": [
+								{
+									"catalogId": "3e2d537a-3b2a-476d-804b-9ab4c4556cbf",
+									"quantity": 3,
+									"notes": "Item note"
+								}
+							],
+							"notes": "Billing note"
+						}
+						""");
+		
+		mockMvc.perform(postReq)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.items[0].notes").value("Item note"))
+			.andExpect(jsonPath("$.notes").value("Billing note"));
+	}
+	
+	@Test
+	void BillingController_CreateWithPriceOverride_ReturnsCreatedValue() throws Exception {
+		var postReq = post("/billing")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("""
+						{
+							"items": [
+								{
+									"catalogId": "3e2d537a-3b2a-476d-804b-9ab4c4556cbf",
+									"quantity": 3
+								},
+								{
+									"catalogId": "002a95ff-00b1-48ee-98ce-6469a076d201",
+									"quantity": 1,
+									"priceOverride": 50
+								}
+							]
+						}
+						""");
+		
+		mockMvc.perform(postReq)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.items[0].priceOverride").doesNotExist())
+			.andExpect(jsonPath("$.items[1].priceOverride").value(50));
 	}
 	
 	@Test
@@ -61,7 +106,6 @@ class BillingIT {
 				.content("""
 						{
 							"items": [],
-							"amountOverride": null,
 							"notes": "BillingController_Create_ShowsInList 1"
 						}
 						"""));
@@ -71,7 +115,6 @@ class BillingIT {
 				.content("""
 						{
 							"items": [],
-							"amountOverride": null,
 							"notes": "BillingController_Create_ShowsInList 2"
 						}
 						"""));
@@ -81,7 +124,6 @@ class BillingIT {
 				.content("""
 						{
 							"items": [],
-							"amountOverride": null,
 							"notes": "BillingController_Create_ShowsInList 3"
 						}
 						"""));

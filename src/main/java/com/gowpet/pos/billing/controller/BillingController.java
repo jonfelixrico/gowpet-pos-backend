@@ -50,6 +50,8 @@ public class BillingController {
 				.price(item.getPrice())
 				.quantity(item.getQuantity())
 				.catalogItem(catalogItem)
+				.priceOverride(item.getPriceOverride())
+				.notes(item.getNotes())
 				.build();
 	}
 	
@@ -60,7 +62,6 @@ public class BillingController {
 		
 		return BillingRespDto.builder()
 				.id(billing.getId())
-				.amountOverride(billing.getAmountOverride())
 				.notes(billing.getNotes())
 				.items(items)
 				.build();
@@ -86,11 +87,12 @@ public class BillingController {
 						.catalogId(item.getCatalogId())
 						.quantity(item.getQuantity())
 						.price(itemSvc.get(item.getCatalogId()).getPrice())
+						.priceOverride(item.getPriceOverride())
+						.notes(item.getNotes())
 						.build())
 				.toList();
 		
 		return BillingInput.builder()
-				.amountOverride(dto.getAmountOverride())
 				.notes(dto.getNotes())
 				.items(inputItems)
 				.build();

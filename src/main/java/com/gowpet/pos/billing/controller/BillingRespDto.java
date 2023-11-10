@@ -12,7 +12,6 @@ import lombok.Getter;
 @Builder
 class BillingRespDto {
 	private String id;
-	private Double amountOverride;
 	private String notes;
 	private List<BillingItemRespDto> items;
 	
@@ -23,6 +22,8 @@ class BillingRespDto {
 		private CatalogItem catalogItem;
 		private Double price;
 		private Double quantity;
+		private Double priceOverride;
+		private String notes;
 	}
 	
 	@Getter
