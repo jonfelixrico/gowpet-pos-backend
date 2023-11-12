@@ -8,13 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.ErrorResponse;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.gowpet.pos.billing.service.Billing;
 import com.gowpet.pos.billing.service.BillingItem;
@@ -30,9 +24,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RequestMapping("/billing")
 @SecurityRequirement(name = "bearerAuth")
 public class BillingController {
-	private BillingService billingSvc;
-	private UserService userSvc;
-	private CatalogItemService itemSvc;
+	private final BillingService billingSvc;
+	private final UserService userSvc;
+	private final CatalogItemService itemSvc;
 	
 	BillingController(BillingService billingSvc, UserService userSvc, CatalogItemService itemSvc) {
 		this.billingSvc = billingSvc;
@@ -74,10 +68,11 @@ public class BillingController {
 	}
 	
 	@GetMapping
-	List<BillingRespDto> listBilling() {
-		return billingSvc.list().stream()
-				.map(this::convertBillingToDto)
-				.toList();
+	ResponseEntity<List<BillingRespDto>> listBilling(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "30") Integer itemCount) {
+		var page = billingSvc.list(pageNo, itemCount);
+		return ResponseEntity.ok()
+				.header("X-Total-Count", String.valueOf(page.getTotalPages()))
+				.body(page.stream().map(this::convertBillingToDto).toList());
 	}
 	
 	private BillingInput dtoToInput(BillingReqDto dto) {

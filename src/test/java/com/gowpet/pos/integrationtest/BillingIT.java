@@ -98,39 +98,29 @@ class BillingIT {
 			.andExpect(jsonPath("$.items[0].priceOverride").doesNotExist())
 			.andExpect(jsonPath("$.items[1].priceOverride").value(50));
 	}
+
+	private String generateNote(int number) {
+		return String.format("BillingController_Create_ShowsInList %d", number);
+	}
 	
 	@Test
 	void BillingController_Create_ShowsInList() throws Exception {
-		mockMvc.perform(post("/billing")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content("""
+		for (int i = 0; i < 100; i++) {
+			mockMvc.perform(post("/billing")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(String.format("""
 						{
 							"items": [],
-							"notes": "BillingController_Create_ShowsInList 1"
+							"notes": "%s"
 						}
-						"""));
-		
-		mockMvc.perform(post("/billing")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content("""
-						{
-							"items": [],
-							"notes": "BillingController_Create_ShowsInList 2"
-						}
-						"""));
-		
-		mockMvc.perform(post("/billing")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content("""
-						{
-							"items": [],
-							"notes": "BillingController_Create_ShowsInList 3"
-						}
-						"""));
-		
-		mockMvc.perform(get("/billing"))
-			.andExpect(jsonPath("$[?(@.notes=='BillingController_Create_ShowsInList 1')]").exists())
-			.andExpect(jsonPath("$[?(@.notes=='BillingController_Create_ShowsInList 2')]").exists())
-			.andExpect(jsonPath("$[?(@.notes=='BillingController_Create_ShowsInList 3')]").exists());
+						""", generateNote(i))));
+		}
+
+		var result = mockMvc.perform(get("/billing?pageNo=0&itemCount=500"));
+
+		for (int i = 0; i < 100; i++) {
+			var path = String.format("$[?(@.notes=='%s')]", generateNote(i));
+			result.andExpect(jsonPath(path).exists());
+		}
 	}
 }
