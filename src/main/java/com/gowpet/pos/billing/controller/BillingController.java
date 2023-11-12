@@ -68,7 +68,7 @@ public class BillingController {
 	}
 	
 	@GetMapping
-	ResponseEntity<List<BillingRespDto>> listBilling(@RequestParam(defaultValue = "") Integer pageNo, @RequestParam(defaultValue = "0") Integer itemCount) {
+	ResponseEntity<List<BillingRespDto>> listBilling(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "30") Integer itemCount) {
 		var page = billingSvc.list(pageNo, itemCount);
 		return ResponseEntity.ok()
 				.header("X-Total-Count", String.valueOf(page.getTotalPages()))
