@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.StreamSupport;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.gowpet.pos.catalog.CatalogItemService;
@@ -34,10 +36,9 @@ public class BillingService {
 		
 		return result.get();
 	}
-	
-	public List<Billing> list() {
-		// TODO implement pagination
-		return StreamSupport.stream(billingRepo.findAll().spliterator(), false).toList();
+
+	public Page<Billing> list(int pageNo, int itemCount) {
+		return billingRepo.findAll(PageRequest.of(pageNo, itemCount));
 	}
 	
 	public Billing create(BillingInput newBilling, User author) {
