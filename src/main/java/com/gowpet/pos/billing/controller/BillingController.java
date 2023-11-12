@@ -30,9 +30,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RequestMapping("/billing")
 @SecurityRequirement(name = "bearerAuth")
 public class BillingController {
-	private BillingService billingSvc;
-	private UserService userSvc;
-	private CatalogItemService itemSvc;
+	private final BillingService billingSvc;
+	private final UserService userSvc;
+	private final CatalogItemService itemSvc;
 	
 	BillingController(BillingService billingSvc, UserService userSvc, CatalogItemService itemSvc) {
 		this.billingSvc = billingSvc;
