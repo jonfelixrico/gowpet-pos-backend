@@ -18,8 +18,8 @@ import lombok.Getter;
 
 @Service
 public class BillingService {
-	private BillingRepository billingRepo;
-	private CatalogItemService catalogSvc;
+	private final BillingRepository billingRepo;
+	private final CatalogItemService catalogSvc;
 
 	BillingService(BillingRepository billingRepo, CatalogItemService catalogSvc) {
 		this.billingRepo = billingRepo;
