@@ -116,7 +116,7 @@ class BillingIT {
 						""", generateNote(i))));
 		}
 
-		var result = mockMvc.perform(get("/billing?pageNo=0&pageCount=500"));
+		var result = mockMvc.perform(get("/billing?pageNo=0&itemCount=500"));
 
 		for (int i = 0; i < 100; i++) {
 			var path = String.format("$[?(@.notes=='%s')]", generateNote(i));
