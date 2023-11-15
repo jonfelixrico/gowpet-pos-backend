@@ -5,7 +5,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @WithMockUser(username = "user1")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BillingIT {
 	@Autowired
 	private MockMvc mockMvc;
@@ -28,6 +32,8 @@ class BillingIT {
 	}
 	
 	@Test
+	// This needs to go first because we're also checking the serialNo here
+	@Order(1)
 	void BillingController_CreateBasic_ReturnsCreatedValue() throws Exception {
 		var postReq = post("/billing")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -48,6 +54,7 @@ class BillingIT {
 			// The price is defined in import.sql. Just look for the insert statement associated with the id.
 			.andExpect(jsonPath("$.items[0].price").value(40))
 			.andExpect(jsonPath("$.items[0].quantity").value(3))
+				// We're expecting the serialNo to be 3 because we already have 1 and 2 in import.sql
 			.andExpect(jsonPath("$.serialNo").value(3));
 	}
 	
