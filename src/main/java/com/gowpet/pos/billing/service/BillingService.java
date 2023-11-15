@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.StreamSupport;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,14 +39,27 @@ public class BillingService {
 	public Page<Billing> list(int pageNo, int itemCount) {
 		return billingRepo.findAll(PageRequest.of(pageNo, itemCount));
 	}
-	
+
+	/**
+	 * This generates the next serial no based on the max serial no in the billing table.
+	 * Please see {@link Billing#serialNo} for more info about why we're doing this instead of letting
+	 * JPA take care of it.
+	 */
+	private Long getNextId() {
+		var withMaxId = billingRepo.findTopByOrderBySerialNoDesc();
+		var maxId = withMaxId.isEmpty() ? 0 : withMaxId.get().getSerialNo();
+		return maxId + 1;
+	}
+
 	public Billing create(BillingInput newBilling, User author) {
 		var now = Instant.now();
+
 		var toSaveToDb = Billing.builder()
 				.items(extractItems(newBilling))
 				.notes(newBilling.getNotes())
 				.createDt(now)
 				.createBy(author)
+				.serialNo(getNextId())
 				.build();
 		
 		return billingRepo.save(toSaveToDb);
@@ -79,18 +91,18 @@ public class BillingService {
 	@Builder
 	@AllArgsConstructor(access = AccessLevel.PACKAGE)
 	public static class BillingInput {
-		protected List<? extends BillingItemInput> items;
-		protected String notes;
+		private List<? extends BillingItemInput> items;
+		private String notes;
 	}
 	
 	@Getter
 	@Builder
 	@AllArgsConstructor(access = AccessLevel.PACKAGE)
 	public static class BillingItemInput {
-		protected String catalogId;
-		protected Double quantity;
-		protected Double price;
-		protected Double priceOverride;
-		protected String notes;
+		private String catalogId;
+		private Double quantity;
+		private Double price;
+		private Double priceOverride;
+		private String notes;
 	}
 }

@@ -32,7 +32,7 @@ import lombok.NoArgsConstructor;
 public class Billing {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	protected String id;
+	private String id;
 	
 	@Builder.Default
 	@OneToMany(orphanRemoval = true,
@@ -40,15 +40,24 @@ public class Billing {
 		targetEntity = BillingItem.class,
 		cascade = CascadeType.ALL)
 	@JoinColumn
-	protected List<BillingItem> items = new ArrayList<>();
+	private List<BillingItem> items = new ArrayList<>();
 	
 	
-	protected String notes;
+	private String notes;
 	
 	@Column(nullable = false)
-	protected Instant createDt;
+	private Instant createDt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)
-	protected User createBy;
+	private User createBy;
+
+	/**
+	 * Originally we want this to be auto-generated via GenerateValue, but it turns out
+	 * GenerateValue only works with primary keys. Please see <a href="https://stackoverflow.com/a/536102">this stackoverflow answer</a>
+	 * for more info.
+	 * This means that we need to generate the value ourselves.
+	 */
+	@Column(nullable = false)
+	private Long serialNo;
 }

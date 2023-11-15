@@ -14,6 +14,7 @@ class BillingRespDto {
 	private String id;
 	private String notes;
 	private List<BillingItemRespDto> items;
+	private Long serialNo;
 	
 	@Getter
 	@AllArgsConstructor(access = AccessLevel.PACKAGE)
