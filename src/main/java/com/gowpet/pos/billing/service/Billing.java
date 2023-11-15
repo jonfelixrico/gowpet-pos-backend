@@ -51,7 +51,6 @@ public class Billing {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)
 	private User createBy;
-
-	@GeneratedValue
+	
 	private Long serialNo;
 }
