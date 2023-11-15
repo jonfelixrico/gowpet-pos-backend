@@ -12,9 +12,9 @@ import lombok.Getter;
 @Builder
 class BillingRespDto {
 	private String id;
-	private Double amountOverride;
 	private String notes;
 	private List<BillingItemRespDto> items;
+	private Long serialNo;
 	
 	@Getter
 	@AllArgsConstructor(access = AccessLevel.PACKAGE)
@@ -23,6 +23,8 @@ class BillingRespDto {
 		private CatalogItem catalogItem;
 		private Double price;
 		private Double quantity;
+		private Double priceOverride;
+		private String notes;
 	}
 	
 	@Getter

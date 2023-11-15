@@ -1,7 +1,10 @@
 package com.gowpet.pos.billing.service;
 
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-interface BillingRepository extends CrudRepository<Billing, String>, JpaSpecificationExecutor<Billing> {
+import java.util.Optional;
+
+interface BillingRepository extends CrudRepository<Billing, String>, PagingAndSortingRepository<Billing, String> {
+    Optional<Billing> findTopByOrderBySerialNoDesc();
 }

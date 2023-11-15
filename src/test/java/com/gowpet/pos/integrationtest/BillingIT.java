@@ -1,13 +1,14 @@
 package com.gowpet.pos.integrationtest;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,11 +16,11 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.jayway.jsonpath.JsonPath;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @WithMockUser(username = "user1")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BillingIT {
 	@Autowired
 	private MockMvc mockMvc;
@@ -31,7 +32,14 @@ class BillingIT {
 	}
 	
 	@Test
-	void BillingController_Create_ReturnsCreatedValue() throws Exception {
+	/*
+		This needs to go first because we're also checking the serialNo here
+
+		serialNo is sensitive to the max serialNo in the billing table, so we
+		need to make sure that this is the first insert statement in the test suite.
+	 */
+	@Order(1)
+	void BillingController_CreateBasic_ReturnsCreatedValue() throws Exception {
 		var postReq = post("/billing")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
@@ -39,26 +47,24 @@ class BillingIT {
 							"items": [
 								{
 									"catalogId": "3e2d537a-3b2a-476d-804b-9ab4c4556cbf",
-									"price": 120.00,
-									"quantity": 3.0
+									"quantity": 3
 								}
-							],
-							"amountOverride": null,
-							"notes": "This is the create test"
+							]
 						}
 						""");
 		
 		mockMvc.perform(postReq)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.items[0].catalogItem.id").value("3e2d537a-3b2a-476d-804b-9ab4c4556cbf"))
-			.andExpect(jsonPath("$.items[0].price").value(120.00))
-			.andExpect(jsonPath("$.items[0].quantity").value(3.0))
-			.andExpect(jsonPath("$.notes").value("This is the create test"))
-			.andExpect(jsonPath("$.amountOverride").isEmpty());
+			// The price is defined in import.sql. Just look for the insert statement associated with the id.
+			.andExpect(jsonPath("$.items[0].price").value(40))
+			.andExpect(jsonPath("$.items[0].quantity").value(3))
+				// We're expecting the serialNo to be 3 because we already have 1 and 2 in import.sql
+			.andExpect(jsonPath("$.serialNo").value(3));
 	}
 	
 	@Test
-	void BillingController_DeleteBilling_CannotAccessRecord() throws Exception {
+	void BillingController_CreateWithNotes_ReturnsCreatedValue() throws Exception {
 		var postReq = post("/billing")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
@@ -66,34 +72,22 @@ class BillingIT {
 							"items": [
 								{
 									"catalogId": "3e2d537a-3b2a-476d-804b-9ab4c4556cbf",
-									"price": 120.00,
-									"quantity": 3.0
+									"quantity": 3,
+									"notes": "Item note"
 								}
 							],
-							"amountOverride": null,
-							"notes": null
+							"notes": "Billing note"
 						}
 						""");
 		
-		var serializedJson = mockMvc.perform(postReq)
-			.andReturn()
-			.getResponse()
-			.getContentAsString();
-		var id = JsonPath.read(serializedJson, "$.id");
-		var route = String.format("/billing/%s", id);
-		
-		mockMvc.perform(get(route))
-			.andExpect(status().isOk());
-		
-		mockMvc.perform(delete(route))
-			.andExpect(status().isOk());
-		
-		mockMvc.perform(get(route))
-			.andExpect(status().isNotFound());
+		mockMvc.perform(postReq)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.items[0].notes").value("Item note"))
+			.andExpect(jsonPath("$.notes").value("Billing note"));
 	}
 	
 	@Test
-	void BillingController_Update_UpdatesReflected() throws Exception {
+	void BillingController_CreateWithPriceOverride_ReturnsCreatedValue() throws Exception {
 		var postReq = post("/billing")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
@@ -101,90 +95,45 @@ class BillingIT {
 							"items": [
 								{
 									"catalogId": "3e2d537a-3b2a-476d-804b-9ab4c4556cbf",
-									"price": 120.00,
-									"quantity": 3.0
-								}
-							],
-							"amountOverride": null,
-							"notes": null
-						}
-						""");
-		
-		var serializedJson = mockMvc.perform(postReq)
-			.andReturn()
-			.getResponse()
-			.getContentAsString();
-		var id = JsonPath.read(serializedJson, "$.id");
-		var route = String.format("/billing/%s", id);
-		
-		var putReq = put(route)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content("""
-						{
-							"items": [
-								{
-									"catalogId": "002a95ff-00b1-48ee-98ce-6469a076d201",
-									"price": 50.00,
-									"quantity": 1.0
+									"quantity": 3
 								},
 								{
-									"catalogId": "3e2d537a-3b2a-476d-804b-9ab4c4556cbf",
-									"price": 50.00,
-									"quantity": 5.0
+									"catalogId": "002a95ff-00b1-48ee-98ce-6469a076d201",
+									"quantity": 1,
+									"priceOverride": 50
 								}
-							],
-							"amountOverride": 1000.00,
-							"notes": "This is intentionally overpriced"
+							]
 						}
 						""");
-
-		mockMvc.perform(putReq)
+		
+		mockMvc.perform(postReq)
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.items[0].catalogItem.id").value("002a95ff-00b1-48ee-98ce-6469a076d201"))
-			.andExpect(jsonPath("$.items[0].price").value(50.00))
-			.andExpect(jsonPath("$.items[0].quantity").value(1.0))
-			.andExpect(jsonPath("$.items[1].catalogItem.id").value("3e2d537a-3b2a-476d-804b-9ab4c4556cbf"))
-			.andExpect(jsonPath("$.items[1].price").value(50.00))
-			.andExpect(jsonPath("$.items[1].quantity").value(5.0))
-			.andExpect(jsonPath("$.amountOverride").value(1000.0))
-			.andExpect(jsonPath("$.notes").value("This is intentionally overpriced"));
+			.andExpect(jsonPath("$.items[0].priceOverride").doesNotExist())
+			.andExpect(jsonPath("$.items[1].priceOverride").value(50));
+	}
+
+	private String generateNote(int number) {
+		return String.format("BillingController_Create_ShowsInList %d", number);
 	}
 	
 	@Test
 	void BillingController_Create_ShowsInList() throws Exception {
-		mockMvc.perform(post("/billing")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content("""
+		for (int i = 0; i < 100; i++) {
+			mockMvc.perform(post("/billing")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(String.format("""
 						{
 							"items": [],
-							"amountOverride": null,
-							"notes": "BillingController_Create_ShowsInList 1"
+							"notes": "%s"
 						}
-						"""));
-		
-		mockMvc.perform(post("/billing")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content("""
-						{
-							"items": [],
-							"amountOverride": null,
-							"notes": "BillingController_Create_ShowsInList 2"
-						}
-						"""));
-		
-		mockMvc.perform(post("/billing")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content("""
-						{
-							"items": [],
-							"amountOverride": null,
-							"notes": "BillingController_Create_ShowsInList 3"
-						}
-						"""));
-		
-		mockMvc.perform(get("/billing"))
-			.andExpect(jsonPath("$[?(@.notes=='BillingController_Create_ShowsInList 1')]").exists())
-			.andExpect(jsonPath("$[?(@.notes=='BillingController_Create_ShowsInList 2')]").exists())
-			.andExpect(jsonPath("$[?(@.notes=='BillingController_Create_ShowsInList 3')]").exists());
+						""", generateNote(i))));
+		}
+
+		var result = mockMvc.perform(get("/billing?pageNo=0&itemCount=500"));
+
+		for (int i = 0; i < 100; i++) {
+			var path = String.format("$[?(@.notes=='%s')]", generateNote(i));
+			result.andExpect(jsonPath(path).exists());
+		}
 	}
 }

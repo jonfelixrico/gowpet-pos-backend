@@ -24,22 +24,25 @@ import lombok.NoArgsConstructor;
 public class BillingItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	protected String id;
+	private String id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)
-	protected CatalogItem catalogItem;
+	private CatalogItem catalogItem;
 	
 	@Column(nullable = false)
-	protected Double price;
+	private Double price;
+	
+	private Double priceOverride;
+	private String notes;
 	
 	@Column(nullable = false)
-	protected Double quantity;
+	private Double quantity;
 	
 	@Column(nullable = false)
-	protected Integer itemNo;
+	private Integer itemNo;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
-	protected Billing billing;
+	private Billing billing;
 }

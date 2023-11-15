@@ -8,19 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.ErrorResponse;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.gowpet.pos.billing.service.Billing;
 import com.gowpet.pos.billing.service.BillingItem;
 import com.gowpet.pos.billing.service.BillingService;
+import com.gowpet.pos.billing.service.BillingService.BillingInput;
+import com.gowpet.pos.billing.service.BillingService.BillingItemInput;
+import com.gowpet.pos.catalog.CatalogItemService;
 import com.gowpet.pos.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -29,15 +24,17 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RequestMapping("/billing")
 @SecurityRequirement(name = "bearerAuth")
 public class BillingController {
-	private BillingService billingSvc;
-	private UserService userSvc;
+	private final BillingService billingSvc;
+	private final UserService userSvc;
+	private final CatalogItemService itemSvc;
 	
-	BillingController(BillingService billingSvc, UserService userSvc) {
+	BillingController(BillingService billingSvc, UserService userSvc, CatalogItemService itemSvc) {
 		this.billingSvc = billingSvc;
 		this.userSvc = userSvc;
+		this.itemSvc = itemSvc;
 	}
-	
-	private BillingRespDto.BillingItemRespDto convertBillingItemToDto(BillingItem item) {
+
+	private BillingRespDto.BillingItemRespDto convertItemToDto(BillingItem item) {
 		var catalogItem = BillingRespDto.CatalogItem.builder()
 				.name(item.getCatalogItem().getName())
 				.id(item.getCatalogItem().getId())
@@ -47,53 +44,61 @@ public class BillingController {
 				.price(item.getPrice())
 				.quantity(item.getQuantity())
 				.catalogItem(catalogItem)
+				.priceOverride(item.getPriceOverride())
+				.notes(item.getNotes())
 				.build();
 	}
 	
-	private BillingRespDto convertBillingToDto(Billing billing) {
+	private BillingRespDto convertToDto(Billing billing) {
 		var items = billing.getItems().stream()
-				.map(this::convertBillingItemToDto)
+				.map(this::convertItemToDto)
 				.toList();
 		
 		return BillingRespDto.builder()
 				.id(billing.getId())
-				.amountOverride(billing.getAmountOverride())
 				.notes(billing.getNotes())
 				.items(items)
+				.serialNo(billing.getSerialNo())
 				.build();
 				
 	}
 
 	@GetMapping("/{id}")
 	BillingRespDto getBilling(@PathVariable String id) {
-		return convertBillingToDto(billingSvc.get(id));
+		return convertToDto(billingSvc.get(id));
 	}
 	
 	@GetMapping
-	List<BillingRespDto> listBilling() {
-		return billingSvc.list().stream()
-				.map(this::convertBillingToDto)
+	ResponseEntity<List<BillingRespDto>> listBilling(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "30") Integer itemCount) {
+		var page = billingSvc.list(pageNo, itemCount);
+		return ResponseEntity.ok()
+				.header("X-Total-Count", String.valueOf(page.getTotalPages()))
+				.body(page.stream().map(this::convertToDto).toList());
+	}
+	
+	private BillingInput convertFromDto(BillingReqDto dto) {
+		var inputItems = dto.getItems()
+				.stream()
+				.map(item -> BillingItemInput.builder()
+						.catalogId(item.getCatalogId())
+						.quantity(item.getQuantity())
+						.price(itemSvc.get(item.getCatalogId()).getPrice())
+						.priceOverride(item.getPriceOverride())
+						.notes(item.getNotes())
+						.build())
 				.toList();
+		
+		return BillingInput.builder()
+				.notes(dto.getNotes())
+				.items(inputItems)
+				.build();
 	}
 	
 	@PostMapping
 	BillingRespDto createBilling(@RequestBody BillingReqDto newBilling,
 			@AuthenticationPrincipal UserDetails user) {
-		var created =  billingSvc.create(newBilling, userSvc.findByUsername(user.getUsername()));
-		return convertBillingToDto(created);
-	}
-	
-	@DeleteMapping("/{id}")
-	void deleteBilling(@PathVariable String id, @AuthenticationPrincipal UserDetails user) {
-		billingSvc.delete(id, userSvc.findByUsername(user.getUsername()));
-	}
-	
-	@PutMapping("/{id}")
-	BillingRespDto updateBilling(@PathVariable String id, 
-			@AuthenticationPrincipal UserDetails user, 
-			@RequestBody BillingReqDto toUpdate) {
-		var updated = billingSvc.update(id, toUpdate, userSvc.findByUsername(user.getUsername()));
-		return convertBillingToDto(updated);
+		var created =  billingSvc.create(convertFromDto(newBilling), userSvc.findByUsername(user.getUsername()));
+		return convertToDto(created);
 	}
 	
 	@ExceptionHandler(NoSuchElementException.class)

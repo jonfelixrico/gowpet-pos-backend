@@ -5,17 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.gowpet.pos.catalog.CatalogItemService;
 import com.gowpet.pos.user.service.User;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Service
 public class BillingService {
-	private BillingRepository billingRepo;
-	private CatalogItemService catalogSvc;
+	private final BillingRepository billingRepo;
+	private final CatalogItemService catalogSvc;
 
 	BillingService(BillingRepository billingRepo, CatalogItemService catalogSvc) {
 		this.billingRepo = billingRepo;
@@ -28,68 +33,36 @@ public class BillingService {
 			throw new NoSuchElementException();
 		}
 		
-		var record = result.get();
-		if (record.getRecordStatus() != null && record.getRecordStatus().equals(RecordStatus.DELETED)) {
-			throw new NoSuchElementException();
-		}
-		
 		return result.get();
 	}
-	
-	public List<Billing> list() {
-		// TODO implement pagination
-		return billingRepo.findAll(BillingSpecifications.isNotDeleted());
+
+	public Page<Billing> list(int pageNo, int itemCount) {
+		return billingRepo.findAll(PageRequest.of(pageNo, itemCount));
 	}
-	
-	private BillingItem billingItemHelper (BillingItemInput item, int itemNo) {
-		return BillingItem.builder()
-				.catalogItem(catalogSvc.get(item.getCatalogId()))
-				.price(item.getPrice())
-				.quantity(item.getQuantity())
-				.itemNo(itemNo)
-				.build();
+
+	/**
+	 * This generates the next serial no based on the max serial no in the billing table.
+	 * Please see {@link Billing#serialNo} for more info about why we're doing this instead of letting
+	 * JPA take care of it.
+	 */
+	private Long getNextId() {
+		var withMaxId = billingRepo.findTopByOrderBySerialNoDesc();
+		var maxId = withMaxId.isEmpty() ? 0 : withMaxId.get().getSerialNo();
+		return maxId + 1;
 	}
-	
+
 	public Billing create(BillingInput newBilling, User author) {
 		var now = Instant.now();
+
 		var toSaveToDb = Billing.builder()
 				.items(extractItems(newBilling))
-				.amountOverride(newBilling.getAmountOverride())
 				.notes(newBilling.getNotes())
 				.createDt(now)
 				.createBy(author)
-				.updateCtr(0)
-				.updateBy(author)
-				.updateDt(now)
+				.serialNo(getNextId())
 				.build();
 		
 		return billingRepo.save(toSaveToDb);
-	}
-	
-	public void delete(String id, User deleteBy) {
-		var record = get(id);
-		var builder = record.toBuilder()
-			.updateCtr(record.getUpdateCtr() + 1)
-			.updateDt(Instant.now())
-			.updateBy(deleteBy)
-			.recordStatus(RecordStatus.DELETED);
-		
-		billingRepo.save(builder.build());
-	}
-	
-	public Billing update(String id, BillingInput toUpdate, User updateBy) {
-		var fromDb = get(id);
-		
-		var withUpdatedFields = fromDb.toBuilder()
-				.items(extractItems(toUpdate))
-				.amountOverride(toUpdate.getAmountOverride())
-				.notes(toUpdate.getNotes())
-				.updateCtr(fromDb.getUpdateCtr() + 1)
-				.updateBy(updateBy)
-				.updateDt(Instant.now())
-				.build();
-		
-		return billingRepo.save(withUpdatedFields);
 	}
 	
 	private List<BillingItem> extractItems(BillingInput input) {
@@ -103,17 +76,33 @@ public class BillingService {
 		return mappedItems;
 	}
 	
-	@Getter
-	public static abstract class BillingInput {
-		protected List<? extends BillingItemInput> items;
-		protected Double amountOverride;
-		protected String notes;
+	private BillingItem billingItemHelper (BillingItemInput item, int itemNo) {
+		return BillingItem.builder()
+				.catalogItem(catalogSvc.get(item.getCatalogId()))
+				.price(item.getPrice())
+				.quantity(item.getQuantity())
+				.itemNo(itemNo)
+				.priceOverride(item.getPriceOverride())
+				.notes(item.getNotes())
+				.build();
 	}
 	
 	@Getter
-	public static abstract class BillingItemInput {
-		protected String catalogId;
-		protected Double quantity;
-		protected Double price;
+	@Builder
+	@AllArgsConstructor(access = AccessLevel.PACKAGE)
+	public static class BillingInput {
+		private List<? extends BillingItemInput> items;
+		private String notes;
+	}
+	
+	@Getter
+	@Builder
+	@AllArgsConstructor(access = AccessLevel.PACKAGE)
+	public static class BillingItemInput {
+		private String catalogId;
+		private Double quantity;
+		private Double price;
+		private Double priceOverride;
+		private String notes;
 	}
 }
