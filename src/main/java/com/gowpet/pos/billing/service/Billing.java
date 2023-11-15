@@ -32,7 +32,7 @@ import lombok.NoArgsConstructor;
 public class Billing {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	protected String id;
+	private String id;
 	
 	@Builder.Default
 	@OneToMany(orphanRemoval = true,
@@ -40,17 +40,17 @@ public class Billing {
 		targetEntity = BillingItem.class,
 		cascade = CascadeType.ALL)
 	@JoinColumn
-	protected List<BillingItem> items = new ArrayList<>();
+	private List<BillingItem> items = new ArrayList<>();
 	
 	
-	protected String notes;
+	private String notes;
 	
 	@Column(nullable = false)
-	protected Instant createDt;
+	private Instant createDt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)
-	protected User createBy;
+	private User createBy;
 
 	@GeneratedValue
 	private Long serialNo;
