@@ -39,19 +39,27 @@ public class BillingService {
 	public Page<Billing> list(int pageNo, int itemCount) {
 		return billingRepo.findAll(PageRequest.of(pageNo, itemCount));
 	}
-	
-	public Billing create(BillingInput newBilling, User author) {
-		var now = Instant.now();
 
+	/**
+	 * This generates the next serial no based on the max serial no in the billing table.
+	 * Please see {@link Billing#serialNo} for more info about why we're doing this instead of letting
+	 * JPA take care of it.
+	 */
+	private Long getNextId() {
 		var withMaxId = billingRepo.findTopByOrderBySerialNoDesc();
 		var maxId = withMaxId.isEmpty() ? 0 : withMaxId.get().getSerialNo();
+		return maxId + 1;
+	}
+
+	public Billing create(BillingInput newBilling, User author) {
+		var now = Instant.now();
 
 		var toSaveToDb = Billing.builder()
 				.items(extractItems(newBilling))
 				.notes(newBilling.getNotes())
 				.createDt(now)
 				.createBy(author)
-				.serialNo(maxId + 1)
+				.serialNo(getNextId())
 				.build();
 		
 		return billingRepo.save(toSaveToDb);
