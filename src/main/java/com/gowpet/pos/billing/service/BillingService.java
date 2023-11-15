@@ -42,11 +42,16 @@ public class BillingService {
 	
 	public Billing create(BillingInput newBilling, User author) {
 		var now = Instant.now();
+
+		var withMaxId = billingRepo.findTopByOrderBySerialNoDesc();
+		var maxId = withMaxId.isEmpty() ? 0 : withMaxId.get().getSerialNo();
+
 		var toSaveToDb = Billing.builder()
 				.items(extractItems(newBilling))
 				.notes(newBilling.getNotes())
 				.createDt(now)
 				.createBy(author)
+				.serialNo(maxId + 1)
 				.build();
 		
 		return billingRepo.save(toSaveToDb);
