@@ -32,7 +32,12 @@ class BillingIT {
 	}
 	
 	@Test
-	// This needs to go first because we're also checking the serialNo here
+	/*
+		This needs to go first because we're also checking the serialNo here
+
+		serialNo is sensitive to the max serialNo in the billing table, so we
+		need to make sure that this is the first insert statement in the test suite.
+	 */
 	@Order(1)
 	void BillingController_CreateBasic_ReturnsCreatedValue() throws Exception {
 		var postReq = post("/billing")
