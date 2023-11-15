@@ -34,7 +34,7 @@ public class BillingController {
 		this.itemSvc = itemSvc;
 	}
 
-	private BillingRespDto.BillingItemRespDto convertBillingItemToDto(BillingItem item) {
+	private BillingRespDto.BillingItemRespDto convertItemToDto(BillingItem item) {
 		var catalogItem = BillingRespDto.CatalogItem.builder()
 				.name(item.getCatalogItem().getName())
 				.id(item.getCatalogItem().getId())
@@ -49,9 +49,9 @@ public class BillingController {
 				.build();
 	}
 	
-	private BillingRespDto convertBillingToDto(Billing billing) {
+	private BillingRespDto convertToDto(Billing billing) {
 		var items = billing.getItems().stream()
-				.map(this::convertBillingItemToDto)
+				.map(this::convertItemToDto)
 				.toList();
 		
 		return BillingRespDto.builder()
@@ -64,7 +64,7 @@ public class BillingController {
 
 	@GetMapping("/{id}")
 	BillingRespDto getBilling(@PathVariable String id) {
-		return convertBillingToDto(billingSvc.get(id));
+		return convertToDto(billingSvc.get(id));
 	}
 	
 	@GetMapping
@@ -72,10 +72,10 @@ public class BillingController {
 		var page = billingSvc.list(pageNo, itemCount);
 		return ResponseEntity.ok()
 				.header("X-Total-Count", String.valueOf(page.getTotalPages()))
-				.body(page.stream().map(this::convertBillingToDto).toList());
+				.body(page.stream().map(this::convertToDto).toList());
 	}
 	
-	private BillingInput dtoToInput(BillingReqDto dto) {
+	private BillingInput convertFromDto(BillingReqDto dto) {
 		var inputItems = dto.getItems()
 				.stream()
 				.map(item -> BillingItemInput.builder()
@@ -96,8 +96,8 @@ public class BillingController {
 	@PostMapping
 	BillingRespDto createBilling(@RequestBody BillingReqDto newBilling,
 			@AuthenticationPrincipal UserDetails user) {
-		var created =  billingSvc.create(dtoToInput(newBilling), userSvc.findByUsername(user.getUsername()));
-		return convertBillingToDto(created);
+		var created =  billingSvc.create(convertFromDto(newBilling), userSvc.findByUsername(user.getUsername()));
+		return convertToDto(created);
 	}
 	
 	@ExceptionHandler(NoSuchElementException.class)
