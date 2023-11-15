@@ -58,6 +58,7 @@ public class BillingController {
 				.id(billing.getId())
 				.notes(billing.getNotes())
 				.items(items)
+				.serialNo(billing.getSerialNo())
 				.build();
 				
 	}
