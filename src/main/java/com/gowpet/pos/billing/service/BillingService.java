@@ -79,18 +79,18 @@ public class BillingService {
 	@Builder
 	@AllArgsConstructor(access = AccessLevel.PACKAGE)
 	public static class BillingInput {
-		protected List<? extends BillingItemInput> items;
-		protected String notes;
+		private List<? extends BillingItemInput> items;
+		private String notes;
 	}
 	
 	@Getter
 	@Builder
 	@AllArgsConstructor(access = AccessLevel.PACKAGE)
 	public static class BillingItemInput {
-		protected String catalogId;
-		protected Double quantity;
-		protected Double price;
-		protected Double priceOverride;
-		protected String notes;
+		private String catalogId;
+		private Double quantity;
+		private Double price;
+		private Double priceOverride;
+		private String notes;
 	}
 }
