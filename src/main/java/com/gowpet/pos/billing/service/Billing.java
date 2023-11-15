@@ -52,6 +52,12 @@ public class Billing {
 	@JoinColumn(nullable = false)
 	private User createBy;
 
+	/**
+	 * Originally we want this to be auto-generated via GenerateValue, but it turns out
+	 * GenerateValue only works with primary keys. Please see <a href="https://stackoverflow.com/a/536102">this stackoverflow answer</a>
+	 * for more info.
+	 * This means that we need to generate the value ourselves.
+	 */
 	@Column(nullable = false)
 	private Long serialNo;
 }
