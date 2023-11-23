@@ -8,3 +8,5 @@ INSERT INTO billing_item (id, catalog_item_id, price, quantity, item_no, billing
 
 INSERT INTO billing (id, serial_no, create_dt, create_by_id, notes) VALUES ('60977e99-e1a6-4973-963c-8df377a2b171', 2, TIMESTAMP '2023-10-25 23:35:53+08:00', 'd41df560-b4a1-4fae-8dca-1ce95e3833e4', 'Billing 2');
 INSERT INTO billing_item (id, catalog_item_id, price, quantity, item_no, billing_id) VALUES ('6de11535-76f4-413b-aa9a-028ca0891291', '3e2d537a-3b2a-476d-804b-9ab4c4556cbf', 40, 2, 0, '60977e99-e1a6-4973-963c-8df377a2b171');
+
+INSERT INTO receipt_data (id, header, address, contact_no, sns_link, sns_message) VALUES ('DEFAULT', 'test header', 'test address', '0920-123-4567', 'http://test-sns', 'follow us');
