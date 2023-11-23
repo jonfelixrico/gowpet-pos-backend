@@ -14,11 +14,12 @@ public class ReceiptDataController {
 
     @GetMapping
     ReceiptDataDto getReceiptData() {
-        var data = receiptSvc.getReceiptData();
-        if (data == null) {
+        var result = receiptSvc.getReceiptData();
+        if (result.isEmpty()) {
             return null;
         }
 
+        var data = result.get();
         return ReceiptDataDto
                 .builder()
                 .header(data.getHeader())
