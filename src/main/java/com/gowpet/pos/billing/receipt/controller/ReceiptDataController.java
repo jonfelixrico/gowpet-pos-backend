@@ -42,4 +42,9 @@ public class ReceiptDataController {
                 .snsMessage(data.getSnsMessage())
                 .build());
     }
+
+    @DeleteMapping
+    void clearReceiptData() {
+        receiptSvc.clearReceiptData();
+    }
 }
