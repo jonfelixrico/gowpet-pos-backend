@@ -42,6 +42,10 @@ public class ReceiptDataService {
         return repo.save(receiptData);
     }
 
+    public void clearReceiptData() {
+        repo.deleteById(ReceiptData.DEFAULT_ID);
+    }
+
     @Builder
     @Getter
     @AllArgsConstructor(access = AccessLevel.PACKAGE)
