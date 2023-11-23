@@ -31,12 +31,7 @@ public class ReceiptDataController {
     }
 
     @PutMapping
-    ReceiptDataDto setReceiptData(@RequestBody ReceiptDataDto data) {
+    void setReceiptData(@RequestBody ReceiptDataDto data) {
         receiptSvc.setReceiptData(data);
-        /*
-            No point to use the returned value of setReceiptData since we'll
-            return the same data anyway, as long as the saving was successful.
-         */
-        return data;
     }
 }
