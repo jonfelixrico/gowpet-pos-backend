@@ -1,9 +1,7 @@
 package com.gowpet.pos.billing.receipt;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -44,9 +42,10 @@ public class ReceiptDataService {
         return repo.save(receiptData);
     }
 
-    @Builder
+    @SuperBuilder
     @Getter
     @AllArgsConstructor(access = AccessLevel.PACKAGE)
+    @NoArgsConstructor
     public static class ReceiptDataInput {
         private String header;
         private String[] address;
