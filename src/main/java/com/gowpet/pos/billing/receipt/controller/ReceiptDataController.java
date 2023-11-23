@@ -15,6 +15,9 @@ public class ReceiptDataController {
     @GetMapping
     ReceiptDataDto getReceiptData() {
         var data = receiptSvc.getReceiptData();
+        if (data == null) {
+            return null;
+        }
 
         return ReceiptDataDto
                 .builder()
