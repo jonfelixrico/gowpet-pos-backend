@@ -73,4 +73,13 @@ public class ReceiptDataIT {
                 .andExpect(jsonPath("$.snsLink").value("http://test-sns"))
                 .andExpect(jsonPath("$.snsMessage").value("follow us"));
     }
+
+    @Test
+    @Order(3)
+    void ReceiptData_Clear_ReturnsNull() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/billing/receipt"))
+                .andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/billing/receipt"))
+                .andExpect(jsonPath("$").doesNotExist());
+    }
 }
