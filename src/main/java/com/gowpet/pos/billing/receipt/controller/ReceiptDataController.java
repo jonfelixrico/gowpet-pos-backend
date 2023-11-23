@@ -34,6 +34,12 @@ public class ReceiptDataController {
 
     @PutMapping
     void setReceiptData(@RequestBody ReceiptDataDto data) {
-        receiptSvc.setReceiptData(data);
+        receiptSvc.setReceiptData(ReceiptDataService.ReceiptDataInput.builder()
+                .header(data.getHeader())
+                .address(data.getAddress())
+                .contactNo(data.getContactNo())
+                .snsLink(data.getSnsLink())
+                .snsMessage(data.getSnsMessage())
+                .build());
     }
 }

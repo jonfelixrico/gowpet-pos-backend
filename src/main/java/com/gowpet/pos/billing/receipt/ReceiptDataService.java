@@ -43,10 +43,9 @@ public class ReceiptDataService {
         return repo.save(receiptData);
     }
 
-    @SuperBuilder
+    @Builder
     @Getter
     @AllArgsConstructor(access = AccessLevel.PACKAGE)
-    @NoArgsConstructor
     public static class ReceiptDataInput {
         private String header;
         private String address;

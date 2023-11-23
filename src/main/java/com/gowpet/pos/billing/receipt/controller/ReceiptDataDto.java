@@ -1,9 +1,20 @@
 package com.gowpet.pos.billing.receipt.controller;
 
 import com.gowpet.pos.billing.receipt.ReceiptDataService;
-import lombok.experimental.SuperBuilder;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
-@SuperBuilder
-public class ReceiptDataDto extends ReceiptDataService.ReceiptDataInput {
+@Builder
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@Getter
+public class ReceiptDataDto {
+    private String header;
+    private String address;
+    private String contactNo;
+
+    private String snsLink;
+    private String snsMessage;
 }
 
