@@ -47,7 +47,7 @@ public class ReceiptDataService {
     @Builder
     @Getter
     @AllArgsConstructor(access = AccessLevel.PACKAGE)
-    static class ReceiptDataInput {
+    public static class ReceiptDataInput {
         private String header;
         private String[] address;
         private String contactNo;
