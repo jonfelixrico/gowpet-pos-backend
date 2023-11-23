@@ -21,7 +21,7 @@ public class ReceiptData {
     /**
      * We're using a string array since addresses can have multiple lines
      */
-    private String[] address;
+    private String address;
     private String contactNo;
 
     /**

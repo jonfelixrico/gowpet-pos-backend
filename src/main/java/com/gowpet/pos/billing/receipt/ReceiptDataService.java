@@ -49,7 +49,7 @@ public class ReceiptDataService {
     @NoArgsConstructor
     public static class ReceiptDataInput {
         private String header;
-        private String[] address;
+        private String address;
         private String contactNo;
 
         private String snsLink;
