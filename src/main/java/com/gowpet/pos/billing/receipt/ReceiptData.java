@@ -5,7 +5,7 @@ import jakarta.persistence.Id;
 import lombok.*;
 
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Entity
