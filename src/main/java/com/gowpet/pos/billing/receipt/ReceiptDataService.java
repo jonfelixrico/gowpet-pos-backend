@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ReceiptDataService {
     final private ReceiptDataRepository repo;
@@ -16,18 +18,17 @@ public class ReceiptDataService {
      *
      * @return Null if there is no receipt data yet.
      */
-    public ReceiptData getReceiptData() {
-        var result = repo.findById(ReceiptData.DEFAULT_ID);
-        return result.orElse(null);
+    public Optional<ReceiptData> getReceiptData() {
+        return repo.findById(ReceiptData.DEFAULT_ID);
     }
 
     public ReceiptData.ReceiptDataBuilder getBuilder() {
         var result = getReceiptData();
-        if (result == null) {
+        if (result.isEmpty()) {
             return ReceiptData.builder().id(ReceiptData.DEFAULT_ID);
         }
 
-        return result.toBuilder();
+        return result.get().toBuilder();
     }
 
     public ReceiptData setReceiptData(ReceiptDataInput input) {
