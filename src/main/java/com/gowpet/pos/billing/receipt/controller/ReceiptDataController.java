@@ -1,10 +1,12 @@
 package com.gowpet.pos.billing.receipt.controller;
 
 import com.gowpet.pos.billing.receipt.ReceiptDataService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/billing/receipt")
+@SecurityRequirement(name = "bearerAuth")
 public class ReceiptDataController {
     private final ReceiptDataService receiptSvc;
 
