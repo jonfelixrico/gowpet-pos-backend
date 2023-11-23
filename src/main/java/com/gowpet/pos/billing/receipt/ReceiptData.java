@@ -33,4 +33,6 @@ public class ReceiptData {
      * Social media site message
      */
     private String snsMessage;
+
+    static String DEFAULT_ID = "DEFAULT";
 }
