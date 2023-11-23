@@ -1,7 +1,6 @@
 package com.gowpet.pos.billing.receipt;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
