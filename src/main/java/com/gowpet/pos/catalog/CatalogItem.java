@@ -20,7 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.With;
 
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder(toBuilder = true)
 @Getter
@@ -39,7 +39,12 @@ public class CatalogItem {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private ItemType type;
-	
+
+	@Column(unique = true)
+	private String code;
+
+	@Enumerated(EnumType.STRING)
+	private ItemCodeType codeType;
 
 	@ManyToOne
 	@JoinColumn(nullable=false)

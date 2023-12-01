@@ -40,4 +40,16 @@ class CatalogItemSpecifications {
 			return root.get(CatalogItem_.type).in(types);
 		};
 	}
+
+	static Specification<CatalogItem> id(String id) {
+		return (root, query, builder) -> {
+			return builder.equal(root.get(CatalogItem_.id), id);
+		};
+	}
+
+	static Specification<CatalogItem> code(String code) {
+		return (root, query, builder) -> {
+			return builder.equal(root.get(CatalogItem_.code), code);
+		};
+	}
 }
