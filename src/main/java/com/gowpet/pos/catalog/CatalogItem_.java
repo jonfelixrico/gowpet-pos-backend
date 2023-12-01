@@ -13,6 +13,6 @@ class CatalogItem_ {
 	static volatile SingularAttribute<CatalogItem, ItemStatus> status;
 	static volatile SingularAttribute<CatalogItem, String> name;
 	static volatile SingularAttribute<CatalogItem, ItemType> type;
-
 	static volatile SingularAttribute<CatalogItem, String> id;
+	static volatile SingularAttribute<CatalogItem, String> code;
 }

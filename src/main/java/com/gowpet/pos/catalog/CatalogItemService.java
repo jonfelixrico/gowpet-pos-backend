@@ -71,7 +71,7 @@ public class CatalogItemService {
 	}
 
 	public Optional<CatalogItem> findByCode(String code) {
-		return repo.findByCode(code);
+		return repo.findOne(Specification.allOf(CatalogItemSpecifications.code(code), CatalogItemSpecifications.isNotDeleted()));
 	}
 	
 	public Page<CatalogItem> list(int pageNo, int itemCount, List<ItemType> type, String pattern) {
