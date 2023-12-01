@@ -104,16 +104,22 @@ class CatalogIT {
 				.content("""
 						{
 							"name": "updated name",
-							"price": 69.00
+							"price": 69.00,
+							"code": "some-custom-code-here",
+							"codeType": "CUSTOM"
 						}
 						""");
 		mockMvc.perform(updateReq)
 			.andExpect(status().isOk());
 		
 		mockMvc.perform(get(String.format("/catalog/product/%s", id)))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.name").value("updated name"))
-			.andExpect(jsonPath("$.price").value(69.00));
+				.andExpectAll(
+						status().isOk(),
+						jsonPath("$.name").value("updated name"),
+						jsonPath("$.price").value(69.00),
+						jsonPath("$.code").value("some-custom-code-here"),
+						jsonPath("$.codeType").value("CUSTOM")
+				);
 	}
 	
 	@Test
