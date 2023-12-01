@@ -25,7 +25,7 @@ public class CatalogItemService {
 		this.repo = repo;
 	}
 	
-	public CatalogItem create(InsertFields item, User user) {
+	public CatalogItem create(CatalogItemFields item, User user) {
 		var now = Instant.now();
 		var preparedForSaving = CatalogItem.builder()
 				.name(item.getName())
@@ -52,7 +52,7 @@ public class CatalogItemService {
 		repo.save(modifiedRecord);
 	}
 	
-	public CatalogItem update(String id, UpdateableFields toUpdate, User updateBy) {
+	public CatalogItem update(String id, CatalogItemFields toUpdate, User updateBy) {
 		var record = get(id);
 		var modifiedRecord = record.toBuilder()
 				.updateDt(Instant.now())
@@ -93,17 +93,10 @@ public class CatalogItemService {
 		return StreamSupport.stream(results.spliterator(), false)
 				.collect(Collectors.toList());
 	}
-	
+
 	@Getter
-	@AllArgsConstructor(access = AccessLevel.PACKAGE)
-	public static class UpdateableFields {
-		private String name;
-		private Double price;
-	}
-	
-	@Getter
-	@AllArgsConstructor(access = AccessLevel.PACKAGE)
-	public static class InsertFields {
+	@AllArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class CatalogItemFields {
 		private String name;
 		private Double price;
 	}

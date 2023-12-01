@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gowpet.pos.catalog.CatalogItem;
 import com.gowpet.pos.catalog.CatalogItemService;
-import com.gowpet.pos.catalog.CatalogItemService.InsertFields;
-import com.gowpet.pos.catalog.CatalogItemService.UpdateableFields;
 import com.gowpet.pos.catalog.ItemType;
 import com.gowpet.pos.user.service.UserService;
 
@@ -53,7 +51,7 @@ class CatalogController {
 	}
 	
 	@PostMapping("/product")
-	Map<String, String> createGoods(@RequestBody InsertFields item, @AuthenticationPrincipal UserDetails user) {
+	Map<String, String> createGoods(@RequestBody CatalogItemService.CatalogItemFields item, @AuthenticationPrincipal UserDetails user) {
 		var created = catalogSvc.create(item, userSvc.findByUsername(user.getUsername()));
 		
 		return Map.of("id", created.getId());
@@ -70,7 +68,7 @@ class CatalogController {
 	}
 	
 	@PutMapping("/product/{id}")
-	CatalogItem updateProduct(@PathVariable String id, @RequestBody UpdateableFields item, @AuthenticationPrincipal UserDetails user) {
+	CatalogItem updateProduct(@PathVariable String id, @RequestBody CatalogItemService.CatalogItemFields item, @AuthenticationPrincipal UserDetails user) {
 		return catalogSvc.update(id, item, userSvc.findByUsername(user.getUsername()));
 	}
 	
