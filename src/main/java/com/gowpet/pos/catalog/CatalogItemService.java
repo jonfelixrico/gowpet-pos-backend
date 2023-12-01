@@ -22,21 +22,24 @@ public class CatalogItemService {
 	CatalogItemService(CatalogItemRepository repo) {
 		this.repo = repo;
 	}
+
+
+	private void addFieldsToBuilder(CatalogItemFields fields, CatalogItem.CatalogItemBuilder builder) {
+		builder.name(fields.getName()).price(fields.getPrice());
+	}
 	
 	public CatalogItem create(CatalogItemFields item, User user) {
 		var now = Instant.now();
-		var preparedForSaving = CatalogItem.builder()
-				.name(item.getName())
-				.price(item.getPrice())
+		var builder = CatalogItem.builder()
 				.type(ItemType.PRODUCT)
 				.createDt(now)
 				.createBy(user)
 				.updateDt(now)
 				.updateBy(user)
-				.updateCtr(0)
-				.build();
-		
-		return repo.save(preparedForSaving);
+				.updateCtr(0);
+		addFieldsToBuilder(item, builder);
+
+		return repo.save(builder.build());
 	}
 	
 	public void delete(String id, User deleteBy) {
@@ -52,14 +55,13 @@ public class CatalogItemService {
 	
 	public CatalogItem update(String id, CatalogItemFields toUpdate, User updateBy) {
 		var record = get(id);
-		var modifiedRecord = record.toBuilder()
+		var builder = record.toBuilder()
 				.updateDt(Instant.now())
 				.updateBy(updateBy)
-				.updateCtr(record.getUpdateCtr() + 1)
-				.price(toUpdate.getPrice())
-				.name(toUpdate.getName())
-				.build();
-		return repo.save(modifiedRecord);
+				.updateCtr(record.getUpdateCtr() + 1);
+		addFieldsToBuilder(toUpdate, builder);
+		
+		return repo.save(builder.build());
 	}
 	
 	public CatalogItem get(String id) {
