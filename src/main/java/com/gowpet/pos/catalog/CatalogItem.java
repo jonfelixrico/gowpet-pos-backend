@@ -20,7 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.With;
 
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Builder(toBuilder = true)
 @Getter
