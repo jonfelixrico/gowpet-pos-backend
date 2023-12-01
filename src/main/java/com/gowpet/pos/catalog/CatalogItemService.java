@@ -22,7 +22,7 @@ import lombok.Getter;
 public class CatalogItemService {
 	private CatalogItemRepository repo;
 	
-	public CatalogItemService(CatalogItemRepository repo) {
+	CatalogItemService(CatalogItemRepository repo) {
 		this.repo = repo;
 	}
 	
