@@ -155,6 +155,19 @@ class CatalogIT {
 		List<String> ids = JsonPath.read(body, "$[*].id");
 		assertEquals(50, ids.size());
 	}
+
+	@Test
+	void CatalogController_GetById_ReturnsItem() throws Exception {
+		mockMvc.perform(get("/catalog/product/fad8575f-259c-4626-9e76-89eb55b3ab8b"))
+				.andExpectAll(
+						status().isOk(),
+						// These values are from the DB (import.sql)
+						jsonPath("$.name").value("Nova Cheddar 78g"),
+						jsonPath("$.price").value(42),
+						jsonPath("$.code").value("4800016663505"),
+						jsonPath("$.codeType").value("UPC")
+				);
+	}
 	
 	@Test
 	void CatalogController_SearchWithoutQueryParams_DoesNotThrow() throws Exception {
