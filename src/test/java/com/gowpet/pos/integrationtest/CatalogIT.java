@@ -178,6 +178,18 @@ class CatalogIT {
 						jsonPath("$.id").value("fad8575f-259c-4626-9e76-89eb55b3ab8b")
 				);
 	}
+
+	@Test
+	void CatalogController_GetByWrongId_Throws404() throws Exception {
+		mockMvc.perform(get("/catalog/product/some-wrong-id-here"))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	void CatalogController_GetByWrongCode_Throws404() throws Exception {
+		mockMvc.perform(get("/catalog/code/1235678"))
+				.andExpect(status().isNotFound());
+	}
 	
 	@Test
 	void CatalogController_SearchWithoutQueryParams_DoesNotThrow() throws Exception {
