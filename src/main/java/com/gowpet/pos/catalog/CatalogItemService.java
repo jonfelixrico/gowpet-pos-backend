@@ -25,7 +25,7 @@ public class CatalogItemService {
 
 
 	private void addFieldsToBuilder(CatalogItemFields fields, CatalogItem.CatalogItemBuilder builder) {
-		builder.name(fields.getName()).price(fields.getPrice());
+		builder.name(fields.getName()).price(fields.getPrice()).code(fields.getCode()).codeType(fields.getCodeType());
 	}
 	
 	public CatalogItem create(CatalogItemFields item, User user) {
@@ -60,7 +60,7 @@ public class CatalogItemService {
 				.updateBy(updateBy)
 				.updateCtr(record.getUpdateCtr() + 1);
 		addFieldsToBuilder(toUpdate, builder);
-		
+
 		return repo.save(builder.build());
 	}
 	
@@ -92,5 +92,8 @@ public class CatalogItemService {
 	public static class CatalogItemFields {
 		private String name;
 		private Double price;
+
+		private String code;
+		private ItemCodeType codeType;
 	}
 }
