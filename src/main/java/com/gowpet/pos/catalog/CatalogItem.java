@@ -40,7 +40,9 @@ public class CatalogItem {
 	@Enumerated(EnumType.STRING)
 	private ItemType type;
 
+	@Column(unique = true)
 	private String code;
+
 	@Enumerated(EnumType.STRING)
 	private ItemCodeType codeType;
 
