@@ -61,7 +61,7 @@ class CatalogController {
 	
 	@GetMapping("/product/{id}")
 	CatalogItem getProduct(@PathVariable String id) {
-		return catalogSvc.findById(id);
+		return catalogSvc.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 	}
 	
 	@DeleteMapping("/product/{id}")
@@ -76,12 +76,7 @@ class CatalogController {
 
 	@GetMapping("/code/{code}")
 	CatalogItem getProductByCode(@PathVariable @NotBlank String code) {
-		var result = catalogSvc.findByCode(code);
-		if (result.isEmpty()) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-		}
-
-		return result.get();
+		return catalogSvc.findByCode(code).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 	}
 
 	@ExceptionHandler(NoSuchElementException.class)

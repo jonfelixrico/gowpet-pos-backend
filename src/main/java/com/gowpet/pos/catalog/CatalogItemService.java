@@ -2,7 +2,6 @@ package com.gowpet.pos.catalog;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -44,7 +43,8 @@ public class CatalogItemService {
 	}
 	
 	public void delete(String id, User deleteBy) {
-		var record = findById(id);
+		var record = findById(id).orElseThrow();
+
 		var modifiedRecord = record.toBuilder()
 				.status(ItemStatus.DELETED)
 				.updateDt(Instant.now())
@@ -55,7 +55,8 @@ public class CatalogItemService {
 	}
 	
 	public CatalogItem update(String id, CatalogItemFields toUpdate, User updateBy) {
-		var record = findById(id);
+		var record = findById(id).orElseThrow();
+
 		var builder = record.toBuilder()
 				.updateDt(Instant.now())
 				.updateBy(updateBy)
@@ -65,19 +66,8 @@ public class CatalogItemService {
 		return repo.save(builder.build());
 	}
 	
-	public CatalogItem findById(String id) {
-		var result = repo.findById(id);
-		if (result.isEmpty()) {
-			// TODO consider using a custom error
-			throw new NoSuchElementException();
-		}
-		
-		var record = result.get();
-		if (record.getStatus() != null && record.getStatus().equals(ItemStatus.DELETED)) {
-			throw new NoSuchElementException();
-		}
-		
-		return result.get();
+	public Optional<CatalogItem> findById(String id) {
+		return repo.findOne(Specification.allOf(CatalogItemSpecifications.isNotDeleted(), CatalogItemSpecifications.id(id)));
 	}
 
 	public Optional<CatalogItem> findByCode(String code) {
