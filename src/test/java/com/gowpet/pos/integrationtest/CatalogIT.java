@@ -168,6 +168,16 @@ class CatalogIT {
 						jsonPath("$.codeType").value("UPC")
 				);
 	}
+
+	@Test
+	void CatalogController_GetByCode_ReturnsItem() throws Exception {
+		mockMvc.perform(get("/catalog/code/4800016663505"))
+				.andExpectAll(
+						status().isOk(),
+						// Theis value is from the DB (import.sql)
+						jsonPath("$.id").value("fad8575f-259c-4626-9e76-89eb55b3ab8b")
+				);
+	}
 	
 	@Test
 	void CatalogController_SearchWithoutQueryParams_DoesNotThrow() throws Exception {
