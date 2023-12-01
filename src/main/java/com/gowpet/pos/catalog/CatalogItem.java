@@ -39,7 +39,9 @@ public class CatalogItem {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private ItemType type;
-	
+
+	private String code;
+	private String codeType;
 
 	@ManyToOne
 	@JoinColumn(nullable=false)
