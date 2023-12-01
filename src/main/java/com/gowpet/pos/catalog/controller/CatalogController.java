@@ -31,8 +31,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RequestMapping("/catalog")
 @SecurityRequirement(name = "bearerAuth")
 class CatalogController {
-	private CatalogItemService catalogSvc;
-	private UserService userSvc;
+	private final CatalogItemService catalogSvc;
+	private final UserService userSvc;
 
 	CatalogController(CatalogItemService catalogSvc, UserService userSvc) {
 		this.catalogSvc = catalogSvc;
