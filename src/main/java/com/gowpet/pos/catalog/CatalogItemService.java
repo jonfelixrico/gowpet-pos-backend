@@ -1,7 +1,6 @@
 package com.gowpet.pos.catalog;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -81,13 +80,6 @@ public class CatalogItemService {
 	}
 	
 	public Page<CatalogItem> list(int pageNo, int itemCount, List<ItemType> type, String pattern) {
-		List<Specification<CatalogItem>> andConditions = new ArrayList<>();
-		andConditions.add(CatalogItemSpecifications.isNotDeleted());
-		
-		if (pattern == null || pattern.isEmpty()) {
-			andConditions.add(CatalogItemSpecifications.nameLike(pattern));
-		}
-		
 		return repo.findAll(Specification.allOf(
 					CatalogItemSpecifications.isNotDeleted(),
 					CatalogItemSpecifications.nameLike(pattern),
