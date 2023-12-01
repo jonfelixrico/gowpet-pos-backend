@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,6 +27,7 @@ import com.gowpet.pos.catalog.ItemType;
 import com.gowpet.pos.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/catalog")
@@ -71,7 +73,17 @@ class CatalogController {
 	CatalogItem updateProduct(@PathVariable String id, @RequestBody CatalogItemService.CatalogItemFields item, @AuthenticationPrincipal UserDetails user) {
 		return catalogSvc.update(id, item, userSvc.findByUsername(user.getUsername()));
 	}
-	
+
+	@GetMapping("/code/{code}")
+	CatalogItem getProductByCode(@PathVariable @NotBlank String code) {
+		var result = catalogSvc.findByCode(code);
+		if (result.isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+
+		return result.get();
+	}
+
 	@ExceptionHandler(NoSuchElementException.class)
 	ResponseEntity<ErrorResponse> handleNoSuchElement() {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
