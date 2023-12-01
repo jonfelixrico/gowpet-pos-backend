@@ -1,6 +1,6 @@
 INSERT INTO app_user (id, username, password) VALUES ('d41df560-b4a1-4fae-8dca-1ce95e3833e4', 'user1', '$2a$10$/FxVvhPKTm0FkuXi6h8NxekWKNTiawo4Szd1YgDLy3T0xCEgSTXEK');
 
-INSERT INTO catalog_item (id, name, price, type, create_by_id, create_dt, update_by_id, update_dt, update_ctr) VALUES ('3e2d537a-3b2a-476d-804b-9ab4c4556cbf', 'Piattos Cheese 85g', 40.00, 'PRODUCT', 'd41df560-b4a1-4fae-8dca-1ce95e3833e4', TIMESTAMP '2023-10-24 23:35:53+08:00', 'd41df560-b4a1-4fae-8dca-1ce95e3833e4', TIMESTAMP '2023-10-24 23:35:53+08:00', 0);
+INSERT INTO catalog_item (id, name, price, type, create_by_id, create_dt, update_by_id, update_dt, update_ctr, code, code_type) VALUES ('3e2d537a-3b2a-476d-804b-9ab4c4556cbf', 'Piattos Cheese 85g', 40.00, 'PRODUCT', 'd41df560-b4a1-4fae-8dca-1ce95e3833e4', TIMESTAMP '2023-10-24 23:35:53+08:00', 'd41df560-b4a1-4fae-8dca-1ce95e3833e4', TIMESTAMP '2023-10-24 23:35:53+08:00', 0, '4800016644504', 'UPC');
 INSERT INTO catalog_item (id, name, price, type, create_by_id, create_dt, update_by_id, update_dt, update_ctr) VALUES ('002a95ff-00b1-48ee-98ce-6469a076d201', 'Miggos Nacho Cheese 105g', 30.00, 'PRODUCT', 'd41df560-b4a1-4fae-8dca-1ce95e3833e4', TIMESTAMP '2023-10-24 23:35:53+08:00', 'd41df560-b4a1-4fae-8dca-1ce95e3833e4', TIMESTAMP '2023-10-24 23:35:53+08:00', 0);
 
 INSERT INTO billing (id, serial_no, create_dt, create_by_id, notes) VALUES ('f03c072c-fb7b-490b-9ab9-2f092b99c755', 1, TIMESTAMP '2023-10-25 23:35:53+08:00', 'd41df560-b4a1-4fae-8dca-1ce95e3833e4', 'Billing 1');
