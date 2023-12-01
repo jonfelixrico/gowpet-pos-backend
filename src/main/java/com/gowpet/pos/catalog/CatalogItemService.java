@@ -3,8 +3,6 @@ package com.gowpet.pos.catalog;
 import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +17,7 @@ import lombok.Getter;
 
 @Service
 public class CatalogItemService {
-	private CatalogItemRepository repo;
+	private final CatalogItemRepository repo;
 	
 	CatalogItemService(CatalogItemRepository repo) {
 		this.repo = repo;
@@ -85,13 +83,6 @@ public class CatalogItemService {
 					CatalogItemSpecifications.nameLike(pattern),
 					CatalogItemSpecifications.typeIncludes(type)
 				), PageRequest.of(pageNo, itemCount));
-	}
-
-	// TODO make this paginated
-	public List<CatalogItem> listAll() {
-		var results = repo.findAll(CatalogItemSpecifications.isNotDeleted());
-		return StreamSupport.stream(results.spliterator(), false)
-				.collect(Collectors.toList());
 	}
 
 	@Getter
