@@ -44,7 +44,7 @@ public class CatalogItemService {
 	}
 	
 	public void delete(String id, User deleteBy) {
-		var record = get(id);
+		var record = findById(id);
 		var modifiedRecord = record.toBuilder()
 				.status(ItemStatus.DELETED)
 				.updateDt(Instant.now())
@@ -55,7 +55,7 @@ public class CatalogItemService {
 	}
 	
 	public CatalogItem update(String id, CatalogItemFields toUpdate, User updateBy) {
-		var record = get(id);
+		var record = findById(id);
 		var builder = record.toBuilder()
 				.updateDt(Instant.now())
 				.updateBy(updateBy)
@@ -65,7 +65,7 @@ public class CatalogItemService {
 		return repo.save(builder.build());
 	}
 	
-	public CatalogItem get(String id) {
+	public CatalogItem findById(String id) {
 		var result = repo.findById(id);
 		if (result.isEmpty()) {
 			// TODO consider using a custom error

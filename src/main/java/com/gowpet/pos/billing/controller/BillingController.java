@@ -82,7 +82,7 @@ public class BillingController {
 				.map(item -> BillingItemInput.builder()
 						.catalogId(item.getCatalogId())
 						.quantity(item.getQuantity())
-						.price(itemSvc.get(item.getCatalogId()).getPrice())
+						.price(itemSvc.findById(item.getCatalogId()).getPrice())
 						.priceOverride(item.getPriceOverride())
 						.notes(item.getNotes())
 						.build())

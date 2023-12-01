@@ -61,7 +61,7 @@ class CatalogController {
 	
 	@GetMapping("/product/{id}")
 	CatalogItem getProduct(@PathVariable String id) {
-		return catalogSvc.get(id);
+		return catalogSvc.findById(id);
 	}
 	
 	@DeleteMapping("/product/{id}")
