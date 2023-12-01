@@ -58,7 +58,7 @@ class CatalogIT {
 	}
 	
 	@Test
-	void CatalogController_DeleteItem_Succeeds () throws Exception {
+	void CatalogController_CreateAndDeleteItem_NotFoundViaId () throws Exception {
 		var createReq = post("/catalog/product")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
@@ -73,14 +73,36 @@ class CatalogIT {
 			.getResponse().getContentAsString();
 		var id = JsonPath.read(serializedJson, "$.id");
 		
-		mockMvc.perform(get(String.format("/catalog/product/%s", id)))
-			.andExpect(status().isOk());
-		
 		mockMvc.perform(delete(String.format("/catalog/product/%s", id)))
 			.andExpect(status().isOk());
 		
 		mockMvc.perform(get(String.format("/catalog/product/%s", id)))
 			.andExpect(status().isNotFound());
+	}
+
+	@Test
+	void CatalogController_CreateAndDeleteItem_NotFoundViaCode () throws Exception {
+		var createReq = post("/catalog/product")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("""
+						{
+							"name": "product to delete",
+							"price": 69.00,
+							"code": "code-to-delete",
+							"codeType": "CUSTOM"
+						}
+						""");
+		var serializedJson = mockMvc.perform(createReq)
+				.andExpect(status().isOk())
+				.andReturn()
+				.getResponse().getContentAsString();
+		var id = JsonPath.read(serializedJson, "$.id");
+
+		mockMvc.perform(delete(String.format("/catalog/product/%s", id)))
+				.andExpect(status().isOk());
+
+		mockMvc.perform(get("/catalog/code/code-to-delete"))
+				.andExpect(status().isNotFound());
 	}
 	
 	@Test
