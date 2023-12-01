@@ -3,6 +3,7 @@ package com.gowpet.pos.catalog;
 import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -77,6 +78,10 @@ public class CatalogItemService {
 		}
 		
 		return result.get();
+	}
+
+	public Optional<CatalogItem> findByCode(String code) {
+		return repo.findByCode(code);
 	}
 	
 	public Page<CatalogItem> list(int pageNo, int itemCount, List<ItemType> type, String pattern) {
