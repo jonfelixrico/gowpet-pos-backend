@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,19 +23,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gowpet.pos.catalog.CatalogItem;
 import com.gowpet.pos.catalog.CatalogItemService;
-import com.gowpet.pos.catalog.CatalogItemService.InsertFields;
-import com.gowpet.pos.catalog.CatalogItemService.UpdateableFields;
 import com.gowpet.pos.catalog.ItemType;
 import com.gowpet.pos.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/catalog")
 @SecurityRequirement(name = "bearerAuth")
 class CatalogController {
-	private CatalogItemService catalogSvc;
-	private UserService userSvc;
+	private final CatalogItemService catalogSvc;
+	private final UserService userSvc;
 
 	CatalogController(CatalogItemService catalogSvc, UserService userSvc) {
 		this.catalogSvc = catalogSvc;
@@ -53,15 +53,15 @@ class CatalogController {
 	}
 	
 	@PostMapping("/product")
-	Map<String, String> createGoods(@RequestBody InsertFields item, @AuthenticationPrincipal UserDetails user) {
+	Map<String, String> createGoods(@RequestBody CatalogItemService.CatalogItemFields item, @AuthenticationPrincipal UserDetails user) {
 		var created = catalogSvc.create(item, userSvc.findByUsername(user.getUsername()));
 		
 		return Map.of("id", created.getId());
 	}
 	
 	@GetMapping("/product/{id}")
-	CatalogItem getProduct(@PathVariable String id) {
-		return catalogSvc.get(id);
+	ResponseEntity<CatalogItem> getProduct(@PathVariable String id) {
+		return ResponseEntity.of(catalogSvc.findById(id));
 	}
 	
 	@DeleteMapping("/product/{id}")
@@ -70,10 +70,15 @@ class CatalogController {
 	}
 	
 	@PutMapping("/product/{id}")
-	CatalogItem updateProduct(@PathVariable String id, @RequestBody UpdateableFields item, @AuthenticationPrincipal UserDetails user) {
+	CatalogItem updateProduct(@PathVariable String id, @RequestBody CatalogItemService.CatalogItemFields item, @AuthenticationPrincipal UserDetails user) {
 		return catalogSvc.update(id, item, userSvc.findByUsername(user.getUsername()));
 	}
-	
+
+	@GetMapping("/code/{code}")
+	ResponseEntity<CatalogItem> getProductByCode(@PathVariable @NotBlank String code) {
+		return ResponseEntity.of(catalogSvc.findByCode(code));
+	}
+
 	@ExceptionHandler(NoSuchElementException.class)
 	ResponseEntity<ErrorResponse> handleNoSuchElement() {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

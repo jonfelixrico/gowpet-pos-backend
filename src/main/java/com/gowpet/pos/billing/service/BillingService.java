@@ -78,7 +78,7 @@ public class BillingService {
 	
 	private BillingItem billingItemHelper (BillingItemInput item, int itemNo) {
 		return BillingItem.builder()
-				.catalogItem(catalogSvc.get(item.getCatalogId()))
+				.catalogItem(catalogSvc.findById(item.getCatalogId()).orElseThrow())
 				.price(item.getPrice())
 				.quantity(item.getQuantity())
 				.itemNo(itemNo)

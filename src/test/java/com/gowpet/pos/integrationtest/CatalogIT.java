@@ -58,7 +58,7 @@ class CatalogIT {
 	}
 	
 	@Test
-	void CatalogController_DeleteItem_Succeeds () throws Exception {
+	void CatalogController_CreateAndDeleteItem_NotFoundViaId () throws Exception {
 		var createReq = post("/catalog/product")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("""
@@ -73,14 +73,36 @@ class CatalogIT {
 			.getResponse().getContentAsString();
 		var id = JsonPath.read(serializedJson, "$.id");
 		
-		mockMvc.perform(get(String.format("/catalog/product/%s", id)))
-			.andExpect(status().isOk());
-		
 		mockMvc.perform(delete(String.format("/catalog/product/%s", id)))
 			.andExpect(status().isOk());
 		
 		mockMvc.perform(get(String.format("/catalog/product/%s", id)))
 			.andExpect(status().isNotFound());
+	}
+
+	@Test
+	void CatalogController_CreateAndDeleteItem_NotFoundViaCode () throws Exception {
+		var createReq = post("/catalog/product")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("""
+						{
+							"name": "product to delete",
+							"price": 69.00,
+							"code": "code-to-delete",
+							"codeType": "CUSTOM"
+						}
+						""");
+		var serializedJson = mockMvc.perform(createReq)
+				.andExpect(status().isOk())
+				.andReturn()
+				.getResponse().getContentAsString();
+		var id = JsonPath.read(serializedJson, "$.id");
+
+		mockMvc.perform(delete(String.format("/catalog/product/%s", id)))
+				.andExpect(status().isOk());
+
+		mockMvc.perform(get("/catalog/code/code-to-delete"))
+				.andExpect(status().isNotFound());
 	}
 	
 	@Test
@@ -104,16 +126,22 @@ class CatalogIT {
 				.content("""
 						{
 							"name": "updated name",
-							"price": 69.00
+							"price": 69.00,
+							"code": "some-custom-code-here",
+							"codeType": "CUSTOM"
 						}
 						""");
 		mockMvc.perform(updateReq)
 			.andExpect(status().isOk());
 		
 		mockMvc.perform(get(String.format("/catalog/product/%s", id)))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.name").value("updated name"))
-			.andExpect(jsonPath("$.price").value(69.00));
+				.andExpectAll(
+						status().isOk(),
+						jsonPath("$.name").value("updated name"),
+						jsonPath("$.price").value(69.00),
+						jsonPath("$.code").value("some-custom-code-here"),
+						jsonPath("$.codeType").value("CUSTOM")
+				);
 	}
 	
 	@Test
@@ -148,6 +176,41 @@ class CatalogIT {
 		
 		List<String> ids = JsonPath.read(body, "$[*].id");
 		assertEquals(50, ids.size());
+	}
+
+	@Test
+	void CatalogController_GetById_ReturnsItem() throws Exception {
+		mockMvc.perform(get("/catalog/product/fad8575f-259c-4626-9e76-89eb55b3ab8b"))
+				.andExpectAll(
+						status().isOk(),
+						// These values are from the DB (import.sql)
+						jsonPath("$.name").value("Nova Cheddar 78g"),
+						jsonPath("$.price").value(42),
+						jsonPath("$.code").value("4800016663505"),
+						jsonPath("$.codeType").value("UPC")
+				);
+	}
+
+	@Test
+	void CatalogController_GetByCode_ReturnsItem() throws Exception {
+		mockMvc.perform(get("/catalog/code/4800016663505"))
+				.andExpectAll(
+						status().isOk(),
+						// Theis value is from the DB (import.sql)
+						jsonPath("$.id").value("fad8575f-259c-4626-9e76-89eb55b3ab8b")
+				);
+	}
+
+	@Test
+	void CatalogController_GetByWrongId_Throws404() throws Exception {
+		mockMvc.perform(get("/catalog/product/some-wrong-id-here"))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	void CatalogController_GetByWrongCode_Throws404() throws Exception {
+		mockMvc.perform(get("/catalog/code/1235678"))
+				.andExpect(status().isNotFound());
 	}
 	
 	@Test
