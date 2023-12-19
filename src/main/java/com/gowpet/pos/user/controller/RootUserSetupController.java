@@ -1,9 +1,7 @@
 package com.gowpet.pos.user.controller;
 
 import com.gowpet.pos.user.service.RootUserSetupService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -17,7 +15,12 @@ public class RootUserSetupController {
     }
 
     @GetMapping
-    Map<String, Boolean> hasRootUserBeenSetUp () {
+    Map<String, Boolean> hasRootUserBeenSetUp() {
         return Map.of("hasRootUserBeenSetUp", rootUserSetupSvc.hasRootUserBeenSetUp());
+    }
+
+    @PostMapping
+    void createRootUser(@RequestBody CreateUserDto rootUser) {
+        rootUserSetupSvc.createRootUser(rootUser.getUsername(), rootUser.getPassword());
     }
 }
