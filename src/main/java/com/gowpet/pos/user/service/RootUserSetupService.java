@@ -13,4 +13,10 @@ public class RootUserSetupService {
     public boolean hasRootUserBeenSetUp () {
         return userRepo.count() > 0;
     }
+
+    public void createRootUser(String username, String password) {
+        userRepo.save(User.builder()
+                .username(username)
+                .password(password).build());
+    }
 }
