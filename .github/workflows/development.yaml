@@ -21,7 +21,7 @@ jobs:
         uses: ./.github/actions/prepare-maven
 
       - name: Run tests
-        run: mvn verify
+        run: mvn -B verify --file pom.xml
         shell: bash
 
   
