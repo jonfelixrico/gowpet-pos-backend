@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                 		.requestMatchers("/authenticate").permitAll()
                 		.requestMatchers("/authenticate/*").permitAll()
-                		.requestMatchers("/debug/**").permitAll()
+                		.requestMatchers("/user/root").permitAll()
                 		.requestMatchers("/openapi").permitAll()
                 		.requestMatchers("/openapi/**").permitAll()
                 		.requestMatchers(HttpMethod.POST, "/user").permitAll() // TODO remove once registration flow is done
