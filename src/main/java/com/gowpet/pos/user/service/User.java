@@ -23,8 +23,4 @@ public class User { // TODO turn this into an abstract; decouple from DB
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private User createBy;
-
-    public Boolean isRoot() {
-        return getCreateBy() == null;
-    }
 }
