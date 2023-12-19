@@ -15,6 +15,10 @@ public class RootUserSetupService {
     }
 
     public void createRootUser(String username, String password) {
+        if (hasRootUserBeenSetUp()) {
+            throw new IllegalStateException();
+        }
+
         userRepo.save(User.builder()
                 .username(username)
                 .password(password).build());
