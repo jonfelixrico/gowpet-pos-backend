@@ -1,6 +1,7 @@
 package com.gowpet.pos.user.controller;
 
 import com.gowpet.pos.user.service.RootUserSetupService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -9,9 +10,11 @@ import java.util.Map;
 @RequestMapping("/user/root")
 public class RootUserSetupController {
     private final RootUserSetupService rootUserSetupSvc;
+    private final PasswordEncoder pwEncoder;
 
-    RootUserSetupController(RootUserSetupService rootUserSetupSvc) {
+    RootUserSetupController(RootUserSetupService rootUserSetupSvc, PasswordEncoder pwEncoder) {
         this.rootUserSetupSvc = rootUserSetupSvc;
+        this.pwEncoder = pwEncoder;
     }
 
     @GetMapping
@@ -21,6 +24,12 @@ public class RootUserSetupController {
 
     @PostMapping
     void createRootUser(@RequestBody CreateUserDto rootUser) {
-        rootUserSetupSvc.createRootUser(rootUser.getUsername(), rootUser.getPassword());
+        rootUserSetupSvc.createRootUser(
+                rootUser.getUsername(),
+                /*
+                    We can't do password encoding at the service level since injecting PwEncoder from the
+                    service level will cause a circular dependency error. The app won't start.
+                 */
+                pwEncoder.encode(rootUser.getPassword()));
     }
 }
