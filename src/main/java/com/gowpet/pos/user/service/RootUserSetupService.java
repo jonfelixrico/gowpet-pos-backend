@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class RootUserSetupService {
     private final UserRepository userRepo;
+    private final UserService userSvc;
 
-    RootUserSetupService(UserRepository userRepo) {
+    RootUserSetupService(UserRepository userRepo, UserService userSvc) {
         this.userRepo = userRepo;
+        this.userSvc = userSvc;
     }
 
     public boolean hasRootUserBeenSetUp() {
@@ -19,8 +21,6 @@ public class RootUserSetupService {
             throw new IllegalStateException();
         }
 
-        userRepo.save(User.builder()
-                .username(username)
-                .password(password).build());
+        userSvc.create(username, password);
     }
 }
