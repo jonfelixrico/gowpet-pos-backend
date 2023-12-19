@@ -27,6 +27,6 @@ class RootUserSetupIT {
                                 	"password": "password"
                                 }
                                 """))
-                .andExpect(status().is5xxServerError());
+                .andExpect(status().isConflict());
     }
 }
