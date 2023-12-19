@@ -24,7 +24,7 @@ public class User { // TODO turn this into an abstract; decouple from DB
     @JoinColumn
     private User createBy;
 
-    private Boolean isRoot() {
+    public Boolean isRoot() {
         return getCreateBy() == null;
     }
 }
