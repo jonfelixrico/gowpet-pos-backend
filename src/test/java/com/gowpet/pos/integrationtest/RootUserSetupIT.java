@@ -18,7 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 /*
     This is to just prevent the DML that populates the test DB from running.
-    In this test suite, we want to simulate a newly-deployed environment.
+    In this test suite, we want to simulate a newly-deployed environment where the DB
+    doesn't have any data.
  */
 @TestPropertySource(properties = {"spring.jpa.hibernate.ddl-auto=update"})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
