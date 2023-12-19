@@ -21,6 +21,9 @@ spring:
   sql:
     init:
       mode: always
+      # We're not using data.sql or import.sql so that we have a way of opting out of seeding the DB
+      # in the tests by overriding data-locations with blank.sql
+      data-locations: classpath:test-data.sql
 app:
   rsa:
     public: |
