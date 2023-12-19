@@ -1,5 +1,6 @@
 package com.gowpet.pos.debug.user.controller;
 
+import com.gowpet.pos.user.controller.CreateUserDto;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
