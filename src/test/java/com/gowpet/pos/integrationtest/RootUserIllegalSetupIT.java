@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -13,22 +12,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-/*
-    This is to just prevent the DML that populates the test DB from running.
-    In this test suite, we want to simulate a newly-deployed environment.
- */
-@TestPropertySource(properties = {"spring.jpa.hibernate.ddl-auto=update"})
-class RootUserSetupIT {
+class RootUserIllegalSetupIT {
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     void RootUserSetUp_CreateRoot_ThrowsError() throws Exception {
-        mockMvc.perform(post("/user/root").contentType(MediaType.APPLICATION_JSON).content("""
-                {
-                	"username": "new-root",
-                	"password": "password"
-                }
-                """)).andExpect(status().isOk());
+        mockMvc.perform(post("/user/root")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                	"username": "new-root",
+                                	"password": "password"
+                                }
+                                """))
+                .andExpect(status().isConflict());
     }
 }
