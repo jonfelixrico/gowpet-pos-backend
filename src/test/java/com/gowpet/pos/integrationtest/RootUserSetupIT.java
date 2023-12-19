@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     In this test suite, we want to simulate a newly-deployed environment where the DB
     doesn't have any data.
  */
-@TestPropertySource(properties = {"spring.jpa.hibernate.ddl-auto=update"})
+@TestPropertySource(properties = "spring.jpa.hibernate.ddl-auto=update", locations="classpath:application.yml")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class RootUserSetupIT {
     @Autowired
