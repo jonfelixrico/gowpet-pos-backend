@@ -19,8 +19,4 @@ public class User { // TODO turn this into an abstract; decouple from DB
 
     @Column(nullable = false)
     private String password;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private User createBy;
 }
