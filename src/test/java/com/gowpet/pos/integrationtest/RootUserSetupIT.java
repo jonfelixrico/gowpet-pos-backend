@@ -1,13 +1,13 @@
 package com.gowpet.pos.integrationtest;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -21,7 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     In this test suite, we want to simulate a newly-deployed environment where the DB
     doesn't have any data.
  */
-@TestPropertySource(properties = "spring.jpa.hibernate.ddl-auto=update", locations="classpath:application.yml")
+@TestPropertySource(properties = "spring.sql.init.data-locations=classpath:blank.sql", locations="classpath:application.yml")
+@ContextConfiguration
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class RootUserSetupIT {
     @Autowired
