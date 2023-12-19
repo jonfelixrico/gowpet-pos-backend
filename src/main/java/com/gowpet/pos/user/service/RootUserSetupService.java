@@ -10,7 +10,7 @@ public class RootUserSetupService {
         this.userRepo = userRepo;
     }
 
-    public boolean hasRootUserBeenSetUp () {
+    public boolean hasRootUserBeenSetUp() {
         return userRepo.count() > 0;
     }
 
