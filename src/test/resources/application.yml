@@ -22,7 +22,6 @@ spring:
     init:
       mode: always
 app:
-  debug: true
   rsa:
     public: |
       -----BEGIN PUBLIC KEY-----

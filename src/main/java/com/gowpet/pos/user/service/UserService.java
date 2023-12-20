@@ -10,8 +10,8 @@ public class UserService {
 		this.repo = repo;
 	}
 
-	public User create(String username, String password) {
-		return repo.save(User.builder()
+	public void create(String username, String password) {
+		repo.save(User.builder()
 				.username(username)
 				.password(password).build());
 	}
