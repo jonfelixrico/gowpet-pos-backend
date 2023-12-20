@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     doesn't have any data.
  */
 @TestPropertySource(properties = "spring.sql.init.data-locations=classpath:blank.sql", locations="classpath:application.yml")
-@ContextConfiguration
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class RootUserSetupIT {
     @Autowired
