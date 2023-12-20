@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     In this test suite, we want to simulate a newly-deployed environment where the DB
     doesn't have any data.
  */
-@TestPropertySource(properties = "spring.sql.init.data-locations=classpath:blank.sql", locations="classpath:application.yml")
+@TestPropertySource("classpath:no-seed.application.yml")
 @ContextConfiguration
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class RootUserSetupIT {
