@@ -18,9 +18,12 @@ spring:
         format_sql: true
     defer-datasource-initialization: true
     show-sql: true
+
   sql:
     init:
       mode: always
+      # This will result in an empty database
+      data-locations: classpath:blank.sql
 app:
   rsa:
     public: |
