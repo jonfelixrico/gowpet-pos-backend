@@ -183,7 +183,7 @@ class CatalogIT {
 		mockMvc.perform(get("/catalog/product/fad8575f-259c-4626-9e76-89eb55b3ab8b"))
 				.andExpectAll(
 						status().isOk(),
-						// These values are from the DB (test-data.sql)
+						// These values are from the DB (import.sql)
 						jsonPath("$.name").value("Nova Cheddar 78g"),
 						jsonPath("$.price").value(42),
 						jsonPath("$.code").value("4800016663505"),
@@ -196,7 +196,7 @@ class CatalogIT {
 		mockMvc.perform(get("/catalog/code/4800016663505"))
 				.andExpectAll(
 						status().isOk(),
-						// Theis value is from the DB (test-data.sql)
+						// Theis value is from the DB (import.sql)
 						jsonPath("$.id").value("fad8575f-259c-4626-9e76-89eb55b3ab8b")
 				);
 	}
