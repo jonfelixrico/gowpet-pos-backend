@@ -1,7 +1,7 @@
 # Reference: https://medium.com/@paulkunda/setting-up-h2-for-testing-in-spring-boot-245d3a98e405
 
-# application-default.yml is used instead of application.yml because the application-default.yml from the main resources
-# folder seem to be overriding the application.yml here
+# If this was named application.yml instead of application-default.yml, what seems to happen is that the application-default.yml from
+# main/resources overrides what we've set here. As a workaround, we're having this file named as application-default.yml too.
 
 spring:
   datasource:
