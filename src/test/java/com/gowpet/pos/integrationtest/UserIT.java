@@ -22,13 +22,22 @@ public class UserIT {
 
     @Test
     void UserController_CreateUser_Succeeds() throws Exception {
-        var username = String.format("user-%d", Instant.now().toEpochMilli());
-        var request = post("/user").contentType(MediaType.APPLICATION_JSON).content(String.format("""
+        var body = String.format("""
                     {
-                        "username": "%s",
+                        "username": "user-%s",
                         "password": "password"
                     }
-                """, username));
-        mockMvc.perform(request).andExpect(status().isOk());
+                """, Instant.now().toEpochMilli());
+        mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).content(body))
+                .andExpect(status().isOk());
+
+        /*
+         * The intention here is to verify that the user really has been created.
+         *
+         * TODO once we get a /user/{id} route, use that instead of authenticating again.
+         *  Checking the existence using /authenticate is weird since there is a current "session" with user1
+         */
+        mockMvc.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).content(body))
+                .andExpect(status().isOk());
     }
 }
