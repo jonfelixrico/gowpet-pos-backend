@@ -1,5 +1,8 @@
 # Reference: https://medium.com/@paulkunda/setting-up-h2-for-testing-in-spring-boot-245d3a98e405
 
+# application-default.yml is used instead of application.yml because the application-default.yml from the main resources
+# folder seem to be overriding the application.yml here
+
 spring:
   datasource:
     driver-class-name: org.h2.Driver
