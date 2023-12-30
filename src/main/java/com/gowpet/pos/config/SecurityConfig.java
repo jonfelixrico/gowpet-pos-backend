@@ -19,6 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.gowpet.pos.auth.JwtAuthFilter;
 
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -35,13 +37,13 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { 
         return http
         		.csrf(csrf -> csrf.disable()) // TODO restore this someday
-                .authorizeHttpRequests(authz -> authz
-                		.requestMatchers("/authenticate").permitAll()
-                		.requestMatchers("/authenticate/*").permitAll()
-                		.requestMatchers("/user/root").permitAll()
-                		.requestMatchers("/openapi").permitAll()
-                		.requestMatchers("/openapi/**").permitAll()
-                		.requestMatchers(HttpMethod.POST, "/user").permitAll() // TODO remove once registration flow is done
+                .authorizeHttpRequests(auth -> auth
+                		.requestMatchers(antMatcher("/authenticate")).permitAll()
+                		.requestMatchers(antMatcher("/authenticate/*")).permitAll()
+                		.requestMatchers(antMatcher("/user/root")).permitAll()
+                		.requestMatchers(antMatcher("/openapi")).permitAll()
+                		.requestMatchers(antMatcher("/openapi/**")).permitAll()
+                		.requestMatchers(antMatcher(HttpMethod.POST, "/user")).permitAll() // TODO remove once registration flow is done
                         .anyRequest().authenticated())
                 .sessionManagement(smc -> smc.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()) 
