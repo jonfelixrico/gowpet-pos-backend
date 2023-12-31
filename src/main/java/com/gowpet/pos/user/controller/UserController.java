@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping
-    ResponseEntity<List<UserDto>> listUsers(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "30") Integer itemCount) {
+    ResponseEntity<List<UserDto>> listUsers(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "15") Integer itemCount) {
         var page = userSvc.list(pageNo, itemCount);
 
         return ResponseEntity.ok()
