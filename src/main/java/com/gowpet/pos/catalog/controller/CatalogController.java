@@ -1,15 +1,13 @@
 package com.gowpet.pos.catalog.controller;
 
+import com.gowpet.pos.auth.service.SessionService;
 import com.gowpet.pos.catalog.CatalogItem;
 import com.gowpet.pos.catalog.CatalogItemService;
 import com.gowpet.pos.catalog.ItemType;
-import com.gowpet.pos.user.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +20,12 @@ import java.util.NoSuchElementException;
 @SecurityRequirement(name = "bearerAuth")
 class CatalogController {
     private final CatalogItemService catalogSvc;
-    private final UserService userSvc;
+    private final SessionService sessionSvc;
 
-    CatalogController(CatalogItemService catalogSvc, UserService userSvc) {
+
+    CatalogController(CatalogItemService catalogSvc, SessionService sessionSvc) {
         this.catalogSvc = catalogSvc;
-        this.userSvc = userSvc;
+        this.sessionSvc = sessionSvc;
     }
 
     @GetMapping
@@ -41,8 +40,9 @@ class CatalogController {
     }
 
     @PostMapping("/product")
-    Map<String, String> createGoods(@RequestBody CatalogItemService.CatalogItemFields item, @AuthenticationPrincipal UserDetails user) {
-        var created = catalogSvc.create(item, userSvc.findByUsername(user.getUsername()).orElseThrow());
+    Map<String, String> createGoods(@RequestBody CatalogItemService.CatalogItemFields item) {
+        var sessionUser = sessionSvc.getSessionUser().orElseThrow();
+        var created = catalogSvc.create(item, sessionUser);
 
         return Map.of("id", created.getId());
     }
@@ -53,13 +53,15 @@ class CatalogController {
     }
 
     @DeleteMapping("/product/{id}")
-    void deleteProduct(@PathVariable String id, @AuthenticationPrincipal UserDetails user) {
-        catalogSvc.delete(id, userSvc.findByUsername(user.getUsername()).orElseThrow());
+    void deleteProduct(@PathVariable String id) {
+        var sessionUser = sessionSvc.getSessionUser().orElseThrow();
+        catalogSvc.delete(id, sessionUser);
     }
 
     @PutMapping("/product/{id}")
-    CatalogItem updateProduct(@PathVariable String id, @RequestBody CatalogItemService.CatalogItemFields item, @AuthenticationPrincipal UserDetails user) {
-        return catalogSvc.update(id, item, userSvc.findByUsername(user.getUsername()).orElseThrow());
+    CatalogItem updateProduct(@PathVariable String id, @RequestBody CatalogItemService.CatalogItemFields item) {
+        var sessionUser = sessionSvc.getSessionUser().orElseThrow();
+        return catalogSvc.update(id, item, sessionUser);
     }
 
     @GetMapping("/code/{code}")
