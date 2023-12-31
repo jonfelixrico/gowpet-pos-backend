@@ -1,8 +1,10 @@
 package com.gowpet.pos.user.service;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,5 +25,9 @@ public class UserService {
                 .build();
 
         repo.save(toSave);
+    }
+
+    public List<User> list(int pageNo, int size) {
+        return repo.findAll(PageRequest.of(pageNo, size)).toList();
     }
 }
