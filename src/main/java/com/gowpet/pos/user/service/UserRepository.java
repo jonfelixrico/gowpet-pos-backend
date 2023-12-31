@@ -2,6 +2,8 @@ package com.gowpet.pos.user.service;
 
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Optional;
+
 interface UserRepository extends CrudRepository<User, String> {
-    User findByUsername(String username);
+    Optional<User> findByUsername(String username);
 }

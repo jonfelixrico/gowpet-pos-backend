@@ -2,6 +2,8 @@ package com.gowpet.pos.user.service;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     private final UserRepository repo;
@@ -20,7 +22,7 @@ public class UserService {
         repo.save(toSave);
     }
 
-    public User findByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
         return repo.findByUsername(username);
     }
 }

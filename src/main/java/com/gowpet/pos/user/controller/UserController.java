@@ -25,7 +25,7 @@ public class UserController {
 
     @PostMapping
     void createUser(@RequestBody CreateUserDto newUser, @AuthenticationPrincipal UserDetails user) {
-        userSvc.create(newUser.getUsername(), pwEncoder.encode(newUser.getPassword()), userSvc.findByUsername(user.getUsername()));
+        userSvc.create(newUser.getUsername(), pwEncoder.encode(newUser.getPassword()), userSvc.findByUsername(user.getUsername()).orElseThrow());
         log.info("Created user {}", newUser.getUsername());
     }
 }
