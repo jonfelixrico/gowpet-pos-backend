@@ -1,17 +1,15 @@
 package com.gowpet.pos.billing.controller;
 
+import com.gowpet.pos.auth.service.SessionService;
 import com.gowpet.pos.billing.service.Billing;
 import com.gowpet.pos.billing.service.BillingItem;
 import com.gowpet.pos.billing.service.BillingService;
 import com.gowpet.pos.billing.service.BillingService.BillingInput;
 import com.gowpet.pos.billing.service.BillingService.BillingItemInput;
 import com.gowpet.pos.catalog.CatalogItemService;
-import com.gowpet.pos.user.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,13 +21,14 @@ import java.util.NoSuchElementException;
 @SecurityRequirement(name = "bearerAuth")
 public class BillingController {
     private final BillingService billingSvc;
-    private final UserService userSvc;
     private final CatalogItemService itemSvc;
 
-    BillingController(BillingService billingSvc, UserService userSvc, CatalogItemService itemSvc) {
+    private final SessionService sessionSvc;
+
+    BillingController(BillingService billingSvc, CatalogItemService itemSvc, SessionService sessionSvc) {
         this.billingSvc = billingSvc;
-        this.userSvc = userSvc;
         this.itemSvc = itemSvc;
+        this.sessionSvc = sessionSvc;
     }
 
     private BillingRespDto.BillingItemRespDto convertItemToDto(BillingItem item) {
@@ -93,9 +92,9 @@ public class BillingController {
     }
 
     @PostMapping
-    BillingRespDto createBilling(@RequestBody BillingReqDto newBilling,
-                                 @AuthenticationPrincipal UserDetails user) {
-        var created = billingSvc.create(convertFromDto(newBilling), userSvc.findByUsername(user.getUsername()).orElseThrow());
+    BillingRespDto createBilling(@RequestBody BillingReqDto newBilling) {
+        var sessionUser = sessionSvc.getSessionUser().orElseThrow();
+        var created = billingSvc.create(convertFromDto(newBilling), sessionUser);
         return convertToDto(created);
     }
 
