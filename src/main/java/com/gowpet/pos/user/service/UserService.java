@@ -24,8 +24,4 @@ public class UserService {
 
         repo.save(toSave);
     }
-
-    public Optional<User> findByUsername(String username) {
-        return repo.findByUsername(username);
-    }
 }
