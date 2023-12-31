@@ -1,9 +1,10 @@
 package com.gowpet.pos.user.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -25,7 +26,7 @@ public class UserService {
         repo.save(toSave);
     }
 
-    public Optional<User> findByUsername(String username) {
-        return repo.findByUsername(username);
+    public Page<User> list(int pageNo, int size) {
+        return repo.findAll(PageRequest.of(pageNo, size, Sort.by("username").ascending()));
     }
 }
