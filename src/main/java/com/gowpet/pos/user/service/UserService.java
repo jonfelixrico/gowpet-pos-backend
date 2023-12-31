@@ -2,6 +2,7 @@ package com.gowpet.pos.user.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,6 @@ public class UserService {
     }
 
     public Page<User> list(int pageNo, int size) {
-        return repo.findAll(PageRequest.of(pageNo, size));
+        return repo.findAll(PageRequest.of(pageNo, size, Sort.by("username").ascending()));
     }
 }
