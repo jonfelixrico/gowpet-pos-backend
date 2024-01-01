@@ -1,15 +1,3 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost/gowpet-pos
-    username: postgres
-    password: postgres
-  jpa:
-    hibernate:
-      ddl-auto: update
-  h2:
-    console:
-      enabled: false
-
 springdoc:
   swagger-ui:
     enabled: false
@@ -17,10 +5,8 @@ springdoc:
   api-docs:
     enabled: false
     path: /openapi
-
 server:
   port: 3005
-
 app:
   # OVERRIDE THESE ON PROD! These are here just to make setting up the dev environment convenient
   rsa:
