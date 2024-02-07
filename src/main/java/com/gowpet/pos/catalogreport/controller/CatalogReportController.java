@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/catalog/report")
 @SecurityRequirement(name = "bearerAuth")
-public class CatalogReportController {
+class CatalogReportController {
 }
