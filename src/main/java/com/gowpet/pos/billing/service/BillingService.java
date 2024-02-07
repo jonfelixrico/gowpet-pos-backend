@@ -22,9 +22,12 @@ public class BillingService {
 	private final BillingRepository billingRepo;
 	private final CatalogItemService catalogSvc;
 
-	BillingService(BillingRepository billingRepo, CatalogItemService catalogSvc) {
+	private final BillingItemRepository itemRepo;
+
+	BillingService(BillingRepository billingRepo, CatalogItemService catalogSvc, BillingItemRepository itemRepo) {
 		this.billingRepo = billingRepo;
 		this.catalogSvc = catalogSvc;
+		this.itemRepo = itemRepo;
 	}
 
 	public Billing get(String id) {
@@ -64,7 +67,11 @@ public class BillingService {
 		
 		return billingRepo.save(toSaveToDb);
 	}
-	
+
+	public List<BillingItem> listItems(Instant start, Instant end) {
+		return itemRepo.listItems(start, end);
+	}
+
 	private List<BillingItem> extractItems(BillingInput input) {
 		var mappedItems = new ArrayList<BillingItem>();
 
