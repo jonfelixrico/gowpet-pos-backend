@@ -13,5 +13,5 @@ public interface BillingItemRepository extends CrudRepository<String, BillingIte
         WHERE
             b.billing.createDt BETWEEN ?1 AND ?2
     """)
-    List<BillingItem> getBillingWithinRange(Instant start, Instant end);
+    List<BillingItem> listItems(Instant start, Instant end);
 }
