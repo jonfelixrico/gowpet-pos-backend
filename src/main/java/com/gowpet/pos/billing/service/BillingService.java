@@ -68,8 +68,8 @@ public class BillingService {
 		return billingRepo.save(toSaveToDb);
 	}
 
-	public List<BillingItem> listItems(Instant start, Instant end) {
-		return itemRepo.listItems(start, end);
+	public List<AggregatedBillingItem> aggregateItems(Instant start, Instant end) {
+		return itemRepo.aggregateItems(start, end);
 	}
 
 	private List<BillingItem> extractItems(BillingInput input) {

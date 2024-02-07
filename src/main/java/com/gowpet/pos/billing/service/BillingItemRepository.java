@@ -8,10 +8,11 @@ import java.util.List;
 
 public interface BillingItemRepository extends CrudRepository<String, BillingItem> {
     @Query("""
-        SELECT b
-        FROM BillingItem AS b
+        SELECT new com.gowpet.pos.billing.service.AggregatedBillingItem(bi.catalogItem.id, bi.price, COUNT(1))
+        FROM BillingItem AS bi
         WHERE
-            b.billing.createDt BETWEEN ?1 AND ?2
+            bi.billing.createDt BETWEEN ?1 AND ?2
+        GROUP BY bi.catalogItem.id, bi.price
     """)
-    List<BillingItem> listItems(Instant start, Instant end);
+    List<AggregatedBillingItem> aggregateItems(Instant start, Instant end);
 }
