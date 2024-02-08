@@ -20,6 +20,7 @@ public class CatalogReportIT {
     @Autowired
     private MockMvc mockMvc;
     private boolean hasBeenSetUp = false;
+    private String[] testItemIds = new String[]{};
 
     private String createCatalogItem(String name, Double price) throws Exception {
         var createReq = post("/catalog/product")
@@ -78,12 +79,14 @@ public class CatalogReportIT {
             return;
         }
 
-        var itemId1 = createCatalogItem("report-item-1", 10.0);
-        var itemId2 = createCatalogItem("report-item-2", 20.0);
-        var itemId3 = createCatalogItem("report-item-3", 30.0);
+        testItemIds = new String[]{
+                createCatalogItem("report-item-1", 10.0),
+                createCatalogItem("report-item-2", 20.0),
+                createCatalogItem("report-item-3", 30.0)
+        };
 
         for (int i = 1; i <= 10; i++) {
-            createBilling(itemId1, itemId2, itemId3, i);
+            createBilling(testItemIds[0], testItemIds[1], testItemIds[2], i);
         }
 
         hasBeenSetUp = true;
