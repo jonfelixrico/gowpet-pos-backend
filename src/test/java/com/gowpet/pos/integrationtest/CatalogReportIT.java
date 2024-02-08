@@ -24,12 +24,12 @@ public class CatalogReportIT {
         var createReq = post("/catalog/product")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(String.format("""
-						{
-							"name": "%s",
-							"price": %f
-						}
-						
-						""", name, price));
+                        {
+                        	"name": "%s",
+                        	"price": %f
+                        }
+                        						
+                        """, name, price));
         var serializedJson = mockMvc.perform(createReq)
                 .andExpect(status().isOk())
                 .andReturn()
