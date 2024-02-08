@@ -7,7 +7,6 @@ import lombok.Getter;
 import java.util.List;
 
 @Builder
-@Getter
 record CatalogReportDto(List<PartialCatalogItem> references, List<AggregatedBillingItem> entries) {
     @Builder
     record PartialCatalogItem(String id, String name) {
