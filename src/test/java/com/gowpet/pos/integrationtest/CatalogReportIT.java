@@ -66,8 +66,14 @@ public class CatalogReportIT {
     }
 
     @BeforeTestClass
-    void createTestData() {
-        // TODO create test data
+    void createTestData() throws Exception {
+        var itemId1 = createCatalogItem("report-item-1", 10.0);
+		var itemId2 = createCatalogItem("report-item-2", 20.0);
+		var itemId3 = createCatalogItem("report-item-3", 30.0);
+
+		for (int i = 1; i <= 10; i++) {
+			createBilling(itemId1, itemId2, itemId3, i);
+		}
     }
 
     @Test
