@@ -11,6 +11,8 @@ public interface BillingItemRepository extends CrudRepository<BillingItem, Strin
     @Query("""
         SELECT new com.gowpet.pos.billing.service.AggregatedBillingItem(bi.catalogItem.id, bi.price, SUM(bi.quantity))
         FROM BillingItem AS bi
+        WHERE
+            bi.billing.createDt BETWEEN :start AND :end
         GROUP BY bi.catalogItem.id, bi.price
     """)
     List<AggregatedBillingItem> aggregateItems(@Param("start") Instant start, @Param("end") Instant end);
