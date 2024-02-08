@@ -39,6 +39,32 @@ public class CatalogReportIT {
         return JsonPath.read(serializedJson, "$.id");
     }
 
+    private void createBilling(String item1Id, String item2Id, String item3Id, Integer quantityEach) throws Exception {
+        var postReq = post("/billing")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(String.format("""
+                        {
+                        	"items": [
+                        		{
+                        			"catalogId": "%s",
+                        			"quantity": %d
+                        		},
+                        		{
+                        			"catalogId": "%s",
+                        			"quantity": %d
+                        		},
+                        		{
+                        			"catalogId": "%s",
+                        			"quantity": %d
+                        		}
+                        	]
+                        }
+                        """, item1Id, quantityEach, item2Id, quantityEach, item3Id, quantityEach));
+
+        mockMvc.perform(postReq)
+                .andExpect(status().isOk());
+    }
+
     @BeforeTestClass
     void createTestData() {
         // TODO create test data
