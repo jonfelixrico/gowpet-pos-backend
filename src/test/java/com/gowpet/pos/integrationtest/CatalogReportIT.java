@@ -1,7 +1,6 @@
 package com.gowpet.pos.integrationtest;
 
 import com.jayway.jsonpath.JsonPath;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -21,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CatalogReportIT {
     @Autowired
     private MockMvc mockMvc;
+    private boolean hasBeenSetUp = false;
 
     private String createCatalogItem(String name, Double price) throws Exception {
         var createReq = post("/catalog/product")
@@ -67,8 +66,6 @@ public class CatalogReportIT {
                 .andExpect(status().isOk());
     }
 
-    private boolean hasBeenSetUp = false;
-
     /**
      * Didn't go for BeforeAll since we'd have to use a static method for it.
      * Adjusting the seed code to be static is going to be a PITA so we're going for this
@@ -84,12 +81,12 @@ public class CatalogReportIT {
         }
 
         var itemId1 = createCatalogItem("report-item-1", 10.0);
-		var itemId2 = createCatalogItem("report-item-2", 20.0);
-		var itemId3 = createCatalogItem("report-item-3", 30.0);
+        var itemId2 = createCatalogItem("report-item-2", 20.0);
+        var itemId3 = createCatalogItem("report-item-3", 30.0);
 
-		for (int i = 1; i <= 10; i++) {
-			createBilling(itemId1, itemId2, itemId3, i);
-		}
+        for (int i = 1; i <= 10; i++) {
+            createBilling(itemId1, itemId2, itemId3, i);
+        }
 
         hasBeenSetUp = true;
     }
