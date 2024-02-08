@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.time.Instant;
 import java.util.List;
 
-public interface BillingItemRepository extends CrudRepository<String, BillingItem> {
+public interface BillingItemRepository extends CrudRepository<BillingItem, String> {
     @Query("""
         SELECT new com.gowpet.pos.billing.service.AggregatedBillingItem(bi.catalogItem.id, bi.price, COUNT(1))
         FROM BillingItem AS bi
