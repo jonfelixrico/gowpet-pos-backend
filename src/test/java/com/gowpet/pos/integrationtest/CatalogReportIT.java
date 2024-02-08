@@ -66,12 +66,10 @@ public class CatalogReportIT {
                 .andExpect(status().isOk());
     }
 
-    /**
+    /*
      * Didn't go for BeforeAll since we'd have to use a static method for it.
      * Adjusting the seed code to be static is going to be a PITA so we're going for this
      * instead to keep the MockMvc approach.
-     *
-     * @throws Exception
      */
     @BeforeEach
     void createTestData() throws Exception {
