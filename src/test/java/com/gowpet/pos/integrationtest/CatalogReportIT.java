@@ -10,7 +10,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -93,7 +98,16 @@ public class CatalogReportIT {
     }
 
     @Test
-    void Reporting_RetrieveAllTime_ReturnsReport() {
-        // TODO add test
+    void Reporting_RetrieveAllTime_ReturnsReport() throws Exception {
+        var getReq = get("/catalog/report")
+                .queryParam("start", Instant.now().minus(1, ChronoUnit.DAYS).toString())
+                .queryParam("end", Instant.now().plus(1, ChronoUnit.DAYS).toString());
+
+        mockMvc.perform(getReq)
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath(String.format("$.entries[?(@.catalogItemId == '%s')].price", testItemIds[0])).value(10),
+                        jsonPath(String.format("$.entries[?(@.catalogItemId == '%s')].quantity", testItemIds[0])).value(55)
+                );
     }
 }
