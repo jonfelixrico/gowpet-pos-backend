@@ -1,6 +1,7 @@
 package com.gowpet.pos.integrationtest;
 
 import com.jayway.jsonpath.JsonPath;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,9 +100,17 @@ public class CatalogReportIT {
 
     @Test
     void Reporting_RetrieveAllTime_ReturnsReport() throws Exception {
-        var getReq = get("/catalog/report")
-                .queryParam("start", Instant.now().minus(1, ChronoUnit.DAYS).toString())
-                .queryParam("end", Instant.now().plus(1, ChronoUnit.DAYS).toString());
+        testItemIds = new String[]{
+                createCatalogItem("report-item-1", 10.0),
+                createCatalogItem("report-item-2", 20.0),
+                createCatalogItem("report-item-3", 30.0)
+        };
+
+        for (int i = 1; i <= 10; i++) {
+            createBilling(testItemIds[0], testItemIds[1], testItemIds[2], i);
+        }
+
+        var getReq = get("/catalog/report");
 
         mockMvc.perform(getReq)
                 .andExpectAll(
