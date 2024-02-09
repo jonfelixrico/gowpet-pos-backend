@@ -30,8 +30,10 @@ class CatalogReportController {
     CatalogReportDto getReport(@RequestParam Optional<Instant> start, @RequestParam Optional<Instant> end) {
         List<AggregatedBillingItem> aggregated = billingSvc.aggregateItems(start.orElse(Instant.ofEpochMilli(0)), end.orElse(Instant.now()));
 
-        var uniqueCatItemIds = new HashSet<>(aggregated.stream().map(AggregatedBillingItem::catalogItemId).toList());
-        var catalogItemData = uniqueCatItemIds.stream()
+
+        var catalogItemData = aggregated.stream()
+                .map(AggregatedBillingItem::catalogItemId)
+                .distinct()
                 .map(id -> catalogSvc.findById(id).orElseThrow())
                 .map(catalogItem -> CatalogReportDto.PartialCatalogItem.builder()
                         .id(catalogItem.getId())
