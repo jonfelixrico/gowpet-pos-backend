@@ -37,9 +37,8 @@ public class Billing {
 	@Builder.Default
 	@OneToMany(orphanRemoval = true,
 		fetch = FetchType.LAZY,
-		targetEntity = BillingItem.class,
 		cascade = CascadeType.ALL)
-	@JoinColumn
+	@JoinColumn(name = "billing_id")
 	private List<BillingItem> items = new ArrayList<>();
 	
 	
