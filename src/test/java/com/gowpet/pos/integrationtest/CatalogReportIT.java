@@ -100,16 +100,6 @@ public class CatalogReportIT {
 
     @Test
     void Reporting_RetrieveAllTime_ReturnsReport() throws Exception {
-        testItemIds = new String[]{
-                createCatalogItem("report-item-1", 10.0),
-                createCatalogItem("report-item-2", 20.0),
-                createCatalogItem("report-item-3", 30.0)
-        };
-
-        for (int i = 1; i <= 10; i++) {
-            createBilling(testItemIds[0], testItemIds[1], testItemIds[2], i);
-        }
-
         var getReq = get("/catalog/report");
 
         mockMvc.perform(getReq)
