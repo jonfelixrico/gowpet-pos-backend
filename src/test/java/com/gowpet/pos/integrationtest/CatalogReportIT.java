@@ -47,7 +47,7 @@ public class CatalogReportIT {
         return JsonPath.read(serializedJson, "$.id");
     }
 
-    private void createBilling(String item1Id, String item2Id, String item3Id, Integer quantityEach) throws Exception {
+    private void createBilling(String item1Id, String item2Id, String item3Id, int quantityEach) throws Exception {
         var postReq = post("/billing")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(String.format("""
