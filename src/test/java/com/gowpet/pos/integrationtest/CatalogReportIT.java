@@ -113,4 +113,8 @@ public class CatalogReportIT {
                         jsonPath(String.format("$.entries[?(@.catalogItemId == '%s')].quantity", testItemIds[2])).value(55.0)
                 );
     }
+
+    // TODO create test for date ranges
+
+    // TODO adjust tests after fully implementing custom price
 }
