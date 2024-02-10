@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/catalog/report")
@@ -26,11 +27,13 @@ class CatalogReportController {
     }
 
     @GetMapping
-    CatalogReportDto getReport(@RequestParam Instant start, @RequestParam Instant end) {
-        List<AggregatedBillingItem> aggregated = billingSvc.aggregateItems(start, end);
+    CatalogReportDto getReport(@RequestParam Optional<Instant> start, @RequestParam Optional<Instant> end) {
+        List<AggregatedBillingItem> aggregated = billingSvc.aggregateItems(start.orElse(Instant.ofEpochMilli(0)), end.orElse(Instant.now()));
 
-        var uniqueCatItemIds = new HashSet<>(aggregated.stream().map(AggregatedBillingItem::catalogItemId).toList());
-        var catalogItemData = uniqueCatItemIds.stream()
+
+        var catalogItemData = aggregated.stream()
+                .map(AggregatedBillingItem::catalogItemId)
+                .distinct()
                 .map(id -> catalogSvc.findById(id).orElseThrow())
                 .map(catalogItem -> CatalogReportDto.PartialCatalogItem.builder()
                         .id(catalogItem.getId())

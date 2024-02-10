@@ -43,6 +43,6 @@ public class BillingItem {
 	private Integer itemNo;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn
+	@JoinColumn(name = "billing_id", insertable = false, updatable = false)
 	private Billing billing;
 }
