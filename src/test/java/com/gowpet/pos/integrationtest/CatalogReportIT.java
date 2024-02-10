@@ -105,8 +105,12 @@ public class CatalogReportIT {
         mockMvc.perform(getReq)
                 .andExpectAll(
                         status().isOk(),
-                        jsonPath(String.format("$.entries[?(@.catalogItemId == '%s')].price", testItemIds[0])).value(10),
-                        jsonPath(String.format("$.entries[?(@.catalogItemId == '%s')].quantity", testItemIds[0])).value(55)
+                        jsonPath(String.format("$.entries[?(@.catalogItemId == '%s')].price", testItemIds[0])).value(10.0),
+                        jsonPath(String.format("$.entries[?(@.catalogItemId == '%s')].quantity", testItemIds[0])).value(55.0),
+                        jsonPath(String.format("$.entries[?(@.catalogItemId == '%s')].price", testItemIds[1])).value(20.0),
+                        jsonPath(String.format("$.entries[?(@.catalogItemId == '%s')].quantity", testItemIds[1])).value(55.0),
+                        jsonPath(String.format("$.entries[?(@.catalogItemId == '%s')].price", testItemIds[2])).value(30.0),
+                        jsonPath(String.format("$.entries[?(@.catalogItemId == '%s')].quantity", testItemIds[2])).value(55.0)
                 );
     }
 }
