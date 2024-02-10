@@ -24,8 +24,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(toBuilder = true)
 @Getter
 @Entity
@@ -37,9 +37,8 @@ public class Billing {
 	@Builder.Default
 	@OneToMany(orphanRemoval = true,
 		fetch = FetchType.LAZY,
-		targetEntity = BillingItem.class,
 		cascade = CascadeType.ALL)
-	@JoinColumn
+	@JoinColumn(name = "billing_id")
 	private List<BillingItem> items = new ArrayList<>();
 	
 	
